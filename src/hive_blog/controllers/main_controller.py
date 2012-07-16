@@ -36,7 +36,7 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import colony.libs.import_util
 
-import hive_blog_main.main.hive_blog_main_exceptions
+import hive_blog.main.hive_blog_exceptions
 
 JPEG_CONTENT_TYPE = "image/jpeg"
 """ The jpeg content type """
@@ -73,33 +73,33 @@ RSS_CONTENT_TYPE = "application/rss+xml"
 
 # runs the external imports
 models = colony.libs.import_util.__import__("models")
-web_mvc_utils = colony.libs.import_util.__import__("web_mvc_utils")
+mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 
 class MainController:
     """
-    The hive blog main controller.
+    The hive blog controller.
     """
 
-    hive_blog_main_plugin = None
-    """ The hive blog main plugin """
+    hive_blog_plugin = None
+    """ The hive blog plugin """
 
-    hive_blog_main = None
-    """ The hive blog main """
+    hive_blog = None
+    """ The hive blog """
 
-    def __init__(self, hive_blog_main_plugin, hive_blog_main):
+    def __init__(self, hive_blog_plugin, hive_blog):
         """
         Constructor of the class.
 
-        @type hive_blog_main_plugin: HiveBlogMainPlugin
-        @param hive_blog_main_plugin: The hive blog main plugin.
-        @type hive_blog_main: HiveBlogMain
-        @param hive_blog_main: The hive blog main.
+        @type hive_blog_plugin: HiveBlogPlugin
+        @param hive_blog_plugin: The hive blog plugin.
+        @type hive_blog: HiveBlog
+        @param hive_blog: The hive blog.
         """
 
-        self.hive_blog_main_plugin = hive_blog_main_plugin
-        self.hive_blog_main = hive_blog_main
+        self.hive_blog_plugin = hive_blog_plugin
+        self.hive_blog = hive_blog
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_index(self, rest_request, parameters = {}):
         """
         Handles the given hive index rest request.
@@ -111,7 +111,7 @@ class MainController:
         """
 
         # retrieves the required controllers
-        page_controller = self.hive_blog_main.page_controller
+        page_controller = self.hive_blog.page_controller
 
         # retrieves the feed attribute
         feed = self.get_attribute_decoded(rest_request, "feed", DEFAULT_ENCODING)
@@ -124,7 +124,7 @@ class MainController:
             # calls the page controller to show the first page
             page_controller.handle_show(rest_request, parameters)
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_about(self, rest_request, parameters = {}):
         """
         Handles the given hive about rest request.
@@ -139,7 +139,7 @@ class MainController:
         template_file = self.retrieve_template_file("general.html.tpl", partial_page = "main/about_contents.html.tpl")
         self.process_set_contents(rest_request, template_file)
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_signup(self, rest_request, parameters = {}):
         """
         Handles the given hive signup rest request.
@@ -154,7 +154,7 @@ class MainController:
         template_file = self.retrieve_template_file("general.html.tpl", partial_page = "main/signup_contents.html.tpl")
         self.process_set_contents(rest_request, template_file, assign_session = True)
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_signup_create(self, rest_request, parameters = {}):
         """
         Handles the given hive signup rest request.
@@ -168,7 +168,7 @@ class MainController:
         # in case the captcha does not validate
         if not self._validate_captcha(rest_request, False):
             # raises the invalid captcha exception
-            raise hive_blog_main.main.hive_blog_main_exceptions.InvalidCaptcha("invalid captcha value sent")
+            raise hive_blog.main.hive_blog_exceptions.InvalidCaptcha("invalid captcha value sent")
 
         # retrieves the session information attributes
         openid_claimed_id = self.get_session_attribute(rest_request, "openid.claimed_id")
@@ -185,7 +185,7 @@ class MainController:
         user_entity.twitter_username = twitter_username
 
         # stores the user and its relations in the data source
-        user_entity.store(web_mvc_utils.PERSIST_SAVE_TYPE)
+        user_entity.store(mvc_utils.PERSIST_SAVE_TYPE)
 
         # sets the login username session attribute
         self.set_session_attribute(rest_request, "login.username", user_entity.username)
@@ -193,7 +193,7 @@ class MainController:
         # redirects to the login page
         self.redirect_base_path(rest_request, "login")
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_signin(self, rest_request, parameters = {}):
         """
         Handles the given hive signin rest request.
@@ -208,7 +208,7 @@ class MainController:
         template_file = self.retrieve_template_file("general.html.tpl", partial_page = "main/signin_contents.html.tpl")
         self.process_set_contents(rest_request, template_file)
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_signin_process(self, rest_request, parameters = {}):
         """
         Handles the given hive signin process rest request.
@@ -262,7 +262,7 @@ class MainController:
             # processes a facebook signin
             self._process_facebook_signin(rest_request)
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_login(self, rest_request, parameters = {}):
         """
         Handles the given hive login rest request.
@@ -309,7 +309,7 @@ class MainController:
         redirect_path = return_address or "index"
         self.redirect_base_path(rest_request, redirect_path, quote = False)
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_logout(self, rest_request, parameters = {}):
         """
         Handles the given hive logout rest request.
@@ -329,7 +329,7 @@ class MainController:
         # redirects to the signin page
         self.redirect_base_path(rest_request, "signin")
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_openid(self, rest_request, parameters = {}):
         """
         Handles the given hive openid rest request.
@@ -418,7 +418,7 @@ class MainController:
         # redirects to the login page
         self.redirect_base_path(rest_request, "login")
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_twitter(self, rest_request, parameters = {}):
         """
         Handles the given hive twitter rest request.
@@ -432,7 +432,7 @@ class MainController:
         # redirects to the initial page
         self.redirect_base_path(rest_request, "index")
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_facebook(self, rest_request, parameters = {}):
         """
         Handles the given hive facebook rest request.
@@ -446,7 +446,7 @@ class MainController:
         # redirects to the initial page
         self.redirect_base_path(rest_request, "index")
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_rss(self, rest_request, parameters = {}):
         """
         Handles the given hive rss rest request.
@@ -472,7 +472,7 @@ class MainController:
         template_file.assign("posts", posts)
         self.process_set_contents(rest_request, template_file, content_type = RSS_CONTENT_TYPE)
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_hive_captcha(self, rest_request, parameters = {}):
         """
         Handles the given hive captcha request.
@@ -484,7 +484,7 @@ class MainController:
         """
 
         # retrieves the security captcha plugin
-        security_captcha_plugin = self.hive_blog_main_plugin.security_captcha_plugin
+        security_captcha_plugin = self.hive_blog_plugin.security_captcha_plugin
 
         # validates the captcha
         if self._validate_captcha(rest_request):
@@ -512,7 +512,7 @@ class MainController:
         # validates the captcha, regenerating the captcha
         if not self._validate_captcha(rest_request, True):
             # raises the invalid captcha exception
-            raise hive_blog_main.main.hive_blog_main_exceptions.InvalidCaptcha("invalid captcha value sent")
+            raise hive_blog.main.hive_blog_exceptions.InvalidCaptcha("invalid captcha value sent")
 
         # encrypts the login password
         encrypted_login_password = models.RootEntity.encrypt(login_password)
@@ -547,11 +547,11 @@ class MainController:
         self.redirect_base_path(rest_request, "login")
 
     def _process_openid_signin(self, rest_request, openid_value):
-        # retrieves the service openid plugin
-        service_openid_plugin = self.hive_blog_main_plugin.service_openid_plugin
+        # retrieves the api openid plugin
+        api_openid_plugin = self.hive_blog_plugin.api_openid_plugin
 
         # creates the openid remote client
-        openid_remote_client = service_openid_plugin.create_remote_client({})
+        openid_remote_client = api_openid_plugin.create_remote_client({})
 
         # normalizes the openid value
         openid_value_normalized = openid_remote_client.normalize_claimed_id(openid_value)
@@ -583,7 +583,7 @@ class MainController:
 
     def _process_twitter_signin(self, rest_request):
         # retrieves the service twitter plugin
-        service_twitter_plugin = self.hive_blog_main_plugin.service_twitter_plugin
+        service_twitter_plugin = self.hive_blog_plugin.service_twitter_plugin
 
         # creates the twitter remote client
         twitter_remote_client = service_twitter_plugin.create_remote_client({})
@@ -608,7 +608,7 @@ class MainController:
 
     def _process_facebook_signin(self, rest_request):
         # retrieves the service facebook plugin
-        service_facebook_plugin = self.hive_blog_main_plugin.service_facebook_plugin
+        service_facebook_plugin = self.hive_blog_plugin.service_facebook_plugin
 
         # creates the facebook remote client
         facebook_remote_client = service_facebook_plugin.create_remote_client({})
@@ -653,7 +653,7 @@ class MainController:
         # in case no authentication name (method) is defined
         else:
             # raises the invalid authentication information
-            raise hive_blog_main.main.hive_blog_main_exceptions.InvalidAuthenticationInformation("missing authentication name")
+            raise hive_blog.main.hive_blog_exceptions.InvalidAuthenticationInformation("missing authentication name")
 
         # retrieves the user that matches the authentication parameters
         user_entity = models.User.find_one(login_filter)
@@ -663,7 +663,7 @@ class MainController:
 
     def _generate_captcha(self, rest_request):
         # retrieves the security captcha plugin
-        security_captcha_plugin = self.hive_blog_main_plugin.security_captcha_plugin
+        security_captcha_plugin = self.hive_blog_plugin.security_captcha_plugin
 
         # generates a captcha string value
         string_value = security_captcha_plugin.generate_captcha_string_value({})
@@ -698,12 +698,12 @@ class MainController:
         # in case no valid captcha session is set
         if not captcha_session:
             # raises the invalid captcha exception
-            raise hive_blog_main.main.hive_blog_main_exceptions.InvalidCaptcha("invalid captcha session value")
+            raise hive_blog.main.hive_blog_exceptions.InvalidCaptcha("invalid captcha session value")
 
         # in case both captchas match don't match (invalid captcha value)
         if not captcha_validation == captcha_session:
             # raises the invalid captcha exception
-            raise hive_blog_main.main.hive_blog_main_exceptions.InvalidCaptcha("non matching captcha value: " + str(captcha_validation))
+            raise hive_blog.main.hive_blog_exceptions.InvalidCaptcha("non matching captcha value: " + str(captcha_validation))
 
         # in case the regenerate on valid flag is set
         if regenerate_on_valid:

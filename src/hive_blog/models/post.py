@@ -65,7 +65,7 @@ MONTH_NUMBER_MAP = {
 
 # runs the external imports
 models = colony.libs.import_util.__import__("models")
-web_mvc_utils = colony.libs.import_util.__import__("web_mvc_utils")
+mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 
 class Post(root_entity.RootEntity):
     """
@@ -101,7 +101,7 @@ class Post(root_entity.RootEntity):
         "fetch_type" : "lazy",
         "mandatory" : True,
         "secure" : True,
-        "persist_type" : web_mvc_utils.PERSIST_ASSOCIATE_TYPE
+        "persist_type" : mvc_utils.PERSIST_ASSOCIATE_TYPE
     }
     """ The author of the post """
 
@@ -109,7 +109,7 @@ class Post(root_entity.RootEntity):
         "data_type" : "relation",
         "fetch_type" : "lazy",
         "secure" : True,
-        "persist_type" : web_mvc_utils.PERSIST_NONE_TYPE
+        "persist_type" : mvc_utils.PERSIST_NONE_TYPE
     }
     """ The comment for the post """
 

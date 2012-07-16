@@ -58,7 +58,7 @@ MONTH_NUMBER_MAP = {
 
 # runs the external imports
 models = colony.libs.import_util.__import__("models")
-web_mvc_utils = colony.libs.import_util.__import__("web_mvc_utils")
+mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 
 class Comment(root_entity.RootEntity):
     """
@@ -82,7 +82,7 @@ class Comment(root_entity.RootEntity):
         "data_type" : "relation",
         "fetch_type" : "lazy",
         "mandatory" : True,
-        "persist_type" : web_mvc_utils.PERSIST_SAVE_TYPE | web_mvc_utils.PERSIST_ASSOCIATE_TYPE
+        "persist_type" : mvc_utils.PERSIST_SAVE_TYPE | mvc_utils.PERSIST_ASSOCIATE_TYPE
     }
     """ The author of the comment """
 
@@ -90,7 +90,7 @@ class Comment(root_entity.RootEntity):
         "data_type" : "relation",
         "fetch_type" : "lazy",
         "mandatory" : True,
-        "persist_type" : web_mvc_utils.PERSIST_ASSOCIATE_TYPE
+        "persist_type" : mvc_utils.PERSIST_ASSOCIATE_TYPE
     }
     """ The post that contains the comment """
 
@@ -99,7 +99,7 @@ class Comment(root_entity.RootEntity):
         "fetch_type" : "lazy",
         "mandatory" : True,
         "secure" : True,
-        "persist_type" : web_mvc_utils.PERSIST_ASSOCIATE_TYPE
+        "persist_type" : mvc_utils.PERSIST_ASSOCIATE_TYPE
     }
     """ The comment for which this comment is a reply """
 
@@ -107,7 +107,7 @@ class Comment(root_entity.RootEntity):
         "data_type" : "relation",
         "fetch_type" : "lazy",
         "secure" : True,
-        "persist_type" : web_mvc_utils.PERSIST_NONE_TYPE
+        "persist_type" : mvc_utils.PERSIST_NONE_TYPE
     }
     """ The comment replies to the comment """
 

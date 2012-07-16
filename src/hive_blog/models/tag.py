@@ -40,7 +40,7 @@ import root_entity
 
 # runs the external imports
 models = colony.libs.import_util.__import__("models")
-web_mvc_utils = colony.libs.import_util.__import__("web_mvc_utils")
+mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 
 class Tag(root_entity.RootEntity):
     """
@@ -66,7 +66,7 @@ class Tag(root_entity.RootEntity):
         "data_type" : "relation",
         "fetch_type" : "lazy",
         "secure" : True,
-        "persist_type" : web_mvc_utils.PERSIST_NONE_TYPE
+        "persist_type" : mvc_utils.PERSIST_NONE_TYPE
     }
     """ The root entities for this tag """
 

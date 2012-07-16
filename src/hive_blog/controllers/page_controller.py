@@ -40,33 +40,33 @@ import colony.libs.import_util
 
 # runs the external imports
 models = colony.libs.import_util.__import__("models")
-web_mvc_utils = colony.libs.import_util.__import__("web_mvc_utils")
+mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 
 class PageController:
     """
     The hive blog page controller.
     """
 
-    hive_blog_main_plugin = None
-    """ The hive blog main plugin """
+    hive_blog_plugin = None
+    """ The hive blog plugin """
 
-    hive_blog_main = None
-    """ The hive blog main """
+    hive_blog = None
+    """ The hive blog """
 
-    def __init__(self, hive_blog_main_plugin, hive_blog_main):
+    def __init__(self, hive_blog_plugin, hive_blog):
         """
         Constructor of the class.
 
-        @type hive_blog_main_plugin: HiveBlogMainPlugin
-        @param hive_blog_main_plugin: The hive blog main plugin.
-        @type hive_blog_main: HiveBlogMain
-        @param hive_blog_main: The hive blog main.
+        @type hive_blog_plugin: HiveBlogPlugin
+        @param hive_blog_plugin: The hive blog plugin.
+        @type hive_blog: HiveBlog
+        @param hive_blog: The hive blog.
         """
 
-        self.hive_blog_main_plugin = hive_blog_main_plugin
-        self.hive_blog_main = hive_blog_main
+        self.hive_blog_plugin = hive_blog_plugin
+        self.hive_blog = hive_blog
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_show(self, rest_request, parameters = {}):
         # retrieves the page index pattern
         page_index = self.get_pattern(parameters, "page_index", types.IntType) or 1

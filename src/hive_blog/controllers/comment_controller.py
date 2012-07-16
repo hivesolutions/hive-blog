@@ -36,45 +36,45 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import colony.libs.import_util
 
-import hive_blog_main.main.hive_blog_main_exceptions
+import hive_blog.main.hive_blog_exceptions
 
 # runs the external imports
 models = colony.libs.import_util.__import__("models")
-web_mvc_utils = colony.libs.import_util.__import__("web_mvc_utils")
+mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 
 class CommentController:
     """
     The hive blog comment controller.
     """
 
-    hive_blog_main_plugin = None
-    """ The hive blog main plugin """
+    hive_blog_plugin = None
+    """ The hive blog plugin """
 
-    hive_blog_main = None
-    """ The hive blog main """
+    hive_blog = None
+    """ The hive blog """
 
-    def __init__(self, hive_blog_main_plugin, hive_blog_main):
+    def __init__(self, hive_blog_plugin, hive_blog):
         """
         Constructor of the class.
 
-        @type hive_blog_main_plugin: HiveBlogMainPlugin
-        @param hive_blog_main_plugin: The hive blog main plugin.
-        @type hive_blog_main: HiveBlogMain
-        @param hive_blog_main: The hive blog main.
+        @type hive_blog_plugin: HiveBlogPlugin
+        @param hive_blog_plugin: The hive blog plugin.
+        @type hive_blog: HiveBlog
+        @param hive_blog: The hive blog.
         """
 
-        self.hive_blog_main_plugin = hive_blog_main_plugin
-        self.hive_blog_main = hive_blog_main
+        self.hive_blog_plugin = hive_blog_plugin
+        self.hive_blog = hive_blog
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_create(self, rest_request, parameters = {}):
         # retrieves the required controllers
-        main_controller = self.hive_blog_main.main_controller
+        main_controller = self.hive_blog.main_controller
 
         # validates the captcha, regenerating the captcha
         if not main_controller._validate_captcha(rest_request, False):
             # raises the invalid captcha exception
-            raise hive_blog_main.main.hive_blog_main_exceptions.InvalidCaptcha("invalid captcha value sent")
+            raise hive_blog.main.hive_blog_exceptions.InvalidCaptcha("invalid captcha value sent")
 
         # retrieves the comment from the rest request
         # and applies it to the comment entity
@@ -87,7 +87,7 @@ class CommentController:
         comment_entity.author = comment_entity.author or session_user_entity
 
         # stores the comment and its relations in the data source
-        comment_entity.store(web_mvc_utils.PERSIST_SAVE_TYPE)
+        comment_entity.store(mvc_utils.PERSIST_SAVE_TYPE)
 
         # redirects to the post show path
         self.redirect_show(rest_request, comment_entity.post)

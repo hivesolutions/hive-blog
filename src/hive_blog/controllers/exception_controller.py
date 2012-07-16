@@ -45,24 +45,24 @@ class ExceptionController:
     The hive blog exception controller.
     """
 
-    hive_blog_main_plugin = None
-    """ The hive blog main plugin """
+    hive_blog_plugin = None
+    """ The hive blog plugin """
 
-    hive_blog_main = None
-    """ The hive blog main """
+    hive_blog = None
+    """ The hive blog """
 
-    def __init__(self, hive_blog_main_plugin, hive_blog_main):
+    def __init__(self, hive_blog_plugin, hive_blog):
         """
         Constructor of the class.
 
-        @type hive_blog_main_plugin: HiveBlogMainPlugin
-        @param hive_blog_main_plugin: The hive blog main plugin.
-        @type hive_blog_main: HiveBlogMain
-        @param hive_blog_main: The hive blog main.
+        @type hive_blog_plugin: HiveBlogPlugin
+        @param hive_blog_plugin: The hive blog plugin.
+        @type hive_blog: HiveBlog
+        @param hive_blog: The hive blog.
         """
 
-        self.hive_blog_main_plugin = hive_blog_main_plugin
-        self.hive_blog_main = hive_blog_main
+        self.hive_blog_plugin = hive_blog_plugin
+        self.hive_blog = hive_blog
 
     def handle_exception(self, rest_request, parameters = {}):
         """

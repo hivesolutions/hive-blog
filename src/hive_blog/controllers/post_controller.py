@@ -38,52 +38,52 @@ import types
 
 import colony.libs.import_util
 
-import hive_blog_main.main.hive_blog_main_exceptions
+import hive_blog.main.hive_blog_exceptions
 
 # runs the external imports
 models = colony.libs.import_util.__import__("models")
-web_mvc_utils = colony.libs.import_util.__import__("web_mvc_utils")
+mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 
 class PostController:
     """
     The hive blog post controller.
     """
 
-    hive_blog_main_plugin = None
-    """ The hive blog main plugin """
+    hive_blog_plugin = None
+    """ The hive blog plugin """
 
-    hive_blog_main = None
-    """ The hive blog main """
+    hive_blog = None
+    """ The hive blog """
 
-    def __init__(self, hive_blog_main_plugin, hive_blog_main):
+    def __init__(self, hive_blog_plugin, hive_blog):
         """
         Constructor of the class.
 
-        @type hive_blog_main_plugin: HiveBlogMainPlugin
-        @param hive_blog_main_plugin: The hive blog main plugin.
-        @type hive_blog_main: HiveBlogMain
-        @param hive_blog_main: The hive blog main.
+        @type hive_blog_plugin: HiveBlogPlugin
+        @param hive_blog_plugin: The hive blog plugin.
+        @type hive_blog: HiveBlog
+        @param hive_blog: The hive blog.
         """
 
-        self.hive_blog_main_plugin = hive_blog_main_plugin
-        self.hive_blog_main = hive_blog_main
+        self.hive_blog_plugin = hive_blog_plugin
+        self.hive_blog = hive_blog
 
     def validate(self, rest_request, parameters, validation_parameters):
         # returns the result of the require permission call
-        return self.hive_blog_main.require_permissions(self, rest_request, validation_parameters)
+        return self.hive_blog.require_permissions(self, rest_request, validation_parameters)
 
-    @web_mvc_utils.serialize_exceptions("all")
-    @web_mvc_utils.validated_method("post.create")
+    @mvc_utils.serialize_exceptions("all")
+    @mvc_utils.validated_method("post.create")
     def handle_new(self, rest_request, parameters = {}):
         # processes the contents of the template file assigning the appropriate values to it
         template_file = self.retrieve_template_file("general.html.tpl", partial_page = "post/post_new_contents.html.tpl")
         template_file.assign("post", None)
         self.process_set_contents(rest_request, template_file)
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_create(self, rest_request, parameters = {}):
         # retrieves the required controllers
-        main_controller = self.hive_blog_main.main_controller
+        main_controller = self.hive_blog.main_controller
 
         # retrieves the post from the rest request
         post = self.get_field(rest_request, "post", {})
@@ -96,7 +96,7 @@ class PostController:
         # regenerating the captcha if invalid
         if not preview and not main_controller._validate_captcha(rest_request, False):
             # raises the invalid captcha exception
-            raise hive_blog_main.main.hive_blog_main_exceptions.InvalidCaptcha("invalid captcha value sent")
+            raise hive_blog.main.hive_blog_exceptions.InvalidCaptcha("invalid captcha value sent")
 
         # creates a post entity with the post
         # retrieved from the rest request
@@ -108,7 +108,7 @@ class PostController:
 
         # stores the post and its relations in the data source
         # in case the preview flag is not set
-        not preview and post_entity.store(web_mvc_utils.PERSIST_SAVE_TYPE)
+        not preview and post_entity.store(mvc_utils.PERSIST_SAVE_TYPE)
 
         # processes the contents of the template file assigning the appropriate values to it
         template_file = self.retrieve_template_file("general.html.tpl", partial_page = "post/post_new_contents.html.tpl")
@@ -116,7 +116,7 @@ class PostController:
         template_file.assign("post", post_entity)
         self.process_set_contents(rest_request, template_file)
 
-    @web_mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize_exceptions("all")
     def handle_show(self, rest_request, parameters = {}):
         # creates the return address from the request path
         return_address = self._get_path(rest_request)
