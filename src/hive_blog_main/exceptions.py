@@ -36,15 +36,15 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import colony.base.plugin_system_exceptions
 
-class HiveBlogMainException(colony.base.plugin_system_exceptions.ColonyException):
+class HiveBlogException(colony.base.plugin_system_exceptions.ColonyException):
     """
-    The hive site main exception class.
+    The hive site exception class.
     """
 
     message = None
     """ The exception's message """
 
-class InvalidAuthenticationInformation(HiveBlogMainException):
+class InvalidAuthenticationInformation(HiveBlogException):
     """
     The invalid authentication information class.
     """
@@ -57,7 +57,7 @@ class InvalidAuthenticationInformation(HiveBlogMainException):
         @param message: The message to be printed.
         """
 
-        HiveBlogMainException.__init__(self)
+        HiveBlogException.__init__(self)
         self.message = message
 
     def __str__(self):
@@ -70,7 +70,7 @@ class InvalidAuthenticationInformation(HiveBlogMainException):
 
         return "Invalid authentication information - %s" % self.message
 
-class InvalidCaptcha(HiveBlogMainException):
+class InvalidCaptcha(HiveBlogException):
     """
     The invalid captcha class.
     """
@@ -83,7 +83,7 @@ class InvalidCaptcha(HiveBlogMainException):
         @param message: The message to be printed.
         """
 
-        HiveBlogMainException.__init__(self)
+        HiveBlogException.__init__(self)
         self.message = message
 
     def __str__(self):
@@ -96,7 +96,7 @@ class InvalidCaptcha(HiveBlogMainException):
 
         return "Invalid captcha - %s" % self.message
 
-class PasswordConfirmationMismatch(HiveBlogMainException):
+class PasswordConfirmationMismatch(HiveBlogException):
     """
     The password confirmation mismatch class.
     """
@@ -109,7 +109,7 @@ class PasswordConfirmationMismatch(HiveBlogMainException):
         @param message: The message to be printed.
         """
 
-        HiveBlogMainException.__init__(self)
+        HiveBlogException.__init__(self)
         self.message = message
 
     def __str__(self):
@@ -122,7 +122,7 @@ class PasswordConfirmationMismatch(HiveBlogMainException):
 
         return "Password confirmation mismatch - %s" % self.message
 
-class AccessDeniedException(HiveBlogMainException):
+class AccessDeniedException(HiveBlogException):
     """
     The access denied exception class.
     """
@@ -135,7 +135,7 @@ class AccessDeniedException(HiveBlogMainException):
         @param message: The message to be printed.
         """
 
-        HiveBlogMainException.__init__(self)
+        HiveBlogException.__init__(self)
         self.message = message
 
     def __str__(self):
