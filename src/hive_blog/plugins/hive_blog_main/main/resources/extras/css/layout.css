@@ -1,0 +1,759 @@
+@charset "utf-8";
+
+/*
+ Hive Solutions Blog
+ Copyright (C) 2010 Hive Solutions Lda.
+
+ This file is part of Hive Solutions Blog.
+
+ Hive Solutions Blog is confidential and property of Hive Solutions Lda.,
+ its usage is constrained by the terms of the Hive Solutions
+ Confidential Usage License.
+
+ Hive Solutions Blog should not be distributed under any circumstances,
+ violation of this may imply legal action.
+
+ If you have any questions regarding the terms of this license please
+ refer to <http://www.hive.pt/licenses/>.
+*/
+
+/*
+ __author__    = Francisco Castro <v-fcastro@hive.pt> & João Magalhães <joamag@hive.pt> & Luís Martinho <lmartinho@hive.pt>
+ __version__   = 1.0.0
+ __revision__  = $LastChangedRevision$
+ __date__      = $LastChangedDate$
+ __copyright__ = Copyright (c) 2010 Hive Solutions Lda.
+ __license__   = Hive Solutions Confidential Usage License (HSCUL)
+*/
+
+@font-face {
+    font-family: Rockwell;
+    src: local("Rockwell"), url(../fonts/rock.ttf);
+}
+
+#environment-variables {
+    display: none;
+}
+
+.clear {
+    clear: both;
+}
+
+.hidden {
+    display: none;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.margin-left {
+    margin-left: 24px;
+}
+
+.margin-right {
+    margin-right: 24px;
+}
+
+body {
+    background: transparent url(../images/top-shadow.png) repeat-x left top;
+    color: #808080;
+    font-family: Rockwell;
+    margin: 0px;
+}
+
+img {
+    border: none;
+}
+
+ul {
+    padding: 4px 0px 4px 12px;
+}
+
+ul li {
+    background: transparent url(../images/bullet.png) no-repeat left 10px;
+    line-height: 1.8em;
+    list-style: none;
+    margin-bottom: 12px;
+    padding-left: 18px;
+}
+
+a,
+a:active,
+a:visited {
+    color: #bcc9dd;
+    text-decoration: none;
+}
+a:hover {
+    color: #214c8f;
+}
+
+h1 {
+    color: #214c8f;
+    font-size: 20pt;
+    margin: 0px;
+}
+
+p {
+    line-height: 1.8em;
+}
+
+pre {
+    background-color: #f5f6f6;
+    border: 1px solid #cbccce;
+    line-height: 1.8em;
+    padding: 20px;
+}
+
+pre .red {
+    color: #a33333;
+}
+
+pre .green {
+    color: #338033;
+}
+
+pre .blue {
+    color: #3333b3;
+}
+
+blockquote {
+    background: transparent url(../images/quotes-top.png) no-repeat left top;
+    font-style: italic;
+    margin: 30px 0px 30px 0px;
+    padding: 16px 0px 0px 28px;
+}
+
+blockquote p {
+    background: transparent url(../images/quotes-bottom.png) no-repeat right bottom;
+    padding-bottom: 16px;
+    padding-right: 16px;
+}
+
+form {
+    padding-bottom: 30px;
+}
+
+input {
+    background: transparent url(../images/text-field-background-sprite.png) no-repeat center top;
+    border: none;
+    color: #90a5c7;
+    font-family: Rockwell, Arial;
+    font-size: 20pt;
+    height: 48px;
+    margin-bottom: 20px;
+    outline: none;
+    padding: 1px 20px 1px 20px;
+    width: 485px;
+}
+
+input.small {
+    background: transparent url(../images/text-field-small-background-sprite.png) no-repeat center top;
+    width: 210px;
+}
+
+input.active {
+    background-position: center -50px;
+}
+
+select {
+    color: #90a5c7;
+    font-family: Rockwell, Arial;
+    font-size: 20pt;
+    height: 48px;
+}
+
+#website-field {
+    margin-left: 16px;
+}
+
+textarea {
+    background: transparent url(../images/text-area-background-sprite.png) no-repeat center top;
+    border: none;
+    color: #90a5c7;
+    font-family: Rockwell, Arial;
+    font-size: 20pt;
+    height: 206px;
+    outline: none;
+    overflow: visible;
+    padding-bottom: 12px;
+    padding-left: 20px;
+    padding-right: 5px;
+    padding-top: 12px;
+    resize: none;
+    width: 500px;
+}
+
+textarea.active {
+    background-position: center -230px;
+}
+
+.dropbox {
+    background: transparent url(../images/text-field-small-background-sprite.png) no-repeat center top;
+    color: #90a5c7;
+    font-family: Rockwell, Arial;
+    font-size: 20pt;
+    width: 250px;
+}
+
+.dropbox-selected-value {
+    float: left;
+    height: 42px;
+    padding-left: 20px;
+    padding-top: 8px;
+}
+
+.dropbox-button {
+    background: transparent url(../images/dropbox-button-normal.png) no-repeat center center;
+    cursor: pointer;
+    display: block;
+    float: right;
+    height: 50px;
+    width: 50px;
+}
+
+.dropbox-button:hover {
+    background: transparent url(../images/dropbox-button-hover.png) no-repeat center center;
+}
+
+.dropbox-options {
+    background: #ffffff url(../images/dropbox-background.png) no-repeat center top;
+    display: none;
+    padding-top: 3px;
+    position: absolute;
+    width: 250px;
+}
+
+.dropbox-options ul {
+    border-bottom: 3px solid #214c8f;
+    border-left: 3px solid #214c8f;
+    border-right: 3px solid #214c8f;
+    margin: 0px;
+    padding: 10px 0px 0px 0px;
+}
+
+.dropbox-options ul li{
+    background: none;
+    cursor: pointer;
+    padding: 0px 0px 0px 20px;
+    width: 180px;
+}
+
+.dropbox-options ul li:hover{
+    color: #214c8f;
+}
+
+#header {
+    height: 165px;
+    margin: 20px auto 0px auto;
+    width: 600px;
+}
+
+#header-image {
+    border: none;
+}
+
+#wrapper {
+    margin: 50px auto 0px auto;
+    width: 960px;
+}
+
+#content-column {
+    float: left;
+    width: 600px;
+}
+
+#content-column a:link,
+#content-column a:active,
+#content-column a:visited {
+    color: #6482b1;
+}
+
+#content-column a:hover {
+    color: #214c8f;
+}
+
+.error {
+    margin: 128px 0px 128px 0px;
+}
+
+.error .illustration {
+    background: transparent url(../images/handy-man.png) no-repeat center center;
+    height: 173px;
+    margin: auto auto auto auto;
+    width: 183px;
+}
+
+.error .title {
+    color: #6482b1;
+    font-size: 16pt;
+    margin: 24px 0px 12px 0px;
+    text-align: center;
+}
+
+.error .message {
+    text-align: center;
+}
+
+.post {
+    background: transparent url(../images/separator.png) no-repeat center bottom;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+}
+
+.post-header {
+    padding-bottom: 0px;
+}
+
+.post-preview .post-header {
+    background: transparent url(../images/preview-ribbon.png) no-repeat right top;
+    padding-bottom: 0px;
+}
+
+.post-date {
+    background: transparent url(../images/dotted-vertical.png) repeat-y right top;
+    color: #999999;
+    float: left;
+    font-size: 20pt;
+    text-align: center;
+    width: 80px;
+}
+
+.post-date span {
+    color: #bcc9dd;
+}
+
+.post-title {
+    float: left;
+    margin-left: 10px;
+    width: 510px;
+}
+
+.post-body {
+    padding: 20px 0px 20px 0px;
+}
+
+.post-footer p {
+    line-height: 1.3em;
+    margin: 0px 0px 6px 0px;
+}
+
+.post-footer span {
+    color: #999999;
+}
+
+.post-signature {
+    float: right;
+}
+
+#comments-area {
+}
+
+#comments-form-area {
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+#comments-area #openid-area {
+    display: None;
+}
+
+.control-button {
+    font-size: 18pt;
+}
+
+#previous-button {
+    float: left;
+}
+
+#next-button {
+    float: right;
+}
+
+.auth-buttons {
+    height: 33px;
+    margin: 0px auto 30px auto;
+    width: 395px;
+}
+
+.button-large {
+    background: transparent url(../images/button-large.png) no-repeat;
+    color: #ffffff;
+    cursor: pointer;
+    display: block;
+    height: 30px;
+    margin: 0px auto 0px auto;
+    padding-top: 10px;
+    text-align: center;
+    width: 160px;
+}
+
+.button-large:hover {
+    background: transparent url(../images/button-large-hover.png) no-repeat;
+}
+
+.button-twitter {
+    background: transparent url(../images/button-twitter.png) no-repeat;
+    color: #7a94bc;
+    cursor: pointer;
+    float: left;
+    height: 26px;
+    padding-left: 35px;
+    padding-top: 7px;
+    text-align: left;
+    width: 90px;
+}
+
+.button-twitter:hover {
+    background: transparent url(../images/button-twitter-hover.png) no-repeat;
+}
+
+.button-facebook {
+    background: transparent url(../images/button-facebook.png) no-repeat;
+    color: #7a94bc;
+    cursor: pointer;
+    float: left;
+    height: 26px;
+    margin-left: 10px;
+    padding-left: 35px;
+    padding-top: 7px;
+    text-align: left;
+    width: 90px;
+}
+
+.button-facebook:hover {
+    background: transparent url(../images/button-facebook-hover.png) no-repeat;
+}
+
+.button-openid {
+    background: transparent url(../images/button-openid.png) no-repeat;
+    color: #7a94bc;
+    cursor: pointer;
+    float: left;
+    height: 26px;
+    margin-left: 10px;
+    padding-left: 35px;
+    padding-top: 7px;
+    text-align: left;
+    width: 90px;
+}
+
+.button-openid:hover {
+    background: transparent url(../images/button-openid-hover.png) no-repeat;
+}
+
+.form-buttons {
+    margin: 30px auto 0px auto;
+    width: 340px;
+}
+
+.form-buttons .button-large {
+    float: left;
+    margin: 0px 5px 0px 5px;
+}
+
+.form-buttons-small {
+    margin: 8px auto 0px auto;
+    width: 160px;
+}
+
+#comments-form-area h1 {
+    margin: 20px 0px 20px 0px;
+}
+
+.comment {
+    background: transparent url(../images/dotted-vertical.png) repeat-y 32px 32px;
+    margin-bottom: 24px;
+}
+
+.comment.author {
+    background: transparent url(../images/author-comment-background.png) repeat-y;
+}
+
+.comment-number {
+    color: #999999;
+    float: left;
+    font-size: 18pt;
+    width: 32px;
+}
+
+.comment-avatar {
+    float: left;
+    padding: 6px 0px 6px 10px;
+    width: 50px;
+}
+
+.comment-contents {
+    float: left;
+    padding: 6px 0px 6px 10px;
+    width: 498px;
+}
+
+.comment-date {
+    color: #babcbe;
+}
+
+.comment-body {
+    color: #90a5c7;
+}
+
+.comment.author .comment-contents {
+    background: transparent url(../images/author-ribbon.png) no-repeat right top;
+}
+
+.comment-actions {
+    float: right;
+    font-size: 9pt;
+    margin-top: -16px;
+}
+
+.comment-actions a {
+    margin-right: 10px;
+}
+
+#menu-column {
+    float: left;
+    margin-left: 60px;
+    width: 300px;
+}
+
+#menu-column ul {
+    margin-bottom: 40px;
+    margin-left: 0px;
+    padding: 0px;
+}
+
+#menu-column ul li {
+    font-size: 14pt;
+    line-height: 1.2em;
+    list-style: none;
+    margin-bottom: 10px;
+    padding-left: 36px;
+}
+
+.icon-social{
+    opacity: 0.5;
+}
+
+.icon-social:hover{
+    opacity: 1;
+}
+
+.about {
+    background: transparent url(../images/icon-tiago.png) no-repeat left center;
+}
+
+.rss {
+    background: transparent url(../images/icon-rss.png) no-repeat left center;
+}
+
+.twitter {
+    background: transparent url(../images/icon-twitter.png) no-repeat left center;
+}
+
+.facebook {
+    background: transparent url(../images/icon-facebook.png) no-repeat left center;
+}
+
+.tags {
+    background: transparent url(../images/icon-cloud.png) no-repeat left center;
+}
+
+#tag-cloud {
+    padding-left: 36px;
+}
+
+#tag-cloud ul {
+    margin-bottom: 0px;
+    margin-left: -36px;
+}
+
+.tagg-small {
+    font-size: 14px;
+}
+
+.tagg-medium {
+    font-size: 18px;
+}
+
+.tagg-large {
+    font-size: 22px;
+}
+
+#footer {
+    border-top: 1px solid #dee4ee;
+    height: 40px;
+    margin: 20px auto 20px auto;
+    padding-top: 6px;
+    width: 960px;
+}
+
+#copyright {
+    background: transparent url(../images/hive-signature.png) no-repeat left center;
+    color: #6482b1;
+    float: left;
+    font-size: 9pt;
+    height: 17px;
+    padding: 7px 0px 0px 45px;
+}
+
+#powered-by {
+    background: transparent url(../images/colony-badge.png) no-repeat center center;
+    float: right;
+    height: 17px;
+    width: 160px;
+}
+
+#sign-up-form-area {
+
+}
+
+#sign-up-form-area .title {
+    background: transparent url(../images/title-signup.png) no-repeat center center;
+    height: 70px;
+    margin: 0px auto 0px auto;
+    width: 140px;
+}
+
+#sign-up-form-area h1 {
+    color: #bcc9dd;
+    margin: 30px 0px 16px 0px;
+}
+
+#sign-up-form-area form {
+    margin: 0px auto 0px auto;
+    width: 534px;
+}
+
+#sign-up-form-area form input.small {
+    margin: 0px 0px 20px 0px;
+}
+
+#sign-up-form-area form input.right {
+    margin-left: 20px;
+}
+
+#sign-up-form-area .form-buttons {
+    width: 340px;
+}
+
+#sign-in-form-area {
+    margin: 0px auto 0px auto;
+    width: 250px;
+}
+
+#sign-in-form-area .title {
+    background: transparent url(../images/title-signin.png) no-repeat center center;
+    height: 70px;
+    margin: 0px auto 30px auto;
+    width: 140px;
+}
+
+#sign-in-form-area .form-buttons {
+    width: 160px;
+}
+
+#add-post-form-area {
+    margin: 0px auto 0px auto;
+    width: 530px;
+}
+
+#add-post-form-area .title {
+    background: transparent url(../images/title-add-post.png) no-repeat center center;
+    height: 70px;
+    margin: 0px auto 30px auto;
+    width: 180px;
+}
+
+#add-post-form-area select {
+    margin-left: 20px;
+    width: 200px;
+}
+
+#add-post-form-area textarea {
+    font-size: 11pt;
+    margin-bottom: 20px;
+}
+
+#window-captcha input#captcha {
+    background: transparent url(../images/text-field-captcha-small-background-sprite.png) no-repeat center top;
+    margin-bottom: 0px;
+    margin-top: 20px;
+    width: 280px;
+}
+
+#window-captcha input#captcha.active {
+    background-position: center -50px;
+}
+
+.hidden {
+    display: none;
+}
+
+.separator {
+    background: transparent url(../images/separator.png) no-repeat center center;
+    height: 80px;
+    width: 100%;
+}
+
+.overlay {
+    background-color: #000000;
+    display: none;
+    left: 0px;
+    opacity: 0.8;
+    position: absolute;
+    top: 0px;
+    z-index: 1;
+}
+
+.window-container {
+    display: none;
+    height: 100%;
+    left: 0px;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 2;
+}
+
+.window {
+    background-color: #ffffff;
+    display: none;
+    margin: 150px auto 0px auto;
+    opacity: 1;
+    padding: 20px 0px 30px 0px;
+    position: relative;
+    text-align: center;
+    width: 480px;
+}
+
+.window p {
+    margin-bottom: 22px;
+}
+
+.window .close-button{
+    background: transparent url(../images/button-close.png) no-repeat center center;
+    cursor: pointer;
+    float: right;
+    height: 24px;
+    position: absolute;
+    right: 12px;
+    top: 8px;
+    width: 24px;
+}
+
+.window .close-button:hover{
+    background: transparent url(../images/button-close-hover.png) no-repeat center center;
+}
+
+.date-text-field-container {
+    float: left;
+}
+
+.date-text-field-container input.invalid {
+    color: #c42f2f;
+}
