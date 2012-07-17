@@ -172,7 +172,7 @@ class HiveBlog:
         # retrieves the plugin manager
         plugin_manager = self.hive_blog_plugin.manager
 
-        # retrieves the hive blog plugin path
+        # retrieves the plugin path
         hive_blog_plugin_path = plugin_manager.get_plugin_path_by_id(self.hive_blog_plugin.id)
 
         return (
