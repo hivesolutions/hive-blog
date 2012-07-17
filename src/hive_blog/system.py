@@ -36,11 +36,7 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import types
 
-HIVE_BLOG_MAIN_RESOURCES_PATH = "hive_blog/main/resources"
-""" The hive blog resources path """
-
-EXTRAS_PATH = HIVE_BLOG_MAIN_RESOURCES_PATH + "/extras"
-""" The extras path """
+import colony.base.system
 
 ENTITY_MANAGER_ARGUMENTS = {
     "id" : "pt.hive.hive_blog.database",
@@ -59,23 +55,10 @@ ENTITY_MANAGER_PARAMETERS = {
 AJAX_ENCODER_NAME = "ajx"
 """ The ajax encoder name """
 
-class HiveBlog:
+class HiveBlog(colony.base.system.System):
     """
     The hive blog class.
     """
-
-    hive_blog_plugin = None
-    """ The hive blog plugin """
-
-    def __init__(self, hive_blog_plugin):
-        """
-        Constructor of the class.
-
-        @type hive_blog_plugin: HiveBlogPlugin
-        @param hive_blog_plugin: The hive blog plugin.
-        """
-
-        self.hive_blog_plugin = hive_blog_plugin
 
     def load_components(self):
         """
@@ -84,7 +67,7 @@ class HiveBlog:
         """
 
         # retrieves the mvc utils plugin
-        mvc_utils_plugin = self.hive_blog_plugin.mvc_utils_plugin
+        mvc_utils_plugin = self.plugin.mvc_utils_plugin
 
         # retrieves the entity manager arguments
         entity_manager_arguments = self.get_entity_manager_arguments()
@@ -92,7 +75,7 @@ class HiveBlog:
         # creates the entity models classes by creating the entity manager
         # and updating the classes, this trigger the loading of the entity
         # manager (and creation of it if necessary) then creates the controllers
-        mvc_utils_plugin.assign_models_controllers(self, self.hive_blog_plugin, entity_manager_arguments)
+        mvc_utils_plugin.assign_models_controllers(self, self.plugin, entity_manager_arguments)
 
     def unload_components(self):
         """
@@ -101,7 +84,7 @@ class HiveBlog:
         """
 
         # retrieves the mvc utils plugin
-        mvc_utils_plugin = self.hive_blog_plugin.mvc_utils_plugin
+        mvc_utils_plugin = self.plugin.mvc_utils_plugin
 
         # retrieves the entity manager arguments
         entity_manager_arguments = self.get_entity_manager_arguments()
@@ -170,13 +153,13 @@ class HiveBlog:
         """
 
         # retrieves the plugin manager
-        plugin_manager = self.hive_blog_plugin.manager
+        plugin_manager = self.plugin.manager
 
         # retrieves the plugin path
-        hive_blog_plugin_path = plugin_manager.get_plugin_path_by_id(self.hive_blog_plugin.id)
+        plugin_path = plugin_manager.get_plugin_path_by_id(self.plugin.id)
 
         return (
-            (r"^hive_blog/resources/.+$", (hive_blog_plugin_path + "/" + EXTRAS_PATH, "hive_blog/resources")),
+            (r"^hive_blog/resources/.+$", (plugin_path + "/hive_blog/resources/extras", "hive_blog/resources")),
         )
 
     def get_entity_manager_arguments(self):
@@ -188,10 +171,10 @@ class HiveBlog:
         """
 
         # retrieves the mvc utils plugin
-        mvc_utils_plugin = self.hive_blog_plugin.mvc_utils_plugin
+        mvc_utils_plugin = self.plugin.mvc_utils_plugin
 
         # generates the entity manager arguments
-        entity_manager_arguments = mvc_utils_plugin.generate_entity_manager_arguments(self.hive_blog_plugin, ENTITY_MANAGER_ARGUMENTS, ENTITY_MANAGER_PARAMETERS)
+        entity_manager_arguments = mvc_utils_plugin.generate_entity_manager_arguments(self.plugin, ENTITY_MANAGER_ARGUMENTS, ENTITY_MANAGER_PARAMETERS)
 
         # returns the entity manager arguments
         return entity_manager_arguments
