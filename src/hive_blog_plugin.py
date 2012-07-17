@@ -58,8 +58,8 @@ class HiveBlogPlugin(colony.base.system.Plugin):
         colony.base.system.PluginDependency("pt.hive.colony.plugins.mvc.utils", "1.x.x"),
         colony.base.system.PluginDependency("pt.hive.colony.plugins.security.captcha", "1.x.x"),
         colony.base.system.PluginDependency("pt.hive.colony.plugins.api.openid", "1.x.x"),
-        colony.base.system.PluginDependency("pt.hive.colony.plugins.service.twitter", "1.x.x"),
-        colony.base.system.PluginDependency("pt.hive.colony.plugins.service.facebook", "1.x.x")
+        colony.base.system.PluginDependency("pt.hive.colony.plugins.api.twitter", "1.x.x"),
+        colony.base.system.PluginDependency("pt.hive.colony.plugins.api.facebook", "1.x.x")
     ]
     main_modules = [
         "hive_blog.exceptions",
@@ -78,11 +78,11 @@ class HiveBlogPlugin(colony.base.system.Plugin):
     api_openid_plugin = None
     """ The api openid plugin """
 
-    service_twitter_plugin = None
-    """ The service twitter plugin """
+    api_twitter_plugin = None
+    """ The api twitter plugin """
 
-    service_facebook_plugin = None
-    """ The service facebook plugin """
+    api_facebook_plugin = None
+    """ The api facebook plugin """
 
     def load_plugin(self):
         colony.base.system.Plugin.load_plugin(self)
@@ -153,10 +153,10 @@ class HiveBlogPlugin(colony.base.system.Plugin):
     def set_api_openid_plugin(self, api_openid_plugin):
         self.api_openid_plugin = api_openid_plugin
 
-    @colony.base.decorators.plugin_inject("pt.hive.colony.plugins.service.twitter")
-    def set_service_twitter_plugin(self, service_twitter_plugin):
-        self.service_twitter_plugin = service_twitter_plugin
+    @colony.base.decorators.plugin_inject("pt.hive.colony.plugins.api.twitter")
+    def set_api_twitter_plugin(self, api_twitter_plugin):
+        self.api_twitter_plugin = api_twitter_plugin
 
-    @colony.base.decorators.plugin_inject("pt.hive.colony.plugins.service.facebook")
-    def set_service_facebook_plugin(self, service_facebook_plugin):
-        self.service_facebook_plugin = service_facebook_plugin
+    @colony.base.decorators.plugin_inject("pt.hive.colony.plugins.api.facebook")
+    def set_api_facebook_plugin(self, api_facebook_plugin):
+        self.api_facebook_plugin = api_facebook_plugin

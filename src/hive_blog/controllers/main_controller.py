@@ -36,7 +36,7 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import colony.libs.import_util
 
-import hive_blog.main.hive_blog_exceptions
+import hive_blog.exceptions
 
 JPEG_CONTENT_TYPE = "image/jpeg"
 """ The jpeg content type """
@@ -167,7 +167,7 @@ class MainController:
         # in case the captcha does not validate
         if not self._validate_captcha(rest_request, False):
             # raises the invalid captcha exception
-            raise hive_blog.main.hive_blog_exceptions.InvalidCaptcha("invalid captcha value sent")
+            raise hive_blog.exceptions.InvalidCaptcha("invalid captcha value sent")
 
         # retrieves the session information attributes
         openid_claimed_id = self.get_session_attribute(rest_request, "openid.claimed_id")
@@ -511,7 +511,7 @@ class MainController:
         # validates the captcha, regenerating the captcha
         if not self._validate_captcha(rest_request, True):
             # raises the invalid captcha exception
-            raise hive_blog.main.hive_blog_exceptions.InvalidCaptcha("invalid captcha value sent")
+            raise hive_blog.exceptions.InvalidCaptcha("invalid captcha value sent")
 
         # encrypts the login password
         encrypted_login_password = models.RootEntity.encrypt(login_password)
@@ -581,11 +581,11 @@ class MainController:
         self.redirect_base_path(rest_request, request_url, quote = False)
 
     def _process_twitter_signin(self, rest_request):
-        # retrieves the service twitter plugin
-        service_twitter_plugin = self.hive_blog_plugin.service_twitter_plugin
+        # retrieves the api twitter plugin
+        api_twitter_plugin = self.hive_blog_plugin.api_twitter_plugin
 
         # creates the twitter remote client
-        twitter_remote_client = service_twitter_plugin.create_remote_client({})
+        twitter_remote_client = api_twitter_plugin.create_remote_client({})
 
         # retrieves the callback path from the host
         callback_path = self._get_host_path(rest_request, "/twitter")
@@ -606,11 +606,11 @@ class MainController:
         self.redirect_base_path(rest_request, authenticate_url, quote = False)
 
     def _process_facebook_signin(self, rest_request):
-        # retrieves the service facebook plugin
-        service_facebook_plugin = self.hive_blog_plugin.service_facebook_plugin
+        # retrieves the api facebook plugin
+        api_facebook_plugin = self.hive_blog_plugin.api_facebook_plugin
 
         # creates the facebook remote client
-        facebook_remote_client = service_facebook_plugin.create_remote_client({})
+        facebook_remote_client = api_facebook_plugin.create_remote_client({})
 
         # retrieves the next (callback) from the host
         next = self._get_host_path(rest_request, "/facebook")
@@ -652,7 +652,7 @@ class MainController:
         # in case no authentication name (method) is defined
         else:
             # raises the invalid authentication information
-            raise hive_blog.main.hive_blog_exceptions.InvalidAuthenticationInformation("missing authentication name")
+            raise hive_blog.exceptions.InvalidAuthenticationInformation("missing authentication name")
 
         # retrieves the user that matches the authentication parameters
         user_entity = models.User.find_one(login_filter)
@@ -697,12 +697,12 @@ class MainController:
         # in case no valid captcha session is set
         if not captcha_session:
             # raises the invalid captcha exception
-            raise hive_blog.main.hive_blog_exceptions.InvalidCaptcha("invalid captcha session value")
+            raise hive_blog.exceptions.InvalidCaptcha("invalid captcha session value")
 
         # in case both captchas match don't match (invalid captcha value)
         if not captcha_validation == captcha_session:
             # raises the invalid captcha exception
-            raise hive_blog.main.hive_blog_exceptions.InvalidCaptcha("non matching captcha value: " + str(captcha_validation))
+            raise hive_blog.exceptions.InvalidCaptcha("non matching captcha value: " + str(captcha_validation))
 
         # in case the regenerate on valid flag is set
         if regenerate_on_valid:
