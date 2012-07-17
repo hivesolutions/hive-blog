@@ -63,7 +63,6 @@ MONTH_NUMBER_MAP = {
 }
 """ The map relating the month number with the "mini" month name """
 
-# runs the external imports
 models = colony.libs.import_util.__import__("models")
 mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 

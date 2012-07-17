@@ -38,7 +38,6 @@ import colony.libs.import_util
 
 import hive_blog.main.hive_blog_exceptions
 
-# runs the external imports
 models = colony.libs.import_util.__import__("models")
 mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 

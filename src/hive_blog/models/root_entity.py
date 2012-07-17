@@ -38,7 +38,6 @@ import hashlib
 
 import colony.libs.import_util
 
-# runs the external imports
 models = colony.libs.import_util.__import__("models")
 mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 

@@ -83,7 +83,7 @@ class HiveBlog:
         This load should occur only after the dependencies are loaded.
         """
 
-        # retrieves the web mvc utils plugin
+        # retrieves the mvc utils plugin
         mvc_utils_plugin = self.hive_blog_plugin.mvc_utils_plugin
 
         # retrieves the entity manager arguments
@@ -100,7 +100,7 @@ class HiveBlog:
         This load should occur the earliest possible in the unloading process.
         """
 
-        # retrieves the web mvc utils plugin
+        # retrieves the mvc utils plugin
         mvc_utils_plugin = self.hive_blog_plugin.mvc_utils_plugin
 
         # retrieves the entity manager arguments
@@ -187,7 +187,7 @@ class HiveBlog:
         @return: The entity manager arguments.
         """
 
-        # retrieves the web mvc utils plugin
+        # retrieves the mvc utils plugin
         mvc_utils_plugin = self.hive_blog_plugin.mvc_utils_plugin
 
         # generates the entity manager arguments

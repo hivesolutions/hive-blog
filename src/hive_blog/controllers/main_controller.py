@@ -71,7 +71,6 @@ DEFAULT_ENCODING = "utf-8"
 RSS_CONTENT_TYPE = "application/rss+xml"
 """ The rss content type """
 
-# runs the external imports
 models = colony.libs.import_util.__import__("models")
 mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 

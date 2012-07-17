@@ -70,7 +70,7 @@ class HiveBlogPlugin(colony.base.system.Plugin):
     """ The hive blog """
 
     mvc_utils_plugin = None
-    """ The web mvc utils plugin """
+    """ The mvc utils plugin """
 
     security_captcha_plugin = None
     """ The security captch plugin """

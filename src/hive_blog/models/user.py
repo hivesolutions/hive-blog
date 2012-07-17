@@ -40,7 +40,6 @@ import colony.libs.import_util
 
 import root_entity
 
-# runs the external imports
 models = colony.libs.import_util.__import__("models")
 mvc_utils = colony.libs.import_util.__import__("mvc_utils")
 
