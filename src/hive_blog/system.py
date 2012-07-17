@@ -260,10 +260,9 @@ class HiveBlog(colony.base.system.System):
         @return: The casted list value.
         """
 
-        # in case the value is invalid
-        if value == None:
-            # returns the value
-            return value
+        # in case the value is invalid returns
+        # the proper values (fallback)
+        if value == None: return value
 
         # creates the list value from the value
         list_value = type(value) == types.ListType and value or (value,)
