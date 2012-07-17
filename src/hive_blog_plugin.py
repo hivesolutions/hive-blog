@@ -43,7 +43,7 @@ class HiveBlogPlugin(colony.base.system.Plugin):
     """
 
     id = "pt.hive.cronus.plugins.hive_blog"
-    name = "Hive Blog Main Plugin"
+    name = "Hive Blog"
     description = "The plugin that offers the hive blog"
     version = "1.0.0"
     author = "Hive Solutions Lda. <development@hive.pt>"
