@@ -456,10 +456,9 @@ class MainController:
         @param parameters: The handler parameters.
         """
 
-        # retrieves the host path
+        # retrieves the host path then uses it to create
+        # the base url from the host path
         host_path = self._get_host_path(rest_request)
-
-        # creates the base url from the host path
         base_url = host_path + "/"
 
         # retrieves all the posts in the blog
