@@ -65,8 +65,12 @@ class PageController(controllers.Controller):
         previous_page = page_index > 1 and page_index - 1 or None
         next_page = page_index < number_pages and page_index + 1 or None
 
-        # processes the contents of the template file assigning the appropriate values to it
-        template_file = self.retrieve_template_file("general.html.tpl", partial_page = "page/page_show_contents.html.tpl")
+        # processes the contents of the template file assigning the
+        # appropriate values to it
+        template_file = self.retrieve_template_file(
+            "general.html.tpl",
+            partial_page = "page/page_show_contents.html.tpl"
+        )
         template_file.assign("posts", posts)
         template_file.assign("host_posts_path", host_posts_path)
         template_file.assign("previous_page", previous_page)

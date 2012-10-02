@@ -56,8 +56,12 @@ class PostController(controllers.Controller):
     @mvc_utils.serialize_exceptions("all")
     @mvc_utils.validated_method("post.create")
     def handle_new(self, rest_request, parameters = {}):
-        # processes the contents of the template file assigning the appropriate values to it
-        template_file = self.retrieve_template_file("general.html.tpl", partial_page = "post/post_new_contents.html.tpl")
+        # processes the contents of the template file assigning the
+        # appropriate values to it
+        template_file = self.retrieve_template_file(
+            "general.html.tpl",
+            partial_page = "post/post_new_contents.html.tpl"
+        )
         template_file.assign("post", None)
         self.process_set_contents(rest_request, template_file)
 
@@ -91,8 +95,12 @@ class PostController(controllers.Controller):
         # in case the preview flag is not set
         not preview and post_entity.store(mvc_utils.PERSIST_SAVE_TYPE)
 
-        # processes the contents of the template file assigning the appropriate values to it
-        template_file = self.retrieve_template_file("general.html.tpl", partial_page = "post/post_new_contents.html.tpl")
+        # processes the contents of the template file assigning the
+        # appropriate values to it
+        template_file = self.retrieve_template_file(
+            "general.html.tpl",
+            partial_page = "post/post_new_contents.html.tpl"
+        )
         template_file.assign("preview", True)
         template_file.assign("post", post_entity)
         self.process_set_contents(rest_request, template_file)
@@ -109,8 +117,12 @@ class PostController(controllers.Controller):
         post_object_id = self.get_pattern(parameters, "post_object_id", types.IntType)
         post_entity = models.Post.get_for_show(post_object_id)
 
-        # processes the contents of the template file assigning the appropriate values to it
-        template_file = self.retrieve_template_file("general.html.tpl", partial_page = "post/post_show_contents.html.tpl")
+        # processes the contents of the template file assigning the
+        # appropriate values to it
+        template_file = self.retrieve_template_file(
+            "general.html.tpl",
+            partial_page = "post/post_show_contents.html.tpl"
+        )
         template_file.assign("return_address", return_address)
         template_file.assign("host_posts_path", host_posts_path)
         template_file.assign("post", post_entity)

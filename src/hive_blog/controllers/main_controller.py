@@ -185,8 +185,12 @@ class MainController(controllers.Controller):
         @param parameters: The handler parameters.
         """
 
-        # processes the contents of the template file assigning the appropriate values to it
-        template_file = self.retrieve_template_file("general.html.tpl", partial_page = "main/signin_contents.html.tpl")
+        # processes the contents of the template file assigning the
+        # appropriate values to it
+        template_file = self.retrieve_template_file(
+            "general.html.tpl",
+            partial_page = "main/signin_contents.html.tpl"
+        )
         self.process_set_contents(rest_request, template_file)
 
     @mvc_utils.serialize_exceptions("all")
