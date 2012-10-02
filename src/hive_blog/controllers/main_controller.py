@@ -73,30 +73,12 @@ RSS_CONTENT_TYPE = "application/rss+xml"
 
 models = colony.libs.import_util.__import__("models")
 mvc_utils = colony.libs.import_util.__import__("mvc_utils")
+controllers = colony.libs.import_util.__import__("controllers")
 
-class MainController:
+class MainController(controllers.Controller):
     """
     The hive blog controller.
     """
-
-    hive_blog_plugin = None
-    """ The hive blog plugin """
-
-    hive_blog = None
-    """ The hive blog """
-
-    def __init__(self, hive_blog_plugin, hive_blog):
-        """
-        Constructor of the class.
-
-        @type hive_blog_plugin: HiveBlogPlugin
-        @param hive_blog_plugin: The hive blog plugin.
-        @type hive_blog: HiveBlog
-        @param hive_blog: The hive blog.
-        """
-
-        self.hive_blog_plugin = hive_blog_plugin
-        self.hive_blog = hive_blog
 
     @mvc_utils.serialize_exceptions("all")
     def handle_hive_index(self, rest_request, parameters = {}):
@@ -110,7 +92,7 @@ class MainController:
         """
 
         # retrieves the required controllers
-        page_controller = self.hive_blog.page_controller
+        page_controller = self.system.page_controller
 
         # retrieves the feed attribute
         feed = self.get_attribute_decoded(rest_request, "feed", DEFAULT_ENCODING)
@@ -482,7 +464,7 @@ class MainController:
         """
 
         # retrieves the security captcha plugin
-        security_captcha_plugin = self.hive_blog_plugin.security_captcha_plugin
+        security_captcha_plugin = self.plugin.security_captcha_plugin
 
         # validates the captcha
         if self._validate_captcha(rest_request):
@@ -546,7 +528,7 @@ class MainController:
 
     def _process_openid_signin(self, rest_request, openid_value):
         # retrieves the api openid plugin
-        api_openid_plugin = self.hive_blog_plugin.api_openid_plugin
+        api_openid_plugin = self.plugin.api_openid_plugin
 
         # creates the openid remote client
         openid_remote_client = api_openid_plugin.create_remote_client({})
@@ -581,7 +563,7 @@ class MainController:
 
     def _process_twitter_signin(self, rest_request):
         # retrieves the api twitter plugin
-        api_twitter_plugin = self.hive_blog_plugin.api_twitter_plugin
+        api_twitter_plugin = self.plugin.api_twitter_plugin
 
         # creates the twitter remote client
         twitter_remote_client = api_twitter_plugin.create_remote_client({})
@@ -606,7 +588,7 @@ class MainController:
 
     def _process_facebook_signin(self, rest_request):
         # retrieves the api facebook plugin
-        api_facebook_plugin = self.hive_blog_plugin.api_facebook_plugin
+        api_facebook_plugin = self.plugin.api_facebook_plugin
 
         # creates the facebook remote client
         facebook_remote_client = api_facebook_plugin.create_remote_client({})
@@ -661,7 +643,7 @@ class MainController:
 
     def _generate_captcha(self, rest_request):
         # retrieves the security captcha plugin
-        security_captcha_plugin = self.hive_blog_plugin.security_captcha_plugin
+        security_captcha_plugin = self.plugin.security_captcha_plugin
 
         # generates a captcha string value
         string_value = security_captcha_plugin.generate_captcha_string_value({})

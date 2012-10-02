@@ -40,30 +40,12 @@ import colony.libs.import_util
 
 models = colony.libs.import_util.__import__("models")
 mvc_utils = colony.libs.import_util.__import__("mvc_utils")
+controllers = colony.libs.import_util.__import__("controllers")
 
-class PageController:
+class PageController(controllers.Controller):
     """
     The hive blog page controller.
     """
-
-    hive_blog_plugin = None
-    """ The hive blog plugin """
-
-    hive_blog = None
-    """ The hive blog """
-
-    def __init__(self, hive_blog_plugin, hive_blog):
-        """
-        Constructor of the class.
-
-        @type hive_blog_plugin: HiveBlogPlugin
-        @param hive_blog_plugin: The hive blog plugin.
-        @type hive_blog: HiveBlog
-        @param hive_blog: The hive blog.
-        """
-
-        self.hive_blog_plugin = hive_blog_plugin
-        self.hive_blog = hive_blog
 
     @mvc_utils.serialize_exceptions("all")
     def handle_show(self, rest_request, parameters = {}):

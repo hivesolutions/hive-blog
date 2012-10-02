@@ -34,35 +34,20 @@ __copyright__ = "Copyright (c) 2010-2012 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
+import colony.libs.import_util
+
 EXCEPTION_VALUE = "exception"
 """ The exception value """
 
 MESSAGE_VALUE = "message"
 """ The message value """
 
-class ExceptionController:
+controllers = colony.libs.import_util.__import__("controllers")
+
+class ExceptionController(controllers.Controller):
     """
     The hive blog exception controller.
     """
-
-    hive_blog_plugin = None
-    """ The hive blog plugin """
-
-    hive_blog = None
-    """ The hive blog """
-
-    def __init__(self, hive_blog_plugin, hive_blog):
-        """
-        Constructor of the class.
-
-        @type hive_blog_plugin: HiveBlogPlugin
-        @param hive_blog_plugin: The hive blog plugin.
-        @type hive_blog: HiveBlog
-        @param hive_blog: The hive blog.
-        """
-
-        self.hive_blog_plugin = hive_blog_plugin
-        self.hive_blog = hive_blog
 
     def handle_exception(self, rest_request, parameters = {}):
         """

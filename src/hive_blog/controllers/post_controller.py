@@ -42,34 +42,16 @@ import hive_blog.exceptions
 
 models = colony.libs.import_util.__import__("models")
 mvc_utils = colony.libs.import_util.__import__("mvc_utils")
+controllers = colony.libs.import_util.__import__("controllers")
 
-class PostController:
+class PostController(controllers.Controller):
     """
     The hive blog post controller.
     """
 
-    hive_blog_plugin = None
-    """ The hive blog plugin """
-
-    hive_blog = None
-    """ The hive blog """
-
-    def __init__(self, hive_blog_plugin, hive_blog):
-        """
-        Constructor of the class.
-
-        @type hive_blog_plugin: HiveBlogPlugin
-        @param hive_blog_plugin: The hive blog plugin.
-        @type hive_blog: HiveBlog
-        @param hive_blog: The hive blog.
-        """
-
-        self.hive_blog_plugin = hive_blog_plugin
-        self.hive_blog = hive_blog
-
     def validate(self, rest_request, parameters, validation_parameters):
         # returns the result of the require permission call
-        return self.hive_blog.require_permissions(self, rest_request, validation_parameters)
+        return self.system.require_permissions(self, rest_request, validation_parameters)
 
     @mvc_utils.serialize_exceptions("all")
     @mvc_utils.validated_method("post.create")
@@ -82,7 +64,7 @@ class PostController:
     @mvc_utils.serialize_exceptions("all")
     def handle_create(self, rest_request, parameters = {}):
         # retrieves the required controllers
-        main_controller = self.hive_blog.main_controller
+        main_controller = self.system.main_controller
 
         # retrieves the post from the rest request
         post = self.get_field(rest_request, "post", {})
