@@ -12,7 +12,7 @@
 <script type="text/javascript" src="${out_none value=base_path /}resources/libs/jquery_util/environment/js/environment.js"></script>
 <script type="text/javascript" src="${out_none value=base_path /}resources/libs/jquery_util/overlay/js/overlay.js"></script>
 <script type="text/javascript" src="${out_none value=base_path /}resources/libs/jquery_util/scroll_to/js/scroll_to.js"></script>
-<script type="text/javascript" src="${out_none value=base_path /}resources/libs/util/browser.js"></script>
-<script type="text/javascript" src="${out_none value=base_path /}resources/libs/util/date.js"></script>
+<script type="text/javascript" src="${out_none value=base_path /}resources/libs/util/general/browser.js"></script>
+<script type="text/javascript" src="${out_none value=base_path /}resources/libs/util/general/date.js"></script>
 <script type="text/javascript" src="${out_none value=base_path /}resources/js/plugins.js"></script>
 <script type="text/javascript" src="${out_none value=base_path /}resources/js/main.js"></script>
