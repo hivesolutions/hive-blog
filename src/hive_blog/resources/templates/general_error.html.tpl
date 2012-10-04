@@ -1,14 +1,14 @@
-${include file="doctype.html.tpl" /}
+${include file="partials/doctype.html.tpl" /}
 <head>
     <title>Hive Solutions - The diary</title>
-    ${include file="includes.html.tpl" /}
+    ${include file="partials/includes.html.tpl" /}
 </head>
 <body>
-    ${include file="header.html.tpl" /}
-    ${include file="windows.html.tpl" /}
+    ${include file="partials/header.html.tpl" /}
+    ${include file="partials/windows.html.tpl" /}
     <div id="wrapper">
         ${include file_value=page_include /}
     </div>
-    ${include file="footer.html.tpl" /}
+    ${include file="partials/footer.html.tpl" /}
 </body>
-${include file="end_doctype.html.tpl" /}
+${include file="partials/end_doctype.html.tpl" /}
