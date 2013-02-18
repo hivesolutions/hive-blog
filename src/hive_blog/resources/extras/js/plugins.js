@@ -20,7 +20,7 @@
 // __copyright__ = Copyright (c) 2010-2012 Hive Solutions Lda.
 // __license__   = Hive Solutions Confidential Usage License (HSCUL)
 
-(function($) {
+(function(jQuery) {
     jQuery.fn.textfield = function(method, options) {
         // the default values for the menu
         var defaults = {};
@@ -166,7 +166,7 @@
     };
 })(jQuery);
 
-(function($) {
+(function(jQuery) {
     jQuery.fn.textarea = function(method, options) {
         // the default values for the menu
         var defaults = {};
@@ -326,7 +326,7 @@
     };
 })(jQuery);
 
-(function($) {
+(function(jQuery) {
     jQuery.fn.window = function(method, options) {
         // the default values for the menu
         var defaults = {};
@@ -424,7 +424,7 @@
     };
 })(jQuery);
 
-(function($) {
+(function(jQuery) {
     jQuery.fn.windowcontainer = function(method, options) {
         // the default values for the menu
         var defaults = {};
@@ -472,7 +472,7 @@
     };
 })(jQuery);
 
-(function($) {
+(function(jQuery) {
     jQuery.fn.dropbox = function(method, options) {
         // the default values for the menu
         var defaults = {};
@@ -572,7 +572,7 @@
     };
 })(jQuery);
 
-(function($) {
+(function(jQuery) {
     jQuery.fn.datetextfield = function(method, options) {
         // the default values for the menu
         var defaults = {};
