@@ -59,7 +59,8 @@ class RootEntity(models.EntityModel):
         "fetch_type" : "lazy",
         "persist_type" : mvc_utils.PERSIST_ASSOCIATE_TYPE
     }
-    """ The tags for the root entity """
+    """ The tags for the root entity, these values
+    should identify the entity through description """
 
     def __init__(self):
         """
