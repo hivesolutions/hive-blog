@@ -67,6 +67,8 @@ jQuery(document).ready(function() {
                         // submits the form (with the captcha value)
                         element.submit();
                     });
+            jQuery("#window-captcha input#captcha").attr("value", "");
+            jQuery("#window-captcha input#captcha").focus();
         });
     });
 
@@ -144,7 +146,7 @@ jQuery(document).ready(function() {
         var captchaUrl = jQuery.resolveurl("captcha");
 
         jQuery.ajax({
-                    type : "post",
+                    type : "get",
                     url : captchaUrl,
                     data : {
                         captcha : captchaValue
@@ -159,11 +161,17 @@ jQuery(document).ready(function() {
                         windowCaptcha.window("hide");
                     },
                     error : function() {
-                        // retrieves the window captcha
+                        // retrieves the window captcha and uses it to
+                        // trigger the refresh event in it
                         var windowCaptcha = jQuery("#window-captcha");
-
-                        // triggers the refresh captcha event
                         windowCaptcha.trigger("refresh_captcha");
+
+                        // resets the value of the input field associated with
+                        // the definition of the captcha value and then runs
+                        // the focus operation in it
+                        jQuery("#window-captcha input#captcha").attr("value",
+                                "");
+                        jQuery("#window-captcha input#captcha").focus();
                     }
                 });
     });
