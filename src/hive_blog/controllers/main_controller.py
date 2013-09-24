@@ -500,7 +500,8 @@ class MainController(controllers.Controller):
         # encrypts the login password
         encrypted_login_password = models.RootEntity.encrypt(login_password)
 
-        # creates the filter map
+        # creates the filter map to be able to filter the users that
+        # respect the provided filter (authentication)
         filter = {
             "filters" : (
                 {
@@ -515,18 +516,14 @@ class MainController(controllers.Controller):
         # retrieves all users that match the authentication parameters
         user_entity = models.User.find_one(filter)
 
-        # returns in case the user was not found
-        if user_entity:
-            # returns immediately
-            return
+        # returns in case the user was not found as it's not possible
+        # to login a user that it's not valid
+        if not user_entity: return
 
-        # sets the login username in the session
+        # sets the various login related attributes in the current session
+        # this is considered the proper login stage
         self.set_session_attribute(rest_request, "login.username", login_username)
-
-        # sets the login as true
         self.set_session_attribute(rest_request, "login", True)
-
-        # redirects to the login page
         self.redirect_base_path(rest_request, "login")
 
     def _process_openid_signin(self, rest_request, openid_value):
