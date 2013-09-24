@@ -470,10 +470,9 @@ class MainController(controllers.Controller):
         # retrieves the security captcha plugin
         security_captcha_plugin = self.plugin.security_captcha_plugin
 
-        # validates the captcha
-        if self._validate_captcha(rest_request):
-            # returns
-            return
+        # validates the captcha, returning immediately in case
+        # the value is valid (expected result)
+        if self._validate_captcha(rest_request): return
 
         # retrieves the captcha session value
         captcha_session = self.get_session_attribute(rest_request, "captcha")
@@ -665,12 +664,12 @@ class MainController(controllers.Controller):
         # tries to retrieve the captcha validation value
         captcha_validation = form_data_map.get("captcha", None)
 
-        # in case no captcha is meant to be validated
+        # in case no captcha is meant to be validated, must generate
+        # a new one (as this is the initial request)
         if not captcha_validation:
-            # generates a new captcha
+            # generates a new captcha and then returns false, as
+            # no validation is being made
             self._generate_captcha(rest_request)
-
-            # returns false, no validation is being made
             return False
 
         # normalizes the captcha validation value
@@ -689,10 +688,9 @@ class MainController(controllers.Controller):
             # raises the invalid captcha exception
             raise hive_blog.exceptions.InvalidCaptcha("non matching captcha value: " + str(captcha_validation))
 
-        # in case the regenerate on valid flag is set
-        if regenerate_on_valid:
-            # generates a new captcha for the session
-            self._generate_captcha(rest_request)
+        # in case the regenerate on valid flag is set, must
+        # generate a new captcha for the session
+        if regenerate_on_valid: self._generate_captcha(rest_request)
 
         # validation was successful
         return True
