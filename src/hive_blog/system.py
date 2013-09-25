@@ -174,7 +174,9 @@ class HiveBlog(colony.base.system.System):
         mvc_utils_plugin = self.plugin.mvc_utils_plugin
 
         # generates the entity manager arguments
-        entity_manager_arguments = mvc_utils_plugin.generate_entity_manager_arguments(self.plugin, ENTITY_MANAGER_ARGUMENTS, ENTITY_MANAGER_PARAMETERS)
+        entity_manager_arguments = mvc_utils_plugin.generate_entity_manager_arguments(
+            self.plugin, ENTITY_MANAGER_ARGUMENTS, ENTITY_MANAGER_PARAMETERS
+        )
 
         # returns the entity manager arguments
         return entity_manager_arguments
