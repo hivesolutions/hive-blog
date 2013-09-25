@@ -477,9 +477,9 @@ class MainController(controllers.Controller):
         # retrieves the captcha session value
         captcha_session = self.get_session_attribute(rest_request, "captcha")
 
-        # in case there is no captcha defined in session
+        # in case there is no captcha defined in session one must
+        # be generated for the current request
         if not captcha_session:
-            # generates a new captcha for session
             captcha_session = self._generate_captcha(rest_request)
 
         # generates the captcha, retrieving the string value and the string buffer
