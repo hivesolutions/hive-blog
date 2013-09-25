@@ -136,6 +136,12 @@ jQuery(document).ready(function() {
     jQuery("#window-captcha #captcha-refresh").click(function() {
                 // triggers the refresh captcha event
                 jQuery("#window-captcha").trigger("refresh_captcha");
+
+                // resets the value of the input field associated with
+                // the definition of the captcha value and then runs
+                // the focus operation in it
+                jQuery("#window-captcha input#captcha").attr("value", "");
+                jQuery("#window-captcha input#captcha").focus();
             });
 
     jQuery("#window-captcha div#post").click(function() {
