@@ -448,7 +448,7 @@ class MainController(controllers.Controller):
         base_url = host_path + "/"
 
         # retrieves all the posts in the blog
-        posts = models.Post.find_for_list(filter)
+        posts = models.Post.find_for_list()
 
         # processes the contents of the template file assigning the appropriate values to it
         template_file = self.retrieve_template_file("main/rss.xml.tpl")
