@@ -160,7 +160,7 @@ class Post(root_entity.RootEntity):
         self.add_validation_method("contents_abstract", "not_empty")
 
     @staticmethod
-    def get_for_show(post_object_id):
+    def get_for_show(post_object_id, *arg, **kwargs):
         """
         Retrieves the specified instance with the necessary relations
         loaded for its usage in a context where it is being shown.
@@ -184,10 +184,9 @@ class Post(root_entity.RootEntity):
             }
         }
 
-        # retrieves the post
-        post = Post.get(post_object_id, filter)
-
-        # returns the post
+        # retrieves the post and then returns it to the
+        # caller method (as requested by the method)
+        post = Post.get(post_object_id, filter, *arg, **kwargs)
         return post
 
     @staticmethod
