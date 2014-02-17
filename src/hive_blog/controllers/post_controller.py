@@ -50,8 +50,7 @@ class PostController(controllers.Controller):
     """
 
     def validate(self, rest_request, parameters, validation_parameters):
-        # returns the result of the require permission call
-        return self.system.require_permissions(self, rest_request, validation_parameters)
+        return self.system.require_permissions(rest_request, validation_parameters)
 
     @mvc_utils.serialize_exceptions("all")
     @mvc_utils.validated_method("post.create")
