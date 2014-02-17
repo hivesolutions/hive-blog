@@ -181,53 +181,53 @@ class HiveBlog(colony.base.system.System):
         # returns the entity manager arguments
         return entity_manager_arguments
 
-    def require_permissions(self, controller, rest_request, permissions_list = [], base_path = None):
+    def require_permissions(self, rest_request, permissions_list = []):
         """
         Requires the permissions in the given permissions list to be set.
 
-        @type controller: Controller
-        @param controller: The controller being validated.
         @type rest_request: RestRequest
         @param rest_request: The rest request to be updated.
         @type permissions_list: List
         @param permissions_list: The list of permission to be validated.
-        @type base_path: String
-        @param base_path: The base path to be used as prefix in the url.
         @rtype: List
         @return: The list of reasons for permission validation failure.
         """
 
+        # retrieves the controller object currently set in the rest
+        # request and that may be used for controller level operations
+        controller = rest_request.controller
+
         # casts the permissions list
         permissions_list = self.__cast_list(permissions_list)
 
-        # creates the reasons list
-        reasons_list = []
+        # creates the list that will hold the complete set of reasons
+        # for a possible permissions validations failure
+        reasons = []
 
-        # retrieves the login session attribute
+        # retrieves the login session attribute in order to check
+        # if the user is currently logged in (as required)
         login = controller.get_session_attribute(rest_request, "login")
 
-        # in case the login is not set
-        if not login:
-            # adds login to the reasons list
-            reasons_list.append("login")
+        # in case the login is not set must add the login string
+        # to the list of reasons (for failure), then returns the
+        # same list to the caller method
+        if not login: reasons.append("login")
+        return reasons
 
-        # returns the reasons list
-        return reasons_list
-
-    def escape_permissions_failed(self, controller, rest_request, reasons_list = [], base_path = None):
+    def escape_permissions_failed(self, rest_request, reasons_list = []):
         """
         Handler for permission validation failures.
         Displays a message or redirects depending on the encoder name.
 
-        @type controller: Controller
-        @param controller: The controller which handled the request.
         @type rest_request: RestRequest
         @param rest_request: The rest request object.
         @type reasons_list: List
         @param reasons_list: A list with the reasons for validation failure.
-        @type base_path: String.
-        @param base_path: The base path for the request. Defaults to None.
         """
+
+        # retrieves the controller object currently set in the rest
+        # request and that may be used for controller level operations
+        controller = rest_request.controller
 
         # creates the return address from the request path
         return_address = controller._get_path(rest_request)
@@ -240,16 +240,8 @@ class HiveBlog(colony.base.system.System):
             # sets the contents
             controller.set_contents(rest_request, "not enough permissions - access denied")
         else:
-            # in case the base path is not defined
-            if not base_path:
-                # retrieves the base path from the rest request
-                base_path = controller.get_base_path(rest_request)
-
             # redirects to the signin page
-            controller.redirect(rest_request, base_path + "signin")
-
-        # returns true
-        return True
+            controller.redirect_base_path(rest_request, "signin")
 
     def __cast_list(self, value):
         """
