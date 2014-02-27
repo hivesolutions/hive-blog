@@ -47,7 +47,7 @@ class CommentController(controllers.Controller):
     The hive blog comment controller.
     """
 
-    @mvc_utils.serialize("all")
+    @mvc_utils.serialize
     def handle_create(self, rest_request, parameters = {}):
         # retrieves the required controllers
         main_controller = self.system.main_controller
