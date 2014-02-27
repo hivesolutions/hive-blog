@@ -47,7 +47,7 @@ class PageController(controllers.Controller):
     The hive blog page controller.
     """
 
-    @mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize("all")
     def handle_show(self, rest_request, parameters = {}):
         # retrieves the page index pattern
         page_index = self.get_pattern(parameters, "page_index", types.IntType) or 1

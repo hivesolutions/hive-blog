@@ -52,8 +52,8 @@ class PostController(controllers.Controller):
     def validate(self, rest_request, parameters, validation_parameters):
         return self.system.require_permissions(rest_request, validation_parameters)
 
-    @mvc_utils.serialize_exceptions("all")
-    @mvc_utils.validated_method("post.create")
+    @mvc_utils.serialize("all")
+    @mvc_utils.validated("post.create")
     def handle_new(self, rest_request, parameters = {}):
         # processes the contents of the template file assigning the
         # appropriate values to it
@@ -64,7 +64,7 @@ class PostController(controllers.Controller):
         template_file.assign("post", None)
         self.process_set_contents(rest_request, template_file)
 
-    @mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize("all")
     def handle_create(self, rest_request, parameters = {}):
         # retrieves the required controllers
         main_controller = self.system.main_controller
@@ -104,7 +104,7 @@ class PostController(controllers.Controller):
         template_file.assign("post", post_entity)
         self.process_set_contents(rest_request, template_file)
 
-    @mvc_utils.serialize_exceptions("all")
+    @mvc_utils.serialize("all")
     def handle_show(self, rest_request, parameters = {}):
         # creates the return address from the request path
         return_address = self._get_path(rest_request)
