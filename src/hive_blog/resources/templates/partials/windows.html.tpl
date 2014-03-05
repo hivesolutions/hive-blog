@@ -4,7 +4,7 @@
     <p>
         Please fill the box with the word in the image.
     </p>
-    <img id="captcha" src="${out_none value=base_path /}captcha" />
+    <img id="captcha" src="${out value=base_path /}captcha" />
     <input type="text" id="captcha" name="captcha" value="Captcha" data-current_status="" data-original_value="Captcha" />
     <div class="form-buttons">
         <div id="captcha-refresh" class="button-large">Refresh Captcha</div>

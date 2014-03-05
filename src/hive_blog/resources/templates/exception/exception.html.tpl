@@ -4,6 +4,6 @@
         Ooops we're having a problem...
     </div>
     <div class="message">
-        ${out_none value=exception_message xml_escape=True /}
+        ${out value=exception_message xml_escape=True /}
     </div>
 </div>

@@ -1,7 +1,7 @@
 <div id="menu-column">
     <ul>
-        <li class="about"><a href="${out_none value=base_path /}about">About me</a></li>
-        <li class="rss"><a href="${out_none value=base_path /}rss">Subscribe RSS</a></li>
+        <li class="about"><a href="${out value=base_path /}about">About me</a></li>
+        <li class="rss"><a href="${out value=base_path /}rss">Subscribe RSS</a></li>
         <li class="twitter"><a href="http://twitter.com/hivesolutions">Twitter</a></li>
         <li class="facebook"><a href="http://www.facebook.com/hivesolutions">Facebook</a></li>
     </ul>
