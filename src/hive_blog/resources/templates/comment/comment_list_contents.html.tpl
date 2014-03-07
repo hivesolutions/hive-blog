@@ -17,9 +17,9 @@
         </div>
     ${/foreach}
     <div id="comments-form-area">
-        <div class="button-large ${if item=session_user_information value=None operator=neq}hidden${/if}">Post a comment</div>
-        <form action="${out value=base_path /}comments" id="comment-form" class="${if item=session_user_information value=None operator=eq}hidden${/if}" method="post">
-            ${if item=session_user_information value=None operator=eq}
+        <div class="button-large ${if item=session.user_information value=None operator=neq}hidden${/if}">Post a comment</div>
+        <form action="${out value=base_path /}comments" id="comment-form" class="${if item=session.user_information value=None operator=eq}hidden${/if}" method="post">
+            ${if item=session.user_information value=None operator=eq}
                 <h1>Login using:</h1>
                 <div class="auth-buttons">
                     <div class="button-twitter">Twitter</div>
