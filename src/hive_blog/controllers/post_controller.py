@@ -92,7 +92,7 @@ class PostController(controllers.Controller):
 
         # stores the post and its relations in the data source
         # in case the preview flag is not set
-        not preview and post_entity.store(mvc_utils.PERSIST_SAVE_TYPE)
+        not preview and post_entity.store(mvc_utils.PERSIST_SAVE)
 
         # processes the contents of the template file assigning the
         # appropriate values to it

@@ -100,7 +100,7 @@ class Post(root_entity.RootEntity):
         "fetch_type" : "lazy",
         "mandatory" : True,
         "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_ASSOCIATE_TYPE
+        "persist_type" : mvc_utils.PERSIST_ASSOCIATE
     }
     """ The author of the post """
 
@@ -108,7 +108,7 @@ class Post(root_entity.RootEntity):
         "data_type" : "relation",
         "fetch_type" : "lazy",
         "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_NONE_TYPE
+        "persist_type" : mvc_utils.PERSIST_NONE
     }
     """ The comment for the post """
 

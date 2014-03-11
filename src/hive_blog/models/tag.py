@@ -65,7 +65,7 @@ class Tag(root_entity.RootEntity):
         "data_type" : "relation",
         "fetch_type" : "lazy",
         "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_NONE_TYPE
+        "persist_type" : mvc_utils.PERSIST_NONE
     }
     """ The root entities for this tag """
 

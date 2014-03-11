@@ -68,7 +68,7 @@ class CommentController(controllers.Controller):
         comment_entity.author = comment_entity.author or session_user_entity
 
         # stores the comment and its relations in the data source
-        comment_entity.store(mvc_utils.PERSIST_SAVE_TYPE)
+        comment_entity.store(mvc_utils.PERSIST_SAVE)
 
         # redirects to the post show path
         self.redirect_show(rest_request, comment_entity.post)

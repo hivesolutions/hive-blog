@@ -81,7 +81,7 @@ class Comment(root_entity.RootEntity):
         "data_type" : "relation",
         "fetch_type" : "lazy",
         "mandatory" : True,
-        "persist_type" : mvc_utils.PERSIST_SAVE_TYPE | mvc_utils.PERSIST_ASSOCIATE_TYPE
+        "persist_type" : mvc_utils.PERSIST_SAVE | mvc_utils.PERSIST_ASSOCIATE
     }
     """ The author of the comment """
 
@@ -89,7 +89,7 @@ class Comment(root_entity.RootEntity):
         "data_type" : "relation",
         "fetch_type" : "lazy",
         "mandatory" : True,
-        "persist_type" : mvc_utils.PERSIST_ASSOCIATE_TYPE
+        "persist_type" : mvc_utils.PERSIST_ASSOCIATE
     }
     """ The post that contains the comment """
 
@@ -98,7 +98,7 @@ class Comment(root_entity.RootEntity):
         "fetch_type" : "lazy",
         "mandatory" : True,
         "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_ASSOCIATE_TYPE
+        "persist_type" : mvc_utils.PERSIST_ASSOCIATE
     }
     """ The comment for which this comment is a reply """
 
@@ -106,7 +106,7 @@ class Comment(root_entity.RootEntity):
         "data_type" : "relation",
         "fetch_type" : "lazy",
         "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_NONE_TYPE
+        "persist_type" : mvc_utils.PERSIST_NONE
     }
     """ The comment replies to the comment """
 

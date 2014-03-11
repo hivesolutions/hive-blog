@@ -166,7 +166,7 @@ class MainController(controllers.Controller):
         user_entity.twitter_username = twitter_username
 
         # stores the user and its relations in the data source
-        user_entity.store(mvc_utils.PERSIST_SAVE_TYPE)
+        user_entity.store(mvc_utils.PERSIST_SAVE)
 
         # sets the login username session attribute
         self.set_session_attribute(rest_request, "login.username", user_entity.username)

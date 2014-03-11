@@ -57,7 +57,7 @@ class RootEntity(models.EntityModel):
     tags = {
         "data_type" : "relation",
         "fetch_type" : "lazy",
-        "persist_type" : mvc_utils.PERSIST_ASSOCIATE_TYPE
+        "persist_type" : mvc_utils.PERSIST_ASSOCIATE
     }
     """ The tags for the root entity, these values
     should identify the entity through description """
