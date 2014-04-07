@@ -66,11 +66,11 @@
                     // adds the invalid mode class
                     elementReference.addClass("invalid");
                 } else if (currentStatus != "") {
-                    elementReference.attr("value", currentStatus);
+                    elementReference.val(currentStatus);
                 }
 
                 // retrieves the current value
-                var currentValue = elementReference.attr("value");
+                var currentValue = elementReference.val();
 
                 // in case the current value is the original one
                 if (currentValue == originalValue) {
@@ -90,7 +90,7 @@
                         var element = jQuery(this);
 
                         // retrieves the current value
-                        var currentValue = element.attr("value");
+                        var currentValue = element.val();
 
                         // retrieves the original value
                         var originalValue = element.attr("data-original_value");
@@ -105,7 +105,7 @@
                         // the original one
                         if (currentValue == originalValue) {
                             // sets the value attribute to empty
-                            element.attr("value", "");
+                            element.val("");
 
                             // removes the lower class
                             element.removeClass("lower");
@@ -127,7 +127,7 @@
                         var element = jQuery(this);
 
                         // retrieves the current value
-                        var currentValue = element.attr("value");
+                        var currentValue = element.val();
 
                         // retrieves the original value
                         var originalValue = element.attr("data-original_value");
@@ -141,7 +141,7 @@
                         // in case the current value is empty
                         if (currentValue == "") {
                             // sets the value attribute to the original value
-                            element.attr("value", originalValue);
+                            element.val(originalValue);
 
                             // adds the lower class
                             element.addClass("lower");
@@ -656,7 +656,7 @@
             var innerFieldElement = jQuery(":hidden", dateTextFieldContainer);
 
             // retrieves the current value in the text field
-            var textFieldValue = matchedObject.attr("value");
+            var textFieldValue = matchedObject.val();
 
             // converts the date value to an utc timestamp
             var timestampMiliseconds = Date.parseUtc(textFieldValue);
@@ -676,7 +676,7 @@
             }
 
             // sets the timestamp in the inner date field
-            innerFieldElement.attr("value", timestamp);
+            innerFieldElement.val(timestamp);
         };
 
         // initializes the plugin

@@ -67,7 +67,7 @@ jQuery(document).ready(function() {
                         // submits the form (with the captcha value)
                         element.submit();
                     });
-            jQuery("#window-captcha input#captcha").attr("value", "");
+            jQuery("#window-captcha input#captcha").val("");
             jQuery("#window-captcha input#captcha").focus();
         });
     });
@@ -95,13 +95,13 @@ jQuery(document).ready(function() {
         var returnAddress = jQuery("input[name=return_address]", parentForm);
 
         // retrieves the return address value
-        var returnAddressValue = returnAddress.attr("value");
+        var returnAddressValue = returnAddress.val();
 
         // resolves the signin url
         var signinUrl = jQuery.resolveurl("signin");
 
         // sets the new value in the return address
-        returnAddress.attr("value", returnAddressValue + "#comments-form-area");
+        returnAddress.val(returnAddressValue + "#comments-form-area");
 
         // sets the new action in the parent form
         parentForm.attr("action", signinUrl);
@@ -140,13 +140,13 @@ jQuery(document).ready(function() {
                 // resets the value of the input field associated with
                 // the definition of the captcha value and then runs
                 // the focus operation in it
-                jQuery("#window-captcha input#captcha").attr("value", "");
+                jQuery("#window-captcha input#captcha").val("");
                 jQuery("#window-captcha input#captcha").focus();
             });
 
     jQuery("#window-captcha div#post").click(function() {
         // retrieves the captcha value
-        var captchaValue = jQuery("#window-captcha input#captcha").attr("value");
+        var captchaValue = jQuery("#window-captcha input#captcha").val();
 
         // resolves the captcha url
         var captchaUrl = jQuery.resolveurl("captcha");
