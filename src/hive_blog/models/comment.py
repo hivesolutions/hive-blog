@@ -162,11 +162,11 @@ class Comment(root_entity.RootEntity):
         root_entity.RootEntity.set_validation(self)
 
         # adds the validation methods to the date attribute
-        self.add_validation_method("date", "not_none", True)
+        self.add_validation("date", "not_none", True)
 
         # adds the validation methods to the contents attribute
-        self.add_validation_method("contents", "not_none", True)
-        self.add_validation_method("contents", "not_empty")
+        self.add_validation("contents", "not_none", True)
+        self.add_validation("contents", "not_empty")
 
     def get_day(self):
         """

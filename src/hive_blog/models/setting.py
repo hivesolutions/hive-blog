@@ -77,10 +77,10 @@ class Setting(root_entity.RootEntity):
         root_entity.RootEntity.set_validation(self)
 
         # adds the validation methods to the name attribute
-        self.add_validation_method("name", "not_none", True)
-        self.add_validation_method("name", "not_empty")
-        self.add_validation_method("name", "unique")
+        self.add_validation("name", "not_none", True)
+        self.add_validation("name", "not_empty")
+        self.add_validation("name", "unique")
 
         # adds the validation methods to the value attribute
-        self.add_validation_method("value", "not_none", True)
-        self.add_validation_method("value", "not_empty")
+        self.add_validation("value", "not_none", True)
+        self.add_validation("value", "not_empty")

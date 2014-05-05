@@ -146,18 +146,18 @@ class Post(root_entity.RootEntity):
         root_entity.RootEntity.set_validation(self)
 
         # adds the validation methods to the date attribute
-        self.add_validation_method("date", "not_none", True)
+        self.add_validation("date", "not_none", True)
 
         # adds the validation methods to the title attribute
-        self.add_validation_method("title", "not_none", True)
-        self.add_validation_method("title", "not_empty")
+        self.add_validation("title", "not_none", True)
+        self.add_validation("title", "not_empty")
 
         # adds the validation methods to the contents attribute
-        self.add_validation_method("contents", "not_none", True)
-        self.add_validation_method("contents", "not_empty")
+        self.add_validation("contents", "not_none", True)
+        self.add_validation("contents", "not_empty")
 
         # adds the validation methods to the contents abstract attribute
-        self.add_validation_method("contents_abstract", "not_empty")
+        self.add_validation("contents_abstract", "not_empty")
 
     @staticmethod
     def get_for_show(post_object_id, *args, **kwargs):

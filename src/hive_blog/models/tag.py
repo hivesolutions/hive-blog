@@ -93,10 +93,10 @@ class Tag(root_entity.RootEntity):
         root_entity.RootEntity.set_validation(self)
 
         # adds the validation methods to the name attribute
-        self.add_validation_method("name", "not_none", True)
-        self.add_validation_method("name", "not_empty")
-        self.add_validation_method("name", "unique")
+        self.add_validation("name", "not_none", True)
+        self.add_validation("name", "not_empty")
+        self.add_validation("name", "unique")
 
         # adds the validation methods to the count attribute
-        self.add_validation_method("count", "not_none", True)
-        self.add_validation_method("count", "greater_than_or_equal_to_zero")
+        self.add_validation("count", "not_none", True)
+        self.add_validation("count", "greater_than_or_equal_to_zero")

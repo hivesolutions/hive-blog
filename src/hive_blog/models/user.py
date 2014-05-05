@@ -142,32 +142,32 @@ class User(root_entity.RootEntity):
         root_entity.RootEntity.set_validation(self)
 
         # adds the validation methods to the username attribute
-        self.add_validation_method("username", "not_none", True)
-        self.add_validation_method("username", "not_empty")
-        self.add_validation_method("username", "unique")
+        self.add_validation("username", "not_none", True)
+        self.add_validation("username", "not_empty")
+        self.add_validation("username", "unique")
 
         # adds the validation methods to the password attribute
-        self.add_validation_method("password", "not_empty")
-        self.add_custom_validation_method("password", self.validate_password_match, True)
+        self.add_validation("password", "not_empty")
+        self.add_custom_validation("password", self.validate_password_match, True)
 
         # adds the validation methods to the name attribute
-        self.add_validation_method("name", "not_none", True)
-        self.add_validation_method("name", "not_empty")
+        self.add_validation("name", "not_none", True)
+        self.add_validation("name", "not_empty")
 
         # adds the validation methods to the email attribute
-        self.add_validation_method("email", "not_empty")
+        self.add_validation("email", "not_empty")
 
         # adds the validation methods to the website attribute
-        self.add_validation_method("website", "is_url")
+        self.add_validation("website", "is_url")
 
         # adds the validation methods to the openid claimed id attribute
-        self.add_validation_method("openid_claimed_id", "not_empty")
+        self.add_validation("openid_claimed_id", "not_empty")
 
         # adds the validation methods to the twitter username attribute
-        self.add_validation_method("twitter_username", "not_empty")
+        self.add_validation("twitter_username", "not_empty")
 
         # adds the validation methods to the facebook username attribute
-        self.add_validation_method("facebook_username", "not_empty")
+        self.add_validation("facebook_username", "not_empty")
 
     def encrypt_password(self, password = None):
         """
