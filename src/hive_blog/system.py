@@ -48,7 +48,7 @@ ENTITY_MANAGER_ARGUMENTS = {
 """ The entity manager arguments """
 
 ENTITY_MANAGER_PARAMETERS = {
-    "default_database_prefix" : "hive_blog_"
+    "database_prefix" : "hive_blog_"
 }
 """ The entity manager parameters """
 
