@@ -61,8 +61,7 @@ class HiveBlogPlugin(colony.base.system.Plugin):
         colony.base.system.PluginDependency("pt.hive.colony.plugins.api.facebook")
     ]
     main_modules = [
-        "hive_blog.exceptions",
-        "hive_blog.system"
+        "hive_blog"
     ]
 
     hive_blog = None
