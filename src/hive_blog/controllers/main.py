@@ -40,9 +40,6 @@ import hive_blog
 
 import base
 
-JPEG_CONTENT_TYPE = "image/jpeg"
-""" The jpeg content type """
-
 HTTP_PREFIX_VALUE = "http://"
 """ The http prefix value """
 
@@ -336,14 +333,12 @@ class MainController(base.BaseController):
         if not captcha_session:
             captcha_session = self._generate_captcha(request)
 
-        # generates the captcha, retrieving the string value and the string buffer
+        # generates the captcha, retrieving the string value and
+        # the string buffer, then uses the buffer to update the
+        # contents of the request that is going to be returned
         _string_value, string_buffer = captcha_plugin.generate_captcha(captcha_session, {})
-
-        # retrieves the value from the string buffer
         string_buffer_value = string_buffer.get_value()
-
-        # sets the request contents
-        self.set_contents(request, string_buffer_value, JPEG_CONTENT_TYPE)
+        self.set_contents(request, string_buffer_value, "image/jpeg")
 
     def _process_login_signin(self, request, login_username, login_password):
         # validates the captcha, regenerating the captcha and raising
@@ -351,27 +346,19 @@ class MainController(base.BaseController):
         if not self._validate_captcha(request, True):
             raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
-        # encrypts the login password
+        # encrypts the login password and uses it to create the filter
+        # map to be able to filter the users that respect the provided
+        # filter (considered to be valid login attempts)
         encrypted_login_password = models.RootEntity.encrypt(login_password)
-
-        # creates the filter map to be able to filter the users that
-        # respect the provided filter (authentication)
         filter = dict(
-            filters = (
-                dict(
-                    username = login_username
-                ),
-                dict(
-                    password = encrypted_login_password
-                )
-            )
+            username = login_username,
+            password = encrypted_login_password
         )
 
         # retrieves all users that match the authentication parameters
-        user = models.User.find_one(filter)
-
-        # returns in case the user was not found as it's not possible
+        # and returns in case the user was not found as it's not possible
         # to login a user that it's not valid
+        user = models.User.find_one(filter)
         if not user: return
 
         # sets the various login related attributes in the current session
