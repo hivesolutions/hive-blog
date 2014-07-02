@@ -71,10 +71,9 @@ class PostController(base.BaseController):
         post_parameters = self.get_entity_map_parameters(post)
         preview = post_parameters.get("preview", False)
 
-        # in case this is not a preview validates the captcha,
-        # regenerating the captcha if invalid
+        # validates the captcha, regenerating the captcha and raising
+        # an exception in case the validation has failed
         if not preview and not main_controller._validate_captcha(request, False):
-            # raises the invalid captcha exception
             raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
         # creates a post entity with the post

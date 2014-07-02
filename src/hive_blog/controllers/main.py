@@ -92,18 +92,9 @@ class MainController(base.BaseController):
 
     @mvc_utils.serialize
     def signup_create(self, request):
-        """
-        Handles the given hive signup request.
-
-        @type request: Request
-        @param request: The hive signup request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
-        # in case the captcha does not validate
+        # validates the captcha, regenerating the captcha and raising
+        # an exception in case the validation has failed
         if not self._validate_captcha(request, False):
-            # raises the invalid captcha exception
             raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
         # retrieves the session information attributes
@@ -120,11 +111,12 @@ class MainController(base.BaseController):
         user.facebook_username = facebook_username
         user.twitter_username = twitter_username
 
-        # stores the user and its relations in the data source
+        # stores the user and its relations in the data source, creating
+        # the user as part of the operation
         user.create()
 
         # sets the login username session attribute
-        self.set_session_attribute(request, "login.username", user.username)
+        request.set_s("login.username", user.username)
 
         # redirects to the login page
         self.redirect_base_path(request, "login")
@@ -153,72 +145,56 @@ class MainController(base.BaseController):
         facebook_value = facebook_data.get("value", None)
 
         # in case there is a return address data defined (return url)
-        if return_address_data:
-            # sets the return address in the session
-            self.set_session_attribute(request, "return_address", return_address_data)
+        # it must be defined in the current session to be used latter
+        if return_address_data: request.set_s("return_address", return_address_data)
 
         # processes a normal signin in case the
         # username and password were specified
         if login_username and login_password:
-            # processes a normal signin
             self._process_login_signin(request, login_username, login_password)
         # processes an openid signin in case
         # the open id value was specified
         elif openid_value:
-            # processes an openid signin
             self._process_openid_signin(request, openid_value)
         # processes a twitter signin in case
         # the twitter value was specified
         elif twitter_value:
-            # processes a twitter signin
             self._process_twitter_signin(request)
         # processes a facebook signin in case
         # the facebook value was specified
         elif facebook_value:
-            # processes a facebook signin
             self._process_facebook_signin(request)
 
     @mvc_utils.serialize
     def login(self, request):
-        """
-        Handles the given hive login request.
-
-        @type request: Request
-        @param request: The hive login request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
         # retrieves the current session user
         user = self._get_session_user(request)
 
         # redirects to the signup path in case no user is in the session
         if not user:
-            # redirects to the signup path
+            # redirects to the signup path and returns immediately
             self.redirect_base_path(request, "signup")
-
-            # returns immediately
             return
 
         # retrieves the return address from the session
         # and unsets it from the session
         return_address = request.get_s("return_address")
-        self.unset_session_attribute(request, "return_address")
+        request.unset_s("return_address")
 
         # unsets all the session attributes related with registration
-        self.unset_session_attribute(request, "user.registration")
+        request.unset_s("user.registration")
 
         # unsets all the session attributes related with authentication
-        self.unset_session_attribute(request, "login.username")
-        self.unset_session_attribute(request, "openid.claimed_id")
-        self.unset_session_attribute(request, "facebook.username")
-        self.unset_session_attribute(request, "twitter.username")
+        request.unset_s("login.username")
+        request.unset_s("openid.claimed_id")
+        request.unset_s("facebook.username")
+        request.unset_s("twitter.username")
 
         # sets the user in the session
-        self.set_session_attribute(request, "user.information", user)
+        request.set_s("user.information", user)
 
         # sets the login attribute in the session
-        self.set_session_attribute(request, "login", True)
+        request.set_s("login", True)
 
         # redirects to the return address in case it was
         # specified, otherwise redirects to the index
@@ -227,35 +203,14 @@ class MainController(base.BaseController):
 
     @mvc_utils.serialize
     def logout(self, request):
-        """
-        Handles the given hive logout request.
-
-        @type request: Request
-        @param request: The hive logout request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
-        # unsets the login attribute from the session
-        self.unset_session_attribute(request, "login")
-
-        # unsets the user information from the session
-        self.unset_session_attribute(request, "user.information")
-
-        # redirects to the signin page
+        # unsets the login attribute from the session and then redirects
+        # the user back to the login page so that he can login again
+        request.unset_s("login")
+        request.unset_s("user.information")
         self.redirect_base_path(request, "signin")
 
     @mvc_utils.serialize
     def openid(self, request):
-        """
-        Handles the given hive openid request.
-
-        @type request: Request
-        @param request: The hive openid request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
         # retrieves the form data by processing the form (in flat format)
         form_data_map = self.process_form_data_flat(request)
 
@@ -283,7 +238,14 @@ class MainController(base.BaseController):
         openid_invalidate_handle = openid_data.get("invalidate_handle", None)
 
         # creates the openid return structure
-        return_openid_structure = openid_remote_client.generate_openid_structure(openid_provider_url, openid_claimed_id, openid_identity, openid_return_to, None, set_structure = False)
+        return_openid_structure = openid_remote_client.generate_openid_structure(
+            openid_provider_url,
+            openid_claimed_id,
+            openid_identity,
+            openid_return_to,
+            None,
+            set_structure = False
+        )
 
         # sets some of the items of the openid structure
         return_openid_structure.set_signed(openid_signed)
@@ -306,7 +268,7 @@ class MainController(base.BaseController):
             # the minimizes attribute sets the value of it
             if not hasattr(return_openid_structure, minimized_attribute):
                 # retrieves the attribute value from the request
-                attribute_value = self.get_attribute_decoded(request, attribute, DEFAULT_ENCODING)
+                attribute_value = self.get_attribute_decoded(request, attribute, "utf-8")
 
                 # sets the attribute value in the return openid structure
                 setattr(return_openid_structure, minimized_attribute, attribute_value)
@@ -319,60 +281,30 @@ class MainController(base.BaseController):
 
         # creates the user registration structure from the openid simple
         # registration (sreg) values
-        user_registration = {
-            "username" : openid_sreg_data.get("nickname", None),
-            "name" : openid_sreg_data.get("fullname", None),
-            "email" : openid_sreg_data.get("email", None)
-        }
+        user_registration = dict(
+            username = openid_sreg_data.get("nickname", None),
+            name = openid_sreg_data.get("fullname", None),
+            email = openid_sreg_data.get("email", None)
+        )
 
-        # sets the openid claimed id attribute
-        self.set_session_attribute(request, "openid.claimed_id", preferred_claimed_id)
-
-        # sets the user registration attribute
-        self.set_session_attribute(request, "user.registration", user_registration)
+        # sets the openid id associate attributes in the current session
+        # so that may be used latter in the login process
+        request.set_s("openid.claimed_id", preferred_claimed_id)
+        request.set_s("user.registration", user_registration)
 
         # redirects to the login page
         self.redirect_base_path(request, "login")
 
     @mvc_utils.serialize
     def twitter(self, request):
-        """
-        Handles the given hive twitter request.
-
-        @type request: Request
-        @param request: The hive twitter request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
-        # redirects to the initial page
         self.redirect_base_path(request, "index")
 
     @mvc_utils.serialize
     def facebook(self, request):
-        """
-        Handles the given hive facebook request.
-
-        @type request: Request
-        @param request: The hive facebook request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
-        # redirects to the initial page
         self.redirect_base_path(request, "index")
 
     @mvc_utils.serialize
     def rss(self, request):
-        """
-        Handles the given hive rss request.
-
-        @type request: Request
-        @param request: The hive rss request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
         # retrieves the host path then uses it to create
         # the base url from the host path
         host_path = self._get_host_path(request)
@@ -389,15 +321,6 @@ class MainController(base.BaseController):
 
     @mvc_utils.serialize
     def captcha(self, request):
-        """
-        Handles the given hive captcha request.
-
-        @type request: Request
-        @param request: The hive captcha request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
         # retrieves the captcha plugin
         captcha_plugin = self.plugin.captcha_plugin
 
@@ -423,9 +346,9 @@ class MainController(base.BaseController):
         self.set_contents(request, string_buffer_value, JPEG_CONTENT_TYPE)
 
     def _process_login_signin(self, request, login_username, login_password):
-        # validates the captcha, regenerating the captcha
+        # validates the captcha, regenerating the captcha and raising
+        # an exception in case the validation has failed
         if not self._validate_captcha(request, True):
-            # raises the invalid captcha exception
             raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
         # encrypts the login password
@@ -433,16 +356,16 @@ class MainController(base.BaseController):
 
         # creates the filter map to be able to filter the users that
         # respect the provided filter (authentication)
-        filter = {
-            "filters" : (
-                {
-                    "username" : login_username
-                },
-                {
-                    "password" : encrypted_login_password
-                }
+        filter = dict(
+            filters = (
+                dict(
+                    username = login_username
+                ),
+                dict(
+                    password = encrypted_login_password
+                )
             )
-        }
+        )
 
         # retrieves all users that match the authentication parameters
         user = models.User.find_one(filter)
@@ -453,8 +376,8 @@ class MainController(base.BaseController):
 
         # sets the various login related attributes in the current session
         # this is considered the proper login stage
-        self.set_session_attribute(request, "login.username", login_username)
-        self.set_session_attribute(request, "login", True)
+        request.set_s("login.username", login_username)
+        request.set_s("login", True)
         self.redirect_base_path(request, "login")
 
     def _process_openid_signin(self, request, openid_value):
@@ -483,7 +406,7 @@ class MainController(base.BaseController):
         openid_remote_client.openid_associate()
 
         # sets the openid remote client in the session
-        self.set_session_attribute(request, "openid.remote_client", openid_remote_client)
+        request.set_s("openid.remote_client", openid_remote_client)
 
         # retrieves the request url that will be used
         # to forward the user agent
@@ -509,7 +432,7 @@ class MainController(base.BaseController):
         twitter_remote_client.open_oauth_request_token()
 
         # sets the twitter remote client in the session
-        self.set_session_attribute(request, "twitter.remote_client", twitter_remote_client)
+        request.set_s("twitter.remote_client", twitter_remote_client)
 
         # retrieves the oauth authenticate url
         authenticate_url = twitter_remote_client.get_oauth_authenticate_url()
@@ -518,7 +441,6 @@ class MainController(base.BaseController):
         self.redirect_base_path(request, authenticate_url, quote = False)
 
     def _process_facebook_signin(self, request):
-        # retrieves the api facebook plugin
         api_facebook_plugin = self.plugin.api_facebook_plugin
 
         # creates the facebook remote client
@@ -531,91 +453,48 @@ class MainController(base.BaseController):
         facebook_remote_client.generate_facebook_structure(FACEBOOK_CONSUMER_KEY, FACEBOOK_CONSUMER_SECRET, next)
 
         # sets the facebook remote client in the session
-        self.set_session_attribute(request, "facebook.remote_client", facebook_remote_client)
+        request.set_s("facebook.remote_client", facebook_remote_client)
 
-        # retrieves the facebook login url
         login_url = facebook_remote_client.get_login_url()
-
-        # redirects to the login url page
         self.redirect_base_path(request, login_url, quote = False)
 
     def _get_session_user(self, request):
-        # retrieves the session attributes related with authentication
         login_username = request.get_s("login.username")
         openid_claimed_id = request.get_s("openid.claimed_id")
         facebook_username = request.get_s("facebook.username")
         twitter_username = request.get_s("twitter.username")
 
-        # initializes the login filter
-        login_filter = {}
+        filter = {}
 
-        # in case the login username is defined
-        if login_username:
-            login_filter["username"] = login_username
-        # in case the open id claimed id is defined
-        elif openid_claimed_id:
-            login_filter["openid_claimed_id"] = openid_claimed_id
-        # in case the facebook username is defined
-        elif facebook_username:
-            login_filter["facebook_username"] = facebook_username
-        # in case the twitter username is defined
-        elif twitter_username:
-            login_filter["twitter_username"] = twitter_username
-        # in case no authentication name (method) is defined
-        else:
-            # raises the invalid authentication information
-            raise hive_blog.InvalidAuthenticationInformation("missing authentication name")
+        if login_username: filter["username"] = login_username
+        elif openid_claimed_id: filter["openid_claimed_id"] = openid_claimed_id
+        elif facebook_username: filter["facebook_username"] = facebook_username
+        elif twitter_username: filter["twitter_username"] = twitter_username
+        else: raise hive_blog.InvalidAuthenticationInformation("missing authentication name")
 
-        # retrieves the user that matches the authentication parameters
-        user = models.User.find_one(login_filter)
-
-        # returns the retrieved user
+        user = models.User.find_one(filter)
         return user
 
     def _generate_captcha(self, request):
-        # retrieves the captcha plugin
         captcha_plugin = self.plugin.captcha_plugin
-
-        # generates a captcha string value
         string_value = captcha_plugin.generate_captcha_string_value({})
-
-        # sets the captcha as a session attribute
-        self.set_session_attribute(request, "captcha", string_value)
-
-        # returns the generated captcha string value
+        request.set_s("captcha", string_value)
         return string_value
 
     def _validate_captcha(self, request, regenerate_on_valid = False):
-        # tries to retrieve the captcha validation value
         captcha_validation = request.field("captcha", None)
-
-        # in case no captcha is meant to be validated, must generate
-        # a new one (as this is the initial request)
         if not captcha_validation:
-            # generates a new captcha and then returns false, as
-            # no validation is being made
             self._generate_captcha(request)
             return False
 
-        # normalizes the captcha validation value
         captcha_validation = captcha_validation.lower()
-
-        # retrieves the captcha session value
         captcha_session = request.get_s("captcha")
 
-        # in case no valid captcha session is set
         if not captcha_session:
-            # raises the invalid captcha exception
             raise hive_blog.InvalidCaptcha("invalid captcha session value")
 
-        # in case both captchas match don't match (invalid captcha value)
         if not captcha_validation == captcha_session:
-            # raises the invalid captcha exception
             raise hive_blog.InvalidCaptcha("non matching captcha value: " + str(captcha_validation))
 
-        # in case the regenerate on valid flag is set, must
-        # generate a new captcha for the session
         if regenerate_on_valid: self._generate_captcha(request)
-
-        # validation was successful
         return True
