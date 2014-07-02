@@ -6,7 +6,7 @@
                 <img src="http://www.gravatar.com/avatar/${out value=comment.author.get_gravatar_hash xml_escape=True /}" height="50" width="50" alt="" />
             </div>
             <div class="comment-contents">
-                <span class="comment-date">${out value=comment.get_day xml_escape=True /}  ${out value=comment.get_month xml_escape=True /}</span>. ${out value=comment.author.name xml_escape=True /} wrote:
+                <span class="comment-date">${out value=comment.get_day xml_escape=True /} ${out value=comment.get_month xml_escape=True /}</span>. ${out value=comment.author.name xml_escape=True /} wrote:
                 <p class="comment-body">${out value=comment.contents xml_escape=True /}</p>
                 <div class="comment-actions">
                     <a href="#">Reply</a>
@@ -19,7 +19,7 @@
     <div id="comments-form-area">
         <div class="button-large ${if item=session.user_information value=None operator=neq}hidden${/if}">Post a comment</div>
         <form action="${out value=base_path /}comments" id="comment-form" class="${if item=session.user_information value=None operator=eq}hidden${/if}" method="post">
-            ${if item=session.user_information value=None operator=eq}
+            ${if item=session.login value=None operator=eq}
                 <h1>Login using:</h1>
                 <div class="auth-buttons">
                     <div class="button-twitter">Twitter</div>
