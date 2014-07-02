@@ -34,8 +34,6 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import types
-
 import colony
 
 import hive_blog
@@ -50,26 +48,18 @@ class PostController(base.BaseController):
     @mvc_utils.serialize
     @mvc_utils.validated("post.create")
     def new(self, request):
-        # processes the contents of the template file assigning the
-        # appropriate values to it
-        template_file = self.retrieve_template_file(
-            "general.html.tpl",
-            partial_page = "post/post_new_contents.html.tpl"
+        self._template(
+            request = request,
+            partial_page = "post/new.html.tpl",
+            post = None
         )
-        template_file.assign("post", None)
-        self.process_set_contents(request, template_file)
 
     @mvc_utils.serialize
     def create(self, request):
-        # retrieves the required controllers
+        # retrieves the required controllers and the value for the preview
+        # field that defined is the current creation is a preview or not
         main_controller = self.system.main_controller
-
-        # retrieves the post from the rest request
-        post = self.get_field(request, "post", {})
-
-        # retrieves the preview flag from the post parameters
-        post_parameters = self.get_entity_map_parameters(post)
-        preview = post_parameters.get("preview", False)
+        preview = request.field("preview", False)
 
         # validates the captcha, regenerating the captcha and raising
         # an exception in case the validation has failed
@@ -78,45 +68,34 @@ class PostController(base.BaseController):
 
         # creates a post entity with the post
         # retrieved from the rest request
-        post_entity = models.Post.new(post)
+        post = models.Post.new()
 
         # sets the post author as the session user
-        session_user_entity = self.get_session_attribute(request, "user.information")
-        post_entity.author = session_user_entity
+        session_user = request.get_s("user.information")
+        post.author = session_user
 
         # stores the post and its relations in the data source
         # in case the preview flag is not set
-        not preview and post_entity.store(mvc_utils.PERSIST_SAVE)
+        not preview and post.create()
 
         # processes the contents of the template file assigning the
         # appropriate values to it
-        template_file = self.retrieve_template_file(
-            "general.html.tpl",
-            partial_page = "post/post_new_contents.html.tpl"
+        self._template(
+            request = request,
+            partial_page = "post/new.html.tpl",
+            preview = True,
+            post = post
         )
-        template_file.assign("preview", True)
-        template_file.assign("post", post_entity)
-        self.process_set_contents(request, template_file)
 
     @mvc_utils.serialize
     def show(self, request, id):
-        # creates the return address from the request path
         return_address = self._get_path(request)
-
-        # retrieves the hosts posts path
         host_posts_path = self._get_host_path(request, "/posts/")
-
-        # retrieves the posts entity specified in the pattern
-        post_object_id = self.get_pattern(parameters, "post_object_id", types.IntType)
-        post_entity = models.Post.get_for_show(post_object_id)
-
-        # processes the contents of the template file assigning the
-        # appropriate values to it
-        template_file = self.retrieve_template_file(
-            "general.html.tpl",
-            partial_page = "post/post_show_contents.html.tpl"
+        post = models.Post.get_for_show(id)
+        self._template(
+            request = request,
+            partial_page = "post/show.html.tpl",
+            return_address = return_address,
+            host_posts_path = host_posts_path,
+            post = post
         )
-        template_file.assign("return_address", return_address)
-        template_file.assign("host_posts_path", host_posts_path)
-        template_file.assign("post", post_entity)
-        self.process_set_contents(request, template_file, assign_session = True)
