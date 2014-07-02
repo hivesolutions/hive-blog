@@ -38,37 +38,34 @@ import colony
 
 import hive_blog
 
+import base
+
 models = colony.__import__("models")
 mvc_utils = colony.__import__("mvc_utils")
-controllers = colony.__import__("controllers")
 
-class CommentController(controllers.Controller):
-    """
-    The hive blog comment controller.
-    """
+class CommentController(base.BaseController):
 
     @mvc_utils.serialize
-    def handle_create(self, rest_request, parameters = {}):
+    def create(self, request):
         # retrieves the required controllers
         main_controller = self.system.main_controller
 
-        # validates the captcha, regenerating the captcha
-        if not main_controller._validate_captcha(rest_request, False):
-            # raises the invalid captcha exception
+        # validates the captcha, regenerating the captcha and raising
+        # an exception in case the validation has failed
+        if not main_controller._validate_captcha(request, False):
             raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
         # retrieves the comment from the rest request
         # and applies it to the comment entity
-        comment = self.get_field(rest_request, "comment", {})
-        comment_entity = models.Comment.new(comment)
+        comment = request.field("comment", {})
+        comment = models.Comment.new(comment)
 
         # sets the comment author as the session user in case
         # one is defined or the user specified in the comment
-        session_user_entity = self.get_session_attribute(rest_request, "user.information")
-        comment_entity.author = comment_entity.author or session_user_entity
+        session_user_entity = request.get_s("user.information")
+        comment.author = comment.author or session_user_entity
 
         # stores the comment and its relations in the data source
-        comment_entity.store(mvc_utils.PERSIST_SAVE)
-
-        # redirects to the post show path
-        self.redirect_show(rest_request, comment_entity.post)
+        # and then redirects the user to the post show path
+        comment.create()
+        self.redirect_show(request, comment.post)

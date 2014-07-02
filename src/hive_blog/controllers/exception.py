@@ -34,40 +34,17 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import colony.libs.import_util
+import colony
 
-EXCEPTION_VALUE = "exception"
-""" The exception value """
-
-MESSAGE_VALUE = "message"
-""" The message value """
-
-controllers = colony.libs.import_util.__import__("controllers")
+controllers = colony.__import__("controllers")
 
 class ExceptionController(controllers.Controller):
-    """
-    The hive blog exception controller.
-    """
 
-    def handle_exception(self, rest_request, parameters = {}):
-        """
-        Handles an exception.
-
-        @type rest_request: RestRequest
-        @param rest_request: The rest request for which the exception occurred.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
-        # retrieves the exception parameters
-        exception = parameters.get(EXCEPTION_VALUE)
-        exception_message = exception.get(MESSAGE_VALUE)
-
-        # processes the contents of the template file assigning the
-        # appropriate values to it
-        template_file = self.retrieve_template_file(
-            "general_error.html.tpl",
-            partial_page = "exception/exception.html.tpl"
+    def exception(self, request, message = None, traceback = None):
+        self._template(
+            request = request,
+            template = "general_error.html.tpl",
+            partial_page = "exception.html.tpl",
+            exception_message = message,
+            exception_traceback = traceback
         )
-        template_file.assign("exception_message", exception_message)
-        self.process_set_contents(rest_request, template_file)

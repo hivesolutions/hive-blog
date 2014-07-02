@@ -48,7 +48,7 @@ class PageController(controllers.Controller):
     """
 
     @mvc_utils.serialize
-    def handle_show(self, rest_request, parameters = {}):
+    def handle_show(self, rest_request):
         # retrieves the page index pattern
         page_index = self.get_pattern(parameters, "page_index", types.IntType) or 1
 

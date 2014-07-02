@@ -34,9 +34,11 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import colony.libs.import_util
+import colony
 
 import hive_blog
+
+import base
 
 JPEG_CONTENT_TYPE = "image/jpeg"
 """ The jpeg content type """
@@ -71,17 +73,13 @@ DEFAULT_ENCODING = "utf-8"
 RSS_CONTENT_TYPE = "application/rss+xml"
 """ The rss content type """
 
-models = colony.libs.import_util.__import__("models")
-mvc_utils = colony.libs.import_util.__import__("mvc_utils")
-controllers = colony.libs.import_util.__import__("controllers")
+models = colony.__import__("models")
+mvc_utils = colony.__import__("mvc_utils")
 
-class MainController(controllers.Controller):
-    """
-    The hive blog controller.
-    """
+class MainController(base.BaseController):
 
     @mvc_utils.serialize
-    def handle_hive_index(self, rest_request, parameters = {}):
+    def index(self, rest_request):
         """
         Handles the given hive index rest request.
 
@@ -106,7 +104,7 @@ class MainController(controllers.Controller):
             page_controller.handle_show(rest_request, parameters)
 
     @mvc_utils.serialize
-    def handle_hive_about(self, rest_request, parameters = {}):
+    def handle_hive_about(self, rest_request):
         """
         Handles the given hive about rest request.
 
@@ -121,7 +119,7 @@ class MainController(controllers.Controller):
         self.process_set_contents(rest_request, template_file)
 
     @mvc_utils.serialize
-    def handle_hive_signup(self, rest_request, parameters = {}):
+    def handle_hive_signup(self, rest_request):
         """
         Handles the given hive signup rest request.
 
@@ -136,7 +134,7 @@ class MainController(controllers.Controller):
         self.process_set_contents(rest_request, template_file, assign_session = True)
 
     @mvc_utils.serialize
-    def handle_hive_signup_create(self, rest_request, parameters = {}):
+    def handle_hive_signup_create(self, rest_request):
         """
         Handles the given hive signup rest request.
 
@@ -175,7 +173,7 @@ class MainController(controllers.Controller):
         self.redirect_base_path(rest_request, "login")
 
     @mvc_utils.serialize
-    def handle_hive_signin(self, rest_request, parameters = {}):
+    def handle_hive_signin(self, rest_request):
         """
         Handles the given hive signin rest request.
 
@@ -194,7 +192,7 @@ class MainController(controllers.Controller):
         self.process_set_contents(rest_request, template_file)
 
     @mvc_utils.serialize
-    def handle_hive_signin_process(self, rest_request, parameters = {}):
+    def handle_hive_signin_process(self, rest_request):
         """
         Handles the given hive signin process rest request.
 
@@ -248,7 +246,7 @@ class MainController(controllers.Controller):
             self._process_facebook_signin(rest_request)
 
     @mvc_utils.serialize
-    def handle_hive_login(self, rest_request, parameters = {}):
+    def handle_hive_login(self, rest_request):
         """
         Handles the given hive login rest request.
 
@@ -295,7 +293,7 @@ class MainController(controllers.Controller):
         self.redirect_base_path(rest_request, redirect_path, quote = False)
 
     @mvc_utils.serialize
-    def handle_hive_logout(self, rest_request, parameters = {}):
+    def handle_hive_logout(self, rest_request):
         """
         Handles the given hive logout rest request.
 
@@ -315,7 +313,7 @@ class MainController(controllers.Controller):
         self.redirect_base_path(rest_request, "signin")
 
     @mvc_utils.serialize
-    def handle_hive_openid(self, rest_request, parameters = {}):
+    def handle_hive_openid(self, rest_request):
         """
         Handles the given hive openid rest request.
 
@@ -404,7 +402,7 @@ class MainController(controllers.Controller):
         self.redirect_base_path(rest_request, "login")
 
     @mvc_utils.serialize
-    def handle_hive_twitter(self, rest_request, parameters = {}):
+    def handle_hive_twitter(self, rest_request):
         """
         Handles the given hive twitter rest request.
 
@@ -418,7 +416,7 @@ class MainController(controllers.Controller):
         self.redirect_base_path(rest_request, "index")
 
     @mvc_utils.serialize
-    def handle_hive_facebook(self, rest_request, parameters = {}):
+    def handle_hive_facebook(self, rest_request):
         """
         Handles the given hive facebook rest request.
 
@@ -432,7 +430,7 @@ class MainController(controllers.Controller):
         self.redirect_base_path(rest_request, "index")
 
     @mvc_utils.serialize
-    def handle_hive_rss(self, rest_request, parameters = {}):
+    def handle_hive_rss(self, rest_request):
         """
         Handles the given hive rss rest request.
 
@@ -457,7 +455,7 @@ class MainController(controllers.Controller):
         self.process_set_contents(rest_request, template_file, content_type = RSS_CONTENT_TYPE)
 
     @mvc_utils.serialize
-    def handle_hive_captcha(self, rest_request, parameters = {}):
+    def handle_hive_captcha(self, rest_request):
         """
         Handles the given hive captcha request.
 
