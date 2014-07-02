@@ -44,7 +44,7 @@ class ExceptionController(controllers.Controller):
         self._template(
             request = request,
             template = "general_error.html.tpl",
-            partial_page = "exception.html.tpl",
+            partial_page = "exception/exception.html.tpl",
             exception_message = message,
             exception_traceback = traceback
         )

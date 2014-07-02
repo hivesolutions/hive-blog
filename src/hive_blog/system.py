@@ -36,23 +36,25 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import types
 
-import colony.base.system
+import colony
 
-ENTITY_MANAGER_ARGUMENTS = {
-    "id" : "pt.hive.hive_blog.database",
-    "engine" : "sqlite",
-    "connection_parameters" : {
-        "autocommit" : False
-    }
-}
-""" The entity manager arguments """
+ENTITY_MANAGER_ARGUMENTS = dict(
+    id = "pt.hive.hive_blog.database",
+    engine = "sqlite",
+    connection_parameters = dict(
+        autocommit = False
+    )
+)
+""" The entity manager arguments, these arguments are going
+to be used in case no arguments are provided to the system """
 
-ENTITY_MANAGER_PARAMETERS = {
-    "database_prefix" : "hive_blog_"
-}
-""" The entity manager parameters """
+ENTITY_MANAGER_PARAMETERS = dict(
+    database_prefix = "hive_blog_"
+)
+""" The entity manager parameters to be used by default in
+case they are not overriden by any configuration value """
 
-class HiveBlog(colony.base.system.System):
+class HiveBlog(colony.System):
     """
     The hive blog class.
     """
@@ -105,11 +107,11 @@ class HiveBlog(colony.base.system.System):
         return (
             (r"hive_blog/?", self.main_controller.index, "get"),
             (r"hive_blog/index", self.main_controller.index, "get"),
-            (r"hive_blog/pages/<int:index>", self.page_controller.handle_show, "get"),
-            (r"hive_blog/posts/<int:id>", self.post_controller.handle_show, "get"),
-            (r"hive_blog/posts/new", self.post_controller.handle_new, "get"),
-            (r"hive_blog/posts", self.post_controller.handle_create, "post"),
-            (r"hive_blog/comments", self.comment_controller.handle_create, "post"),
+            (r"hive_blog/pages/<int:index>", self.page_controller.show, "get"),
+            (r"hive_blog/posts/<int:id>", self.post_controller.show, "get"),
+            (r"hive_blog/posts/new", self.post_controller.new, "get"),
+            (r"hive_blog/posts", self.post_controller.create, "post"),
+            (r"hive_blog/comments", self.comment_controller.create, "post"),
             (r"hive_blog/signup", self.main_controller.signup, "get"),
             (r"hive_blog/signup", self.main_controller.signup_create, "post"),
             (r"hive_blog/signin", self.main_controller.signin, "get"),
@@ -142,26 +144,28 @@ class HiveBlog(colony.base.system.System):
         plugin_path = plugin_manager.get_plugin_path_by_id(self.plugin.id)
 
         return (
-            (r"nanger/resources/.+", (plugin_path + "/hive_blog/resources/extras", "nanger/resources")),
+            (r"hive_blog/resources/.+", (plugin_path + "/hive_blog/resources/extras", "hive_blog/resources")),
         )
 
     def get_entity_manager_arguments(self):
         """
-        Retrieves the entity manager arguments.
+        Retrieves the entity manager arguments, this method does not
+        take into consideration any kind of configuration and uses
+        only static configuration values.
 
         @rtype: Dictionary
-        @return: The entity manager arguments.
+        @return: The entity manager arguments after the resolution
+        process for the retrieval of the arguments.
         """
 
         # retrieves the mvc utils plugin
         mvc_utils_plugin = self.plugin.mvc_utils_plugin
 
-        # generates the entity manager arguments
+        # generates the entity manager arguments, creating the proper structures
+        # using the standard mvc implementation and returns the values
         entity_manager_arguments = mvc_utils_plugin.generate_entity_manager_arguments(
             self.plugin, ENTITY_MANAGER_ARGUMENTS, ENTITY_MANAGER_PARAMETERS
         )
-
-        # returns the entity manager arguments
         return entity_manager_arguments
 
     def require_permissions(self, request, permissions_list = []):

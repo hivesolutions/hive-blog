@@ -434,8 +434,8 @@ class MainController(base.BaseController):
         @param parameters: The handler parameters.
         """
 
-        # retrieves the security captcha plugin
-        security_captcha_plugin = self.plugin.security_captcha_plugin
+        # retrieves the captcha plugin
+        captcha_plugin = self.plugin.captcha_plugin
 
         # validates the captcha, returning immediately in case
         # the value is valid (expected result)
@@ -450,7 +450,7 @@ class MainController(base.BaseController):
             captcha_session = self._generate_captcha(request)
 
         # generates the captcha, retrieving the string value and the string buffer
-        _string_value, string_buffer = security_captcha_plugin.generate_captcha(captcha_session, {})
+        _string_value, string_buffer = captcha_plugin.generate_captcha(captcha_session, {})
 
         # retrieves the value from the string buffer
         string_buffer_value = string_buffer.get_value()
@@ -609,11 +609,11 @@ class MainController(base.BaseController):
         return user_entity
 
     def _generate_captcha(self, request):
-        # retrieves the security captcha plugin
-        security_captcha_plugin = self.plugin.security_captcha_plugin
+        # retrieves the captcha plugin
+        captcha_plugin = self.plugin.captcha_plugin
 
         # generates a captcha string value
-        string_value = security_captcha_plugin.generate_captcha_string_value({})
+        string_value = captcha_plugin.generate_captcha_string_value({})
 
         # sets the captcha as a session attribute
         self.set_session_attribute(request, "captcha", string_value)
