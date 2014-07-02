@@ -64,10 +64,6 @@ FACEBOOK_CONSUMER_KEY = "b42e59dee7e7b07258dfc82913648e43"
 FACEBOOK_CONSUMER_SECRET = "6fddb2bbaade579798f45b1134865f01"
 """ The facebook consumer secret """
 
-
-RSS_CONTENT_TYPE = "application/rss+xml"
-""" The rss content type """
-
 models = colony.__import__("models")
 mvc_utils = colony.__import__("mvc_utils")
 
@@ -89,18 +85,10 @@ class MainController(base.BaseController):
 
     @mvc_utils.serialize
     def signup(self, request):
-        """
-        Handles the given hive signup request.
-
-        @type request: Request
-        @param request: The hive signup request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
-        # processes the contents of the template file assigning the appropriate values to it
-        template_file = self.retrieve_template_file("general.html.tpl", partial_page = "main/signup_contents.html.tpl")
-        self.process_set_contents(request, template_file, assign_session = True)
+        self._template(
+            request = request,
+            partial_page = "main/signup.html.tpl"
+        )
 
     @mvc_utils.serialize
     def signup_create(self, request):
@@ -119,67 +107,43 @@ class MainController(base.BaseController):
             raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
         # retrieves the session information attributes
-        openid_claimed_id = self.get_session_attribute(request, "openid.claimed_id")
-        facebook_username = self.get_session_attribute(request, "facebook.username")
-        twitter_username = self.get_session_attribute(request, "twitter.username")
+        openid_claimed_id = request.get_s("openid.claimed_id")
+        facebook_username = request.get_s("facebook.username")
+        twitter_username = request.get_s("twitter.username")
 
         # retrieves the user from the request
-        user = self.get_field(request, "user", {})
-        user_entity = models.User.new(user)
+        user = request.field("user", {})
+        user = models.User.new(user)
 
         # retrieves the authentication information in the user entity
-        user_entity.openid_claimed_id = openid_claimed_id
-        user_entity.facebook_username = facebook_username
-        user_entity.twitter_username = twitter_username
+        user.openid_claimed_id = openid_claimed_id
+        user.facebook_username = facebook_username
+        user.twitter_username = twitter_username
 
         # stores the user and its relations in the data source
-        user_entity.store(mvc_utils.PERSIST_SAVE)
+        user.create()
 
         # sets the login username session attribute
-        self.set_session_attribute(request, "login.username", user_entity.username)
+        self.set_session_attribute(request, "login.username", user.username)
 
         # redirects to the login page
         self.redirect_base_path(request, "login")
 
     @mvc_utils.serialize
     def signin(self, request):
-        """
-        Handles the given hive signin request.
-
-        @type request: Request
-        @param request: The hive signin request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
-        # processes the contents of the template file assigning the
-        # appropriate values to it
-        template_file = self.retrieve_template_file(
-            "general.html.tpl",
-            partial_page = "main/signin_contents.html.tpl"
+        self._template(
+            request = request,
+            partial_page = "main/signin.html.tpl"
         )
-        self.process_set_contents(request, template_file)
 
     @mvc_utils.serialize
     def signin_process(self, request):
-        """
-        Handles the given hive signin process request.
-
-        @type request: Request
-        @param request: The hive signin process request to be handled.
-        @type parameters: Dictionary
-        @param parameters: The handler parameters.
-        """
-
-        # retrieves the form data by processing the form
-        form_data_map = self.process_form_data(request)
-
         # retrieves the data from the form data
-        login_data = form_data_map.get("login", {})
-        openid_data = form_data_map.get("openid", {})
-        twitter_data = form_data_map.get("twitter", {})
-        facebook_data = form_data_map.get("facebook", {})
-        return_address_data = form_data_map.get("return_address", None)
+        login_data = request.field("login", {})
+        openid_data = request.field("openid", {})
+        twitter_data = request.field("twitter", {})
+        facebook_data = request.field("facebook", {})
+        return_address_data = request.field("return_address", None)
 
         # retrieves the authentication attributes
         login_username = login_data.get("username", None)
@@ -226,10 +190,10 @@ class MainController(base.BaseController):
         """
 
         # retrieves the current session user
-        user_entity = self._get_session_user(request)
+        user = self._get_session_user(request)
 
         # redirects to the signup path in case no user is in the session
-        if not user_entity:
+        if not user:
             # redirects to the signup path
             self.redirect_base_path(request, "signup")
 
@@ -238,7 +202,7 @@ class MainController(base.BaseController):
 
         # retrieves the return address from the session
         # and unsets it from the session
-        return_address = self.get_session_attribute(request, "return_address")
+        return_address = request.get_s("return_address")
         self.unset_session_attribute(request, "return_address")
 
         # unsets all the session attributes related with registration
@@ -251,7 +215,7 @@ class MainController(base.BaseController):
         self.unset_session_attribute(request, "twitter.username")
 
         # sets the user in the session
-        self.set_session_attribute(request, "user.information", user_entity)
+        self.set_session_attribute(request, "user.information", user)
 
         # sets the login attribute in the session
         self.set_session_attribute(request, "login", True)
@@ -302,7 +266,7 @@ class MainController(base.BaseController):
         openid_sreg_data = openid_data.get("sreg", {})
 
         # retrieves the openid remote client from the session
-        openid_remote_client = self.get_session_attribute(request, "openid.remote_client")
+        openid_remote_client = request.get_s("openid.remote_client")
 
         # retrieves the openid attributes
         openid_claimed_id = openid_data["claimed_id"]
@@ -421,7 +385,7 @@ class MainController(base.BaseController):
         template_file = self.retrieve_template_file("main/rss.xml.tpl")
         template_file.assign("base_url", base_url)
         template_file.assign("posts", posts)
-        self.process_set_contents(request, template_file, content_type = RSS_CONTENT_TYPE)
+        self.process_set_contents(request, template_file, content_type = "application/rss+xml")
 
     @mvc_utils.serialize
     def captcha(self, request):
@@ -442,7 +406,7 @@ class MainController(base.BaseController):
         if self._validate_captcha(request): return
 
         # retrieves the captcha session value
-        captcha_session = self.get_session_attribute(request, "captcha")
+        captcha_session = request.get_s("captcha")
 
         # in case there is no captcha defined in session one must
         # be generated for the current request
@@ -481,11 +445,11 @@ class MainController(base.BaseController):
         }
 
         # retrieves all users that match the authentication parameters
-        user_entity = models.User.find_one(filter)
+        user = models.User.find_one(filter)
 
         # returns in case the user was not found as it's not possible
         # to login a user that it's not valid
-        if not user_entity: return
+        if not user: return
 
         # sets the various login related attributes in the current session
         # this is considered the proper login stage
@@ -577,10 +541,10 @@ class MainController(base.BaseController):
 
     def _get_session_user(self, request):
         # retrieves the session attributes related with authentication
-        login_username = self.get_session_attribute(request, "login.username")
-        openid_claimed_id = self.get_session_attribute(request, "openid.claimed_id")
-        facebook_username = self.get_session_attribute(request, "facebook.username")
-        twitter_username = self.get_session_attribute(request, "twitter.username")
+        login_username = request.get_s("login.username")
+        openid_claimed_id = request.get_s("openid.claimed_id")
+        facebook_username = request.get_s("facebook.username")
+        twitter_username = request.get_s("twitter.username")
 
         # initializes the login filter
         login_filter = {}
@@ -603,10 +567,10 @@ class MainController(base.BaseController):
             raise hive_blog.InvalidAuthenticationInformation("missing authentication name")
 
         # retrieves the user that matches the authentication parameters
-        user_entity = models.User.find_one(login_filter)
+        user = models.User.find_one(login_filter)
 
         # returns the retrieved user
-        return user_entity
+        return user
 
     def _generate_captcha(self, request):
         # retrieves the captcha plugin
@@ -622,11 +586,8 @@ class MainController(base.BaseController):
         return string_value
 
     def _validate_captcha(self, request, regenerate_on_valid = False):
-        # retrieves the form data by processing the form (in flat format)
-        form_data_map = self.process_form_data_flat(request)
-
         # tries to retrieve the captcha validation value
-        captcha_validation = form_data_map.get("captcha", None)
+        captcha_validation = request.field("captcha", None)
 
         # in case no captcha is meant to be validated, must generate
         # a new one (as this is the initial request)
@@ -640,7 +601,7 @@ class MainController(base.BaseController):
         captcha_validation = captcha_validation.lower()
 
         # retrieves the captcha session value
-        captcha_session = self.get_session_attribute(request, "captcha")
+        captcha_session = request.get_s("captcha")
 
         # in case no valid captcha session is set
         if not captcha_session:
