@@ -36,25 +36,20 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import types
 
-import colony.libs.import_util
+import colony
 
 import hive_blog
 
-models = colony.libs.import_util.__import__("models")
-mvc_utils = colony.libs.import_util.__import__("mvc_utils")
-controllers = colony.libs.import_util.__import__("controllers")
+import base
 
-class PostController(controllers.Controller):
-    """
-    The hive blog post controller.
-    """
+models = colony.__import__("models")
+mvc_utils = colony.__import__("mvc_utils")
 
-    def validate(self, rest_request, parameters, validation_parameters):
-        return self.system.require_permissions(rest_request, validation_parameters)
+class PostController(base.BaseController):
 
     @mvc_utils.serialize
     @mvc_utils.validated("post.create")
-    def handle_new(self, rest_request):
+    def handle_new(self, request):
         # processes the contents of the template file assigning the
         # appropriate values to it
         template_file = self.retrieve_template_file(
@@ -62,15 +57,15 @@ class PostController(controllers.Controller):
             partial_page = "post/post_new_contents.html.tpl"
         )
         template_file.assign("post", None)
-        self.process_set_contents(rest_request, template_file)
+        self.process_set_contents(request, template_file)
 
     @mvc_utils.serialize
-    def handle_create(self, rest_request):
+    def handle_create(self, request):
         # retrieves the required controllers
         main_controller = self.system.main_controller
 
         # retrieves the post from the rest request
-        post = self.get_field(rest_request, "post", {})
+        post = self.get_field(request, "post", {})
 
         # retrieves the preview flag from the post parameters
         post_parameters = self.get_entity_map_parameters(post)
@@ -78,7 +73,7 @@ class PostController(controllers.Controller):
 
         # in case this is not a preview validates the captcha,
         # regenerating the captcha if invalid
-        if not preview and not main_controller._validate_captcha(rest_request, False):
+        if not preview and not main_controller._validate_captcha(request, False):
             # raises the invalid captcha exception
             raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
@@ -87,7 +82,7 @@ class PostController(controllers.Controller):
         post_entity = models.Post.new(post)
 
         # sets the post author as the session user
-        session_user_entity = self.get_session_attribute(rest_request, "user.information")
+        session_user_entity = self.get_session_attribute(request, "user.information")
         post_entity.author = session_user_entity
 
         # stores the post and its relations in the data source
@@ -102,15 +97,15 @@ class PostController(controllers.Controller):
         )
         template_file.assign("preview", True)
         template_file.assign("post", post_entity)
-        self.process_set_contents(rest_request, template_file)
+        self.process_set_contents(request, template_file)
 
     @mvc_utils.serialize
-    def handle_show(self, rest_request):
+    def handle_show(self, request):
         # creates the return address from the request path
-        return_address = self._get_path(rest_request)
+        return_address = self._get_path(request)
 
         # retrieves the hosts posts path
-        host_posts_path = self._get_host_path(rest_request, "/posts/")
+        host_posts_path = self._get_host_path(request, "/posts/")
 
         # retrieves the posts entity specified in the pattern
         post_object_id = self.get_pattern(parameters, "post_object_id", types.IntType)
@@ -125,4 +120,4 @@ class PostController(controllers.Controller):
         template_file.assign("return_address", return_address)
         template_file.assign("host_posts_path", host_posts_path)
         template_file.assign("post", post_entity)
-        self.process_set_contents(rest_request, template_file, assign_session = True)
+        self.process_set_contents(request, template_file, assign_session = True)

@@ -37,7 +37,7 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 import math
 import datetime
 
-import colony.libs.import_util
+import colony
 
 import root_entity
 
@@ -63,8 +63,8 @@ MONTH_NUMBER_MAP = {
 }
 """ The map relating the month number with the "mini" month name """
 
-models = colony.libs.import_util.__import__("models")
-mvc_utils = colony.libs.import_util.__import__("mvc_utils")
+models = colony.__import__("models")
+mvc_utils = colony.__import__("mvc_utils")
 
 class Post(root_entity.RootEntity):
     """

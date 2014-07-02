@@ -36,12 +36,12 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import hashlib
 
-import colony.libs.import_util
+import colony
 
 import root_entity
 
-models = colony.libs.import_util.__import__("models")
-mvc_utils = colony.libs.import_util.__import__("mvc_utils")
+models = colony.__import__("models")
+mvc_utils = colony.__import__("mvc_utils")
 
 class User(root_entity.RootEntity):
     """

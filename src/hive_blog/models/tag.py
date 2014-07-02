@@ -34,12 +34,12 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import colony.libs.import_util
+import colony
 
 import root_entity
 
-models = colony.libs.import_util.__import__("models")
-mvc_utils = colony.libs.import_util.__import__("mvc_utils")
+models = colony.__import__("models")
+mvc_utils = colony.__import__("mvc_utils")
 
 class Tag(root_entity.RootEntity):
     """

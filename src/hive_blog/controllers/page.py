@@ -34,36 +34,29 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import types
+import colony
 
-import colony.libs.import_util
+import base
 
-models = colony.libs.import_util.__import__("models")
-mvc_utils = colony.libs.import_util.__import__("mvc_utils")
-controllers = colony.libs.import_util.__import__("controllers")
+models = colony.__import__("models")
+mvc_utils = colony.__import__("mvc_utils")
 
-class PageController(controllers.Controller):
-    """
-    The hive blog page controller.
-    """
+class PageController(base.BaseController):
 
     @mvc_utils.serialize
-    def handle_show(self, rest_request):
-        # retrieves the page index pattern
-        page_index = self.get_pattern(parameters, "page_index", types.IntType) or 1
-
+    def show(self, request, index = 1):
         # retrieves the complete set of posts for the page
         # being requested accessing the data source, then
         # retrieves the number of pages for the blog
-        posts = models.Post.find_for_page(page_index)
+        posts = models.Post.find_for_page(index)
         number_pages = models.Post.get_number_pages()
 
         # retrieves the hosts posts path
-        host_posts_path = self._get_host_path(rest_request, "/posts/")
+        host_posts_path = self._get_host_path(request, "/posts/")
 
         # determines the previous and next page indexes
-        previous_page = page_index > 1 and page_index - 1 or None
-        next_page = page_index < number_pages and page_index + 1 or None
+        previous_page = index > 1 and index - 1 or None
+        next_page = index < number_pages and index + 1 or None
 
         # processes the contents of the template file assigning the
         # appropriate values to it
@@ -75,4 +68,4 @@ class PageController(controllers.Controller):
         template_file.assign("host_posts_path", host_posts_path)
         template_file.assign("previous_page", previous_page)
         template_file.assign("next_page", next_page)
-        self.process_set_contents(rest_request, template_file)
+        self.process_set_contents(request, template_file)
