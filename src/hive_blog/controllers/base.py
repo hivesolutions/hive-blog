@@ -52,3 +52,6 @@ class BaseController(controllers.Controller):
             *args,
             **kwargs
         )
+
+    def _template(self, assign_session = True, *args, **kwargs):
+        return self.template(assign_session = assign_session, *args, **kwargs)
