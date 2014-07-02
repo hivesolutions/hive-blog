@@ -23,7 +23,7 @@
         </p>
         <p>
             <span>Social</span> .
-            ${include file="../social/social_show_base_contents.html.tpl" /}
+            ${include file="../social/show.html.tpl" /}
         </p>
     </div>
 </div>

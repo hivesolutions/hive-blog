@@ -9,7 +9,7 @@
     <generator>http://hive.pt/colony</generator>
     <language>en</language>
         ${foreach item=post from=posts}
-            ${include file="rss_post_base.html.tpl" /}
+            ${include file="rss_post.xml.tpl" /}
         ${/foreach}
     </channel>
 </rss>

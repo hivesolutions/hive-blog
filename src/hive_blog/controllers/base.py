@@ -45,3 +45,10 @@ class BaseController(controllers.Controller):
 
     def validate(self, request, parameters, validation_parameters):
         return self.system.require_permissions(request, validation_parameters)
+
+    def template_file(self, template = "general.html.tpl", *args, **kwargs):
+        return self.retrieve_template_file(
+            file_path = template,
+            *args,
+            **kwargs
+        )

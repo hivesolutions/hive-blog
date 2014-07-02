@@ -137,7 +137,6 @@ class HiveBlog(colony.System):
         to the mvc service.
         """
 
-
         # retrieves the plugin manager and uses it to retrieve
         # the colony site plugin path
         plugin_manager = self.plugin.manager
