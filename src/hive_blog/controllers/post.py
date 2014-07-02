@@ -49,7 +49,7 @@ class PostController(base.BaseController):
 
     @mvc_utils.serialize
     @mvc_utils.validated("post.create")
-    def handle_new(self, request):
+    def new(self, request):
         # processes the contents of the template file assigning the
         # appropriate values to it
         template_file = self.retrieve_template_file(
@@ -60,7 +60,7 @@ class PostController(base.BaseController):
         self.process_set_contents(request, template_file)
 
     @mvc_utils.serialize
-    def handle_create(self, request):
+    def create(self, request):
         # retrieves the required controllers
         main_controller = self.system.main_controller
 
@@ -100,7 +100,7 @@ class PostController(base.BaseController):
         self.process_set_contents(request, template_file)
 
     @mvc_utils.serialize
-    def handle_show(self, request):
+    def show(self, request, id):
         # creates the return address from the request path
         return_address = self._get_path(request)
 

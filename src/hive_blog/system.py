@@ -103,25 +103,25 @@ class HiveBlog(colony.base.system.System):
         """
 
         return (
-            (r"hive_blog/?$", self.main_controller.handle_hive_index, "get"),
-            (r"hive_blog/index$", self.main_controller.handle_hive_index, "get"),
-            (r"hive_blog/pages/(?P<page_index>[0-9]+)$", self.page_controller.handle_show, "get"),
-            (r"hive_blog/posts/(?P<post_object_id>[0-9]+)$", self.post_controller.handle_show, "get"),
-            (r"hive_blog/posts/new$", self.post_controller.handle_new, "get"),
-            (r"hive_blog/posts$", self.post_controller.handle_create, "post"),
-            (r"hive_blog/comments$", self.comment_controller.handle_create, "post"),
-            (r"hive_blog/signup$", self.main_controller.handle_hive_signup, "get"),
-            (r"hive_blog/signup$", self.main_controller.handle_hive_signup_create, "post"),
-            (r"hive_blog/signin$", self.main_controller.handle_hive_signin, "get"),
-            (r"hive_blog/signin$", self.main_controller.handle_hive_signin_process, "post"),
-            (r"hive_blog/openid$", self.main_controller.handle_hive_openid, "get"),
-            (r"hive_blog/twitter$", self.main_controller.handle_hive_twitter),
-            (r"hive_blog/facebook$", self.main_controller.handle_hive_facebook),
-            (r"hive_blog/about$", self.main_controller.handle_hive_about, "get"),
-            (r"hive_blog/login$", self.main_controller.handle_hive_login, "get"),
-            (r"hive_blog/logout$", self.main_controller.handle_hive_logout, "get"),
-            (r"hive_blog/rss$", self.main_controller.handle_hive_rss, "get"),
-            (r"hive_blog/captcha$", self.main_controller.handle_hive_captcha, ("get", "post")),
+            (r"hive_blog/?", self.main_controller.index, "get"),
+            (r"hive_blog/index", self.main_controller.index, "get"),
+            (r"hive_blog/pages/<int:index>", self.page_controller.handle_show, "get"),
+            (r"hive_blog/posts/<int:id>", self.post_controller.handle_show, "get"),
+            (r"hive_blog/posts/new", self.post_controller.handle_new, "get"),
+            (r"hive_blog/posts", self.post_controller.handle_create, "post"),
+            (r"hive_blog/comments", self.comment_controller.handle_create, "post"),
+            (r"hive_blog/signup", self.main_controller.signup, "get"),
+            (r"hive_blog/signup", self.main_controller.signup_create, "post"),
+            (r"hive_blog/signin", self.main_controller.signin, "get"),
+            (r"hive_blog/signin", self.main_controller.signin_process, "post"),
+            (r"hive_blog/openid", self.main_controller.openid, "get"),
+            (r"hive_blog/twitter", self.main_controller.twitter),
+            (r"hive_blog/facebook", self.main_controller.facebook),
+            (r"hive_blog/about", self.main_controller.about, "get"),
+            (r"hive_blog/login", self.main_controller.login, "get"),
+            (r"hive_blog/logout", self.main_controller.logout, "get"),
+            (r"hive_blog/rss", self.main_controller.rss, "get"),
+            (r"hive_blog/captcha", self.main_controller.captcha, ("get", "post")),
         )
 
     def get_resource_patterns(self):
@@ -135,14 +135,14 @@ class HiveBlog(colony.base.system.System):
         to the mvc service.
         """
 
-        # retrieves the plugin manager
-        plugin_manager = self.plugin.manager
 
-        # retrieves the plugin path
+        # retrieves the plugin manager and uses it to retrieve
+        # the colony site plugin path
+        plugin_manager = self.plugin.manager
         plugin_path = plugin_manager.get_plugin_path_by_id(self.plugin.id)
 
         return (
-            (r"hive_blog/resources/.+$", (plugin_path + "/hive_blog/resources/extras", "hive_blog/resources")),
+            (r"nanger/resources/.+", (plugin_path + "/hive_blog/resources/extras", "nanger/resources")),
         )
 
     def get_entity_manager_arguments(self):
@@ -221,8 +221,7 @@ class HiveBlog(colony.base.system.System):
 
     def __cast_list(self, value):
         """
-        Casts the given value to a list,
-        converting it if required.
+        Casts the given value to a list, converting it if required.
 
         @type value: Object
         @param value: The value to be "casted".
@@ -234,8 +233,7 @@ class HiveBlog(colony.base.system.System):
         # the proper values (fallback)
         if value == None: return value
 
-        # creates the list value from the value
+        # creates the list value from the value and returns
+        # the value to the caller method
         list_value = type(value) == types.ListType and value or (value,)
-
-        # returns the list value
         return list_value
