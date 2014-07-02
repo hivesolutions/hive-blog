@@ -26,5 +26,5 @@
 </div>
 ${if item=post value=None operator=neq}
     <div class="separator"></div>
-    ${include file="post_show_base_contents.html.tpl" /}
+    ${include file="show_base.html.tpl" /}
 ${/if}

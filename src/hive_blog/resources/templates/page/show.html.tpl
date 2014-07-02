@@ -1,5 +1,5 @@
 ${foreach item=post from=posts}
-    ${include file="../post/post_show_base_contents.html.tpl" /}
+    ${include file="../post/show_base.html.tpl" /}
 ${/foreach}
 ${if item=previous_page value=None operator=neq}
     <a href="${out value=base_path /}pages/${out value=previous_page xml_escape=True /}"><div id="previous-button" class="control-button">Newer Posts</div></a>
