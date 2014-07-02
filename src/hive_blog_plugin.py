@@ -34,10 +34,9 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import colony.base.system
-import colony.base.decorators
+import colony
 
-class HiveBlogPlugin(colony.base.system.Plugin):
+class HiveBlogPlugin(colony.Plugin):
     """
     The main class for the Hive Blog Main plugin.
     """
@@ -48,56 +47,34 @@ class HiveBlogPlugin(colony.base.system.Plugin):
     version = "1.0.0"
     author = "Hive Solutions Lda. <development@hive.pt>"
     platforms = [
-        colony.base.system.CPYTHON_ENVIRONMENT
+        colony.CPYTHON_ENVIRONMENT
     ]
     capabilities = [
         "mvc_service"
     ]
     dependencies = [
-        colony.base.system.PluginDependency("pt.hive.colony.plugins.mvc.utils"),
-        colony.base.system.PluginDependency("pt.hive.colony.plugins.security.captcha"),
-        colony.base.system.PluginDependency("pt.hive.colony.plugins.api.openid"),
-        colony.base.system.PluginDependency("pt.hive.colony.plugins.api.twitter"),
-        colony.base.system.PluginDependency("pt.hive.colony.plugins.api.facebook")
+        colony.PluginDependency("pt.hive.colony.plugins.mvc.utils"),
+        colony.PluginDependency("pt.hive.colony.plugins.security.captcha"),
+        colony.PluginDependency("pt.hive.colony.plugins.api.openid"),
+        colony.PluginDependency("pt.hive.colony.plugins.api.twitter"),
+        colony.PluginDependency("pt.hive.colony.plugins.api.facebook")
     ]
     main_modules = [
         "hive_blog"
     ]
 
-    hive_blog = None
-    """ The hive blog """
-
-    mvc_utils_plugin = None
-    """ The mvc utils plugin """
-
-    security_captcha_plugin = None
-    """ The security captcha plugin """
-
-    api_openid_plugin = None
-    """ The api openid plugin """
-
-    api_twitter_plugin = None
-    """ The api twitter plugin """
-
-    api_facebook_plugin = None
-    """ The api facebook plugin """
-
     def load_plugin(self):
-        colony.base.system.Plugin.load_plugin(self)
-        import hive_blog.system
-        self.hive_blog = hive_blog.system.HiveBlog(self)
+        colony.Plugin.load_plugin(self)
+        import hive_blog
+        self.system = hive_blog.HiveBlog(self)
 
     def end_load_plugin(self):
-        colony.base.system.Plugin.end_load_plugin(self)
-        self.hive_blog.load_components()
+        colony.Plugin.end_load_plugin(self)
+        self.system.load_components()
 
     def unload_plugin(self):
-        colony.base.system.Plugin.unload_plugin(self)
-        self.hive_blog.unload_components()
-
-    @colony.base.decorators.inject_dependencies
-    def dependency_injected(self, plugin):
-        colony.base.system.Plugin.dependency_injected(self, plugin)
+        colony.Plugin.unload_plugin(self)
+        self.system.unload_components()
 
     def get_patterns(self):
         """
@@ -110,21 +87,7 @@ class HiveBlogPlugin(colony.base.system.Plugin):
         to the mvc service.
         """
 
-        return self.hive_blog.get_patterns()
-
-    def get_communication_patterns(self):
-        """
-        Retrieves the tuple of regular expressions to be used as communication patterns,
-        to the mvc service. The tuple should relate the route with a tuple
-        containing the data handler, the connection changed handler and the name
-        of the connection.
-
-        @rtype: Tuple
-        @return: The tuple of regular expressions to be used as communication patterns,
-        to the mvc service.
-        """
-
-        return self.hive_blog.get_communication_patterns()
+        return self.system.get_patterns()
 
     def get_resource_patterns(self):
         """
@@ -137,24 +100,4 @@ class HiveBlogPlugin(colony.base.system.Plugin):
         to the mvc service.
         """
 
-        return self.hive_blog.get_resource_patterns()
-
-    @colony.base.decorators.plugin_inject("pt.hive.colony.plugins.mvc.utils")
-    def set_mvc_utils_plugin(self, mvc_utils_plugin):
-        self.mvc_utils_plugin = mvc_utils_plugin
-
-    @colony.base.decorators.plugin_inject("pt.hive.colony.plugins.security.captcha")
-    def set_security_captcha_plugin(self, security_captcha_plugin):
-        self.security_captcha_plugin = security_captcha_plugin
-
-    @colony.base.decorators.plugin_inject("pt.hive.colony.plugins.api.openid")
-    def set_api_openid_plugin(self, api_openid_plugin):
-        self.api_openid_plugin = api_openid_plugin
-
-    @colony.base.decorators.plugin_inject("pt.hive.colony.plugins.api.twitter")
-    def set_api_twitter_plugin(self, api_twitter_plugin):
-        self.api_twitter_plugin = api_twitter_plugin
-
-    @colony.base.decorators.plugin_inject("pt.hive.colony.plugins.api.facebook")
-    def set_api_facebook_plugin(self, api_facebook_plugin):
-        self.api_facebook_plugin = api_facebook_plugin
+        return self.system.get_resource_patterns()

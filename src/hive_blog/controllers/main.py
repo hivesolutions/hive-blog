@@ -36,7 +36,7 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import colony.libs.import_util
 
-import hive_blog.exceptions
+import hive_blog
 
 JPEG_CONTENT_TYPE = "image/jpeg"
 """ The jpeg content type """
@@ -149,7 +149,7 @@ class MainController(controllers.Controller):
         # in case the captcha does not validate
         if not self._validate_captcha(rest_request, False):
             # raises the invalid captcha exception
-            raise hive_blog.exceptions.InvalidCaptcha("invalid captcha value sent")
+            raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
         # retrieves the session information attributes
         openid_claimed_id = self.get_session_attribute(rest_request, "openid.claimed_id")
@@ -495,7 +495,7 @@ class MainController(controllers.Controller):
         # validates the captcha, regenerating the captcha
         if not self._validate_captcha(rest_request, True):
             # raises the invalid captcha exception
-            raise hive_blog.exceptions.InvalidCaptcha("invalid captcha value sent")
+            raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
         # encrypts the login password
         encrypted_login_password = models.RootEntity.encrypt(login_password)
@@ -633,7 +633,7 @@ class MainController(controllers.Controller):
         # in case no authentication name (method) is defined
         else:
             # raises the invalid authentication information
-            raise hive_blog.exceptions.InvalidAuthenticationInformation("missing authentication name")
+            raise hive_blog.InvalidAuthenticationInformation("missing authentication name")
 
         # retrieves the user that matches the authentication parameters
         user_entity = models.User.find_one(login_filter)
@@ -678,12 +678,12 @@ class MainController(controllers.Controller):
         # in case no valid captcha session is set
         if not captcha_session:
             # raises the invalid captcha exception
-            raise hive_blog.exceptions.InvalidCaptcha("invalid captcha session value")
+            raise hive_blog.InvalidCaptcha("invalid captcha session value")
 
         # in case both captchas match don't match (invalid captcha value)
         if not captcha_validation == captcha_session:
             # raises the invalid captcha exception
-            raise hive_blog.exceptions.InvalidCaptcha("non matching captcha value: " + str(captcha_validation))
+            raise hive_blog.InvalidCaptcha("non matching captcha value: " + str(captcha_validation))
 
         # in case the regenerate on valid flag is set, must
         # generate a new captcha for the session

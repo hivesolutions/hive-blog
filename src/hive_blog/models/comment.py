@@ -36,7 +36,7 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import datetime
 
-import colony.libs.import_util
+import colony
 
 import root_entity
 
@@ -56,8 +56,8 @@ MONTH_NUMBER_MAP = {
 }
 """ The map relating the month number with the "mini" month name """
 
-models = colony.libs.import_util.__import__("models")
-mvc_utils = colony.libs.import_util.__import__("mvc_utils")
+models = colony.__import__("models")
+mvc_utils = colony.__import__("mvc_utils")
 
 class Comment(root_entity.RootEntity):
     """
@@ -176,10 +176,9 @@ class Comment(root_entity.RootEntity):
         @return: The day when the comment was made.
         """
 
-        # in case there is no date set
-        if not self.date:
-            # returns invalid
-            return None
+        # in case there is no date set, must return
+        # an invalid value indicating the problem
+        if not self.date: return None
 
         # returns the date day
         return self.date.day
@@ -194,10 +193,9 @@ class Comment(root_entity.RootEntity):
         @return: The month when the comment was made.
         """
 
-        # in case there is no date set
-        if not self.date:
-            # returns invalid
-            return None
+        # in case there is no date set, must return
+        # an invalid value indicating the problem
+        if not self.date: return None
 
         # returns the data month abbreviated
         return MONTH_NUMBER_MAP[self.date.month]

@@ -34,13 +34,13 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import colony.libs.import_util
+import colony
 
-import hive_blog.exceptions
+import hive_blog
 
-models = colony.libs.import_util.__import__("models")
-mvc_utils = colony.libs.import_util.__import__("mvc_utils")
-controllers = colony.libs.import_util.__import__("controllers")
+models = colony.__import__("models")
+mvc_utils = colony.__import__("mvc_utils")
+controllers = colony.__import__("controllers")
 
 class CommentController(controllers.Controller):
     """
@@ -55,7 +55,7 @@ class CommentController(controllers.Controller):
         # validates the captcha, regenerating the captcha
         if not main_controller._validate_captcha(rest_request, False):
             # raises the invalid captcha exception
-            raise hive_blog.exceptions.InvalidCaptcha("invalid captcha value sent")
+            raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
         # retrieves the comment from the rest request
         # and applies it to the comment entity

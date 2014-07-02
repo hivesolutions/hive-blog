@@ -38,7 +38,7 @@ import types
 
 import colony.libs.import_util
 
-import hive_blog.exceptions
+import hive_blog
 
 models = colony.libs.import_util.__import__("models")
 mvc_utils = colony.libs.import_util.__import__("mvc_utils")
@@ -80,7 +80,7 @@ class PostController(controllers.Controller):
         # regenerating the captcha if invalid
         if not preview and not main_controller._validate_captcha(rest_request, False):
             # raises the invalid captcha exception
-            raise hive_blog.exceptions.InvalidCaptcha("invalid captcha value sent")
+            raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
         # creates a post entity with the post
         # retrieved from the rest request

@@ -34,9 +34,9 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import colony.base.exceptions
+import colony
 
-class HiveBlogException(colony.base.exceptions.ColonyException):
+class HiveBlogException(colony.ColonyException):
     """
     The hive site exception class.
     """

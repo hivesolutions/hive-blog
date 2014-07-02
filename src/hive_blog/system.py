@@ -52,9 +52,6 @@ ENTITY_MANAGER_PARAMETERS = {
 }
 """ The entity manager parameters """
 
-AJAX_ENCODER_NAME = "ajx"
-""" The ajax encoder name """
-
 class HiveBlog(colony.base.system.System):
     """
     The hive blog class.
@@ -106,40 +103,26 @@ class HiveBlog(colony.base.system.System):
         """
 
         return (
-            (r"^hive_blog/?$", self.main_controller.handle_hive_index, "get"),
-            (r"^hive_blog/index$", self.main_controller.handle_hive_index, "get"),
-            (r"^hive_blog/pages/(?P<page_index>[0-9]+)$", self.page_controller.handle_show, "get"),
-            (r"^hive_blog/posts/(?P<post_object_id>[0-9]+)$", self.post_controller.handle_show, "get"),
-            (r"^hive_blog/posts/new$", self.post_controller.handle_new, "get"),
-            (r"^hive_blog/posts$", self.post_controller.handle_create, "post"),
-            (r"^hive_blog/comments$", self.comment_controller.handle_create, "post"),
-            (r"^hive_blog/signup$", self.main_controller.handle_hive_signup, "get"),
-            (r"^hive_blog/signup$", self.main_controller.handle_hive_signup_create, "post"),
-            (r"^hive_blog/signin$", self.main_controller.handle_hive_signin, "get"),
-            (r"^hive_blog/signin$", self.main_controller.handle_hive_signin_process, "post"),
-            (r"^hive_blog/openid$", self.main_controller.handle_hive_openid, "get"),
-            (r"^hive_blog/twitter$", self.main_controller.handle_hive_twitter),
-            (r"^hive_blog/facebook$", self.main_controller.handle_hive_facebook),
-            (r"^hive_blog/about$", self.main_controller.handle_hive_about, "get"),
-            (r"^hive_blog/login$", self.main_controller.handle_hive_login, "get"),
-            (r"^hive_blog/logout$", self.main_controller.handle_hive_logout, "get"),
-            (r"^hive_blog/rss$", self.main_controller.handle_hive_rss, "get"),
-            (r"^hive_blog/captcha$", self.main_controller.handle_hive_captcha, ("get", "post")),
+            (r"hive_blog/?$", self.main_controller.handle_hive_index, "get"),
+            (r"hive_blog/index$", self.main_controller.handle_hive_index, "get"),
+            (r"hive_blog/pages/(?P<page_index>[0-9]+)$", self.page_controller.handle_show, "get"),
+            (r"hive_blog/posts/(?P<post_object_id>[0-9]+)$", self.post_controller.handle_show, "get"),
+            (r"hive_blog/posts/new$", self.post_controller.handle_new, "get"),
+            (r"hive_blog/posts$", self.post_controller.handle_create, "post"),
+            (r"hive_blog/comments$", self.comment_controller.handle_create, "post"),
+            (r"hive_blog/signup$", self.main_controller.handle_hive_signup, "get"),
+            (r"hive_blog/signup$", self.main_controller.handle_hive_signup_create, "post"),
+            (r"hive_blog/signin$", self.main_controller.handle_hive_signin, "get"),
+            (r"hive_blog/signin$", self.main_controller.handle_hive_signin_process, "post"),
+            (r"hive_blog/openid$", self.main_controller.handle_hive_openid, "get"),
+            (r"hive_blog/twitter$", self.main_controller.handle_hive_twitter),
+            (r"hive_blog/facebook$", self.main_controller.handle_hive_facebook),
+            (r"hive_blog/about$", self.main_controller.handle_hive_about, "get"),
+            (r"hive_blog/login$", self.main_controller.handle_hive_login, "get"),
+            (r"hive_blog/logout$", self.main_controller.handle_hive_logout, "get"),
+            (r"hive_blog/rss$", self.main_controller.handle_hive_rss, "get"),
+            (r"hive_blog/captcha$", self.main_controller.handle_hive_captcha, ("get", "post")),
         )
-
-    def get_communication_patterns(self):
-        """
-        Retrieves the tuple of regular expressions to be used as communication patterns,
-        to the mvc service. The tuple should relate the route with a tuple
-        containing the data handler, the connection changed handler and the name
-        of the connection.
-
-        @rtype: Tuple
-        @return: The tuple of regular expressions to be used as communication patterns,
-        to the mvc service.
-        """
-
-        return ()
 
     def get_resource_patterns(self):
         """
@@ -159,7 +142,7 @@ class HiveBlog(colony.base.system.System):
         plugin_path = plugin_manager.get_plugin_path_by_id(self.plugin.id)
 
         return (
-            (r"^hive_blog/resources/.+$", (plugin_path + "/hive_blog/resources/extras", "hive_blog/resources")),
+            (r"hive_blog/resources/.+$", (plugin_path + "/hive_blog/resources/extras", "hive_blog/resources")),
         )
 
     def get_entity_manager_arguments(self):
@@ -181,21 +164,21 @@ class HiveBlog(colony.base.system.System):
         # returns the entity manager arguments
         return entity_manager_arguments
 
-    def require_permissions(self, rest_request, permissions_list = []):
+    def require_permissions(self, request, permissions_list = []):
         """
         Requires the permissions in the given permissions list to be set.
 
-        @type rest_request: RestRequest
-        @param rest_request: The rest request to be updated.
+        @type request: Request
+        @param request: The request to be updated.
         @type permissions_list: List
         @param permissions_list: The list of permission to be validated.
         @rtype: List
         @return: The list of reasons for permission validation failure.
         """
 
-        # retrieves the controller object currently set in the rest
+        # retrieves the controller object currently set in the
         # request and that may be used for controller level operations
-        controller = rest_request.controller
+        controller = request.controller
 
         # casts the permissions list
         permissions_list = self.__cast_list(permissions_list)
@@ -206,7 +189,7 @@ class HiveBlog(colony.base.system.System):
 
         # retrieves the login session attribute in order to check
         # if the user is currently logged in (as required)
-        login = controller.get_session_attribute(rest_request, "login")
+        login = controller.get_session_attribute(request, "login")
 
         # in case the login is not set must add the login string
         # to the list of reasons (for failure), then returns the
@@ -214,34 +197,27 @@ class HiveBlog(colony.base.system.System):
         if not login: reasons.append("login")
         return reasons
 
-    def escape_permissions_failed(self, rest_request, reasons_list = []):
+    def escape_permissions_failed(self, request, reasons_list = []):
         """
         Handler for permission validation failures.
         Displays a message or redirects depending on the encoder name.
 
-        @type rest_request: RestRequest
-        @param rest_request: The rest request object.
+        @type request: Request
+        @param request: The request object.
         @type reasons_list: List
         @param reasons_list: A list with the reasons for validation failure.
         """
 
-        # retrieves the controller object currently set in the rest
+        # retrieves the controller object currently set in the
         # request and that may be used for controller level operations
-        controller = rest_request.controller
+        controller = request.controller
 
-        # creates the return address from the request path
-        return_address = controller._get_path(rest_request)
-
-        # sets the return address to the new post
-        controller.set_session_attribute(rest_request, "return_address", return_address)
-
-        # in case the encoder name is ajax
-        if rest_request.encoder_name == AJAX_ENCODER_NAME:
-            # sets the contents
-            controller.set_contents(rest_request, "not enough permissions - access denied")
-        else:
-            # redirects to the signin page
-            controller.redirect_base_path(rest_request, "signin")
+        # creates the return address from the request path and sets it
+        # as a session attribute in the controller, then redirect the
+        # user to the signin page so that it can escalate permissions
+        return_address = controller._get_path(request)
+        controller.set_session_attribute(request, "return_address", return_address)
+        controller.redirect_base_path(request, "signin")
 
     def __cast_list(self, value):
         """
