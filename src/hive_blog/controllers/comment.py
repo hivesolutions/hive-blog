@@ -58,12 +58,12 @@ class CommentController(base.BaseController):
         # retrieves the comment from the rest request
         # and applies it to the comment entity
         comment = request.field("comment", {})
-        comment = models.Comment.new(comment)
+        comment = models.Comment.new(map = comment)
 
         # sets the comment author as the session user in case
         # one is defined or the user specified in the comment
-        session_user_entity = request.get_s("user.information")
-        comment.author = comment.author or session_user_entity
+        session_user = request.get_s("user.information")
+        comment.author = comment.author or session_user
 
         # stores the comment and its relations in the data source
         # and then redirects the user to the post show path

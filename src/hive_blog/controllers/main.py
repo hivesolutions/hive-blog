@@ -104,7 +104,7 @@ class MainController(base.BaseController):
 
         # retrieves the user from the request
         user = request.field("user", {})
-        user = models.User.new(user)
+        user = models.User.new(map = user)
 
         # retrieves the authentication information in the user entity
         user.openid_claimed_id = openid_claimed_id
