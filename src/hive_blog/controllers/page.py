@@ -62,7 +62,7 @@ class PageController(base.BaseController):
         # show the page as it's supposed to be shown
         self._template(
             request = request,
-            partial_page = "main/show.html.tpl",
+            partial_page = "page/show.html.tpl",
             posts = posts,
             host_posts_path = host_posts_path,
             previous_page = previous_page,

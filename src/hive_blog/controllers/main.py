@@ -84,7 +84,7 @@ class MainController(base.BaseController):
     def about(self, request):
         self._template(
             request = request,
-            partial_page = "main/about_contents.html.tpl"
+            partial_page = "main/about.html.tpl"
         )
 
     @mvc_utils.serialize
