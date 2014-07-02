@@ -96,11 +96,11 @@ class Comment(root_entity.RootEntity):
     in_reply_to = {
         "data_type" : "relation",
         "fetch_type" : "lazy",
-        "mandatory" : True,
         "secure" : True,
         "persist_type" : mvc_utils.PERSIST_ASSOCIATE
     }
-    """ The comment for which this comment is a reply """
+    """ The comment for which this comment is a reply
+    this is not required for the top level comments """
 
     replies = {
         "data_type" : "relation",
