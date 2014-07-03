@@ -350,9 +350,6 @@ textarea.active {
     float: right;
 }
 
-#comments-area {
-}
-
 #comments-form-area {
     margin-bottom: 60px;
     text-align: center;
@@ -617,9 +614,6 @@ textarea.active {
 
 #logged a {
     color: #6482b1;
-}
-
-#sign-up-form-area {
 }
 
 #sign-up-form-area .title {
