@@ -55,7 +55,7 @@ class CommentController(base.BaseController):
         if not main_controller._validate_captcha(request, False):
             raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
-        # retrieves the comment from the rest request
+        # retrieves the comment from the request
         # and applies it to the comment entity
         comment = request.field("comment", {})
         comment = models.Comment.new(map = comment)

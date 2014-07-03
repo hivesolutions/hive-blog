@@ -67,7 +67,7 @@ class PostController(base.BaseController):
             raise hive_blog.InvalidCaptcha("invalid captcha value sent")
 
         # creates a post entity with the post
-        # retrieved from the rest request
+        # retrieved from the request
         post = request.field("post", {})
         post = models.Post.new(map = post)
 
