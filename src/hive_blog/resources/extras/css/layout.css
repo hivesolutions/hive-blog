@@ -608,8 +608,18 @@ textarea.active {
     width: 160px;
 }
 
-#sign-up-form-area {
+#logged {
+    clear: both;
+    color: #6482b1;
+    font-size: 9pt;
+    text-align: right;
+}
 
+#logged a {
+    color: #6482b1;
+}
+
+#sign-up-form-area {
 }
 
 #sign-up-form-area .title {

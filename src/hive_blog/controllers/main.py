@@ -187,11 +187,11 @@ class MainController(base.BaseController):
         request.unset_s("facebook.username")
         request.unset_s("twitter.username")
 
-        # sets the user in the session
-        request.set_s("user.information", user)
-
-        # sets the login attribute in the session
+        # sets the complete set of attributes that are going to be used
+        # in the identification of the login information
         request.set_s("login", True)
+        request.set_s("user", user.username)
+        request.set_s("user.information", user)
 
         # redirects to the return address in case it was
         # specified, otherwise redirects to the index
@@ -203,6 +203,7 @@ class MainController(base.BaseController):
         # unsets the login attribute from the session and then redirects
         # the user back to the login page so that he can login again
         request.unset_s("login")
+        request.unset_s("user")
         request.unset_s("user.information")
         self.redirect_base_path(request, "signin")
 
