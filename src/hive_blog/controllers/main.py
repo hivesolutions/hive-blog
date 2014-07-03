@@ -167,11 +167,10 @@ class MainController(base.BaseController):
         # retrieves the current session user
         user = self._get_session_user(request)
 
-        # redirects to the signup path in case no user is in the session
-        if not user:
-            # redirects to the signup path and returns immediately
-            self.redirect_base_path(request, "signup")
-            return
+        # redirects to the signup path in case no user is in
+        # the session, because there should be one and so this
+        # is considered to be the fallback procedure
+        if not user: return self.redirect_base_path(request, "signup")
 
         # retrieves the return address from the session
         # and unsets it from the session
