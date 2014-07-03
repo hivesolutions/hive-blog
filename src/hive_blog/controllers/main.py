@@ -385,7 +385,14 @@ class MainController(base.BaseController):
         openid_return_to = self._get_host_path(request, "/openid")
 
         # generates the openid structure by sending all the required data
-        openid_remote_client.generate_openid_structure(None, openid_value_normalized, openid_value_normalized, openid_return_to, openid_realm, session_type = OPENID_SESSION_TYPE)
+        openid_remote_client.generate_openid_structure(
+            None,
+            openid_value_normalized,
+            openid_value_normalized,
+            openid_return_to,
+            openid_realm,
+            session_type = OPENID_SESSION_TYPE
+        )
 
         # runs the openid discovery process to obtains the provider url
         openid_remote_client.openid_discover()
@@ -441,7 +448,11 @@ class MainController(base.BaseController):
         next = self._get_host_path(request, "/facebook")
 
         # generates the facebook structure
-        facebook_remote_client.generate_facebook_structure(FACEBOOK_CONSUMER_KEY, FACEBOOK_CONSUMER_SECRET, next)
+        facebook_remote_client.generate_facebook_structure(
+            FACEBOOK_CONSUMER_KEY,
+            FACEBOOK_CONSUMER_SECRET,
+            next
+        )
 
         # sets the facebook remote client in the session
         request.set_s("facebook.remote_client", facebook_remote_client)
