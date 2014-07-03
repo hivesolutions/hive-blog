@@ -79,36 +79,56 @@ jQuery(document).ready(function() {
         });
     });
 
-    jQuery(".button-openid").click(function() {
-                // retrieves the parent form
-                var parentForm = jQuery(this).parents("form");
+    jQuery(".button-twitter").click(function() {
+        // retrieves the parent form and uses it to add an extra
+        // form field indicating the intent to login using twitter
+        var parentForm = jQuery(this).parents("form");
+        var signinUrl = jQuery.resolveurl("signin");
+        parentForm.attr("action", signinUrl);
+        parentForm.append("<input type=\"hidden\" name=\"twitter[value]\" value=\"true\" />")
+        parentForm.submit();
+    });
 
-                // shows the openid area
+    jQuery(".button-facebook").click(function() {
+        // retrieves the parent form and uses it to add an extra
+        // form field indicating the intent to login using facebook
+        var parentForm = jQuery(this).parents("form");
+        var signinUrl = jQuery.resolveurl("signin");
+        parentForm.attr("action", signinUrl);
+        parentForm.append("<input type=\"hidden\" name=\"facebook[value]\" value=\"true\" />")
+        parentForm.submit();
+    });
+
+    jQuery(".button-openid").click(function() {
+                // retrieves the parent form and uses it to
+                // show the openid area of the form
+                var parentForm = jQuery(this).parents("form");
                 jQuery("#openid-area", parentForm).fadeIn(300);
+                jQuery("#openid-area > input").focus();
             });
 
     jQuery("#openid-area #login").click(function() {
-        // retrieves the parent form
-        var parentForm = jQuery(this).parents("form");
+                // retrieves the parent form
+                var parentForm = jQuery(this).parents("form");
 
-        // retrieves the return address element
-        var returnAddress = jQuery("input[name=return_address]", parentForm);
+                // retrieves the return address element
+                var returnAddress = jQuery("input[name=return_address]",
+                        parentForm);
 
-        // retrieves the return address value
-        var returnAddressValue = returnAddress.val();
+                // retrieves the return address value
+                var returnAddressValue = returnAddress.val();
 
-        // resolves the signin url
-        var signinUrl = jQuery.resolveurl("signin");
+                // resolves the signin url
+                var signinUrl = jQuery.resolveurl("signin");
 
-        // sets the new value in the return address
-        returnAddress.val(returnAddressValue + "#comments-form-area");
+                // sets the new value in the return address
+                returnAddress.val(returnAddressValue + "#comments-form-area");
 
-        // sets the new action in the parent form
-        parentForm.attr("action", signinUrl);
-
-        // submits the form
-        parentForm.submit();
-    });
+                // sets the new action in the parent form and runs
+                // the submit operation in it
+                parentForm.attr("action", signinUrl);
+                parentForm.submit();
+            });
 
     jQuery("#window-captcha").bind("refresh_captcha", function() {
         // retrieves the captcha element
