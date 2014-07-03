@@ -409,23 +409,26 @@ class MainController(base.BaseController):
         self.redirect_base_path(request, request_url, quote = False)
 
     def _process_twitter_signin(self, request):
-        # retrieves the api twitter plugin
+        # retrieves the twitter api plugin and uses it to create a new
+        # client that is going to be used in twitter authentication
         api_twitter_plugin = self.plugin.api_twitter_plugin
-
-        # creates the twitter client
         twitter_client = api_twitter_plugin.create_client({})
 
-        # retrieves the callback path from the host
+        # retrieves the callback path from the host, this should be calculated
+        # using the current request's host value (as expected)
         callback_path = self._get_host_path(request, "/twitter")
 
-        # generates the oauth structure
+        # generates the oauth structure taking into account the currently
+        # defined consumer key and secret values and also the callback
+        # url for which the user will be redirected after authentication
         twitter_client.generate_oauth_structure(
             OAUTH_CONSUMER_KEY,
             OAUTH_CONSUMER_SECRET,
             oauth_callback = callback_path
         )
 
-        # retrieves the authenticate url
+        # retrieves the authenticate url this is going to be used for the
+        # redirection of the user agent at the end of the handling
         twitter_client.open_oauth_request_token()
 
         # sets the twitter structure in the current session
