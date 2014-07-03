@@ -47,18 +47,18 @@ class RootEntity(models.EntityModel):
     entity models inherit.
     """
 
-    object_id = {
-        "id" : True,
-        "data_type" : "integer",
-        "generated" : True
-    }
+    object_id = dict(
+        id = True,
+        data_type = "integer",
+        generated = True
+    )
     """ The object id of the root entity """
 
-    tags = {
-        "data_type" : "relation",
-        "fetch_type" : "lazy",
-        "persist_type" : mvc_utils.PERSIST_ASSOCIATE
-    }
+    tags = dict(
+        data_type = "relation",
+        fetch_type = "lazy",
+        persist_type = mvc_utils.PERSIST_ASSOCIATE
+    )
     """ The tags for the root entity, these values
     should identify the entity through description """
 
@@ -71,11 +71,11 @@ class RootEntity(models.EntityModel):
 
     @staticmethod
     def _relation_tags():
-        return {
-            "type" : "to-many",
-            "target" : models.Tag,
-            "reverse" : "root_entities"
-        }
+        return dict(
+            type = "to-many",
+            target = models.Tag,
+            reverse = "root_entities"
+        )
 
     def set_validation(self):
         """

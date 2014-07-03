@@ -49,64 +49,64 @@ class User(root_entity.RootEntity):
     user entity.
     """
 
-    username = {
-        "data_type" : "string",
-        "indexed" : True,
-        "index_types" : ("hash", "btree"),
-        "mandatory" : True
-    }
+    username = dict(
+        data_type = "string",
+        indexed = True,
+        index_types = ("hash", "btree"),
+        mandatory = True
+    )
     """ The username of the user """
 
-    password = {
-        "data_type" : "text"
-    }
+    password = dict(
+        data_type = "text"
+    )
     """ The password of the user """
 
-    name = {
-        "data_type" : "text",
-        "mandatory" : True
-    }
+    name = dict(
+        data_type = "text",
+        mandatory = True
+    )
     """ The name of the user """
 
-    email = {
-        "data_type" : "text"
-    }
+    email = dict(
+        data_type = "text"
+    )
     """ The email of the user """
 
-    website = {
-        "data_type" : "text"
-    }
+    website = dict(
+        data_type = "text"
+    )
     """ The website of the user """
 
-    openid_claimed_id = {
-        "data_type" : "text"
-    }
+    openid_claimed_id = dict(
+        data_type = "text"
+    )
     """ The user's openid claimed id """
 
-    twitter_username = {
-        "data_type" : "text"
-    }
+    twitter_username = dict(
+        data_type = "text"
+    )
     """ The user's twitter username """
 
-    facebook_username = {
-        "data_type" : "text"
-    }
+    facebook_username = dict(
+        data_type = "text"
+    )
     """ The user's facebook username """
 
-    posts = {
-        "data_type" : "relation",
-        "fetch_type" : "lazy",
-        "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_NONE
-    }
+    posts = dict(
+        data_type = "relation",
+        fetch_type = "lazy",
+        secure = True,
+        persist_type = mvc_utils.PERSIST_NONE
+    )
     """ The posts made by the user """
 
-    comments = {
-        "data_type" : "relation",
-        "fetch_type" : "lazy",
-        "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_NONE
-    }
+    comments = dict(
+        data_type = "relation",
+        fetch_type = "lazy",
+        secure = True,
+        persist_type = mvc_utils.PERSIST_NONE
+    )
     """ The comments made by the user """
 
     def __init__(self):
@@ -118,19 +118,19 @@ class User(root_entity.RootEntity):
 
     @staticmethod
     def _relation_posts():
-        return {
-            "type" : "to-many",
-            "target" : models.Post,
-            "reverse" : "author"
-        }
+        return dict(
+            type = "to-many",
+            target = models.Post,
+            reverse = "author"
+        )
 
     @staticmethod
     def _relation_comments():
-        return {
-            "type" : "to-many",
-            "target" : models.Comment,
-            "reverse" : "author"
-        }
+        return dict(
+            type = "to-many",
+            target = models.Comment,
+            reverse = "author"
+        )
 
     def set_validation(self):
         """

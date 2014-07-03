@@ -46,27 +46,27 @@ class Tag(root_entity.RootEntity):
     The tag class, representing the tag entity.
     """
 
-    name = {
-        "data_type" : "string",
-        "indexed" : True,
-        "index_types" : ("hash", "btree"),
-        "mandatory" : True
-    }
+    name = dict(
+        data_type = "string",
+        indexed = True,
+        index_types = ("hash", "btree"),
+        mandatory = True
+    )
     """ The name of the tag """
 
-    count = {
-        "data_type" : "integer",
-        "mandatory" : True,
-        "secure" : True
-    }
+    count = dict(
+        data_type = "integer",
+        mandatory = True,
+        secure = True
+    )
     """ The occurrences count of the tag """
 
-    root_entities = {
-        "data_type" : "relation",
-        "fetch_type" : "lazy",
-        "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_NONE
-    }
+    root_entities = dict(
+        data_type = "relation",
+        fetch_type = "lazy",
+        secure = True,
+        persist_type = mvc_utils.PERSIST_NONE
+    )
     """ The root entities for this tag """
 
     def __init__(self):
@@ -78,10 +78,10 @@ class Tag(root_entity.RootEntity):
 
     @staticmethod
     def _relation_root_entities():
-        return {
-            "type" : "to-many",
-            "target" : models.RootEntity
-        }
+        return dict(
+            type = "to-many",
+            target = models.RootEntity
+        )
 
     def set_validation(self):
         """

@@ -46,18 +46,18 @@ class Setting(root_entity.RootEntity):
     setting entity.
     """
 
-    name = {
-        "data_type" : "string",
-        "indexed" : True,
-        "index_types" : ("hash", "btree"),
-        "mandatory" : True
-    }
+    name = dict(
+        data_type = "string",
+        indexed = True,
+        index_types = ("hash", "btree"),
+        mandatory = True
+    )
     """ The name for the setting """
 
-    value = {
-        "data_type" : "text",
-        "mandatory" : True
-    }
+    value = dict(
+        data_type = "text",
+        mandatory = True
+    )
     """ The value for the setting """
 
     def __init__(self):

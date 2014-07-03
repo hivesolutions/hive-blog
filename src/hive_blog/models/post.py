@@ -41,9 +41,6 @@ import colony
 
 import root_entity
 
-DEFAULT_NUMBER_RECORDS_PAGE = 3
-""" The default number of records per page """
-
 DEFAULT_DATE_FORMAT = "%Y-%m-%d"
 """ The default date format """
 
@@ -72,44 +69,44 @@ class Post(root_entity.RootEntity):
     post entity.
     """
 
-    date = {
-        "data_type" : "date",
-        "mandatory" : True
-    }
+    date = dict(
+        data_type = "date",
+        mandatory = True
+    )
     """ The date of the post """
 
-    title = {
-        "data_type" : "text",
-        "mandatory" : True
-    }
+    title = dict(
+        data_type = "text",
+        mandatory = True
+    )
     """ The title of the post """
 
-    contents = {
-        "data_type" : "text",
-        "mandatory" : True
-    }
+    contents = dict(
+        data_type = "text",
+        mandatory = True
+    )
     """ The contents of the post """
 
-    contents_abstract = {
-        "data_type" : "text"
-    }
+    contents_abstract = dict(
+        data_type = "text"
+    )
     """ The contents of the abstract of the post """
 
-    author = {
-        "data_type" : "relation",
-        "fetch_type" : "lazy",
-        "mandatory" : True,
-        "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_ASSOCIATE
-    }
+    author = dict(
+        data_type = "relation",
+        fetch_type = "lazy",
+        mandatory = True,
+        secure = True,
+        persist_type = mvc_utils.PERSIST_ASSOCIATE
+    )
     """ The author of the post """
 
-    comments = {
-        "data_type" : "relation",
-        "fetch_type" : "lazy",
-        "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_NONE
-    }
+    comments = dict(
+        data_type = "relation",
+        fetch_type = "lazy",
+        secure = True,
+        persist_type = mvc_utils.PERSIST_NONE
+    )
     """ The comment for the post """
 
     def __init__(self):
@@ -122,20 +119,20 @@ class Post(root_entity.RootEntity):
 
     @staticmethod
     def _relation_author():
-        return {
-            "type" : "to-one",
-            "target" : models.User,
-            "reverse" : "posts",
-            "is_mapper" : True
-        }
+        return dict(
+            type = "to-one",
+            target = models.User,
+            reverse = "posts",
+            is_mapper = True
+        )
 
     @staticmethod
     def _relation_comments():
-        return {
-            "type" : "to-many",
-            "target" : models.Comment,
-            "reverse" : "post"
-        }
+        return dict(
+            type = "to-many",
+            target = models.Comment,
+            reverse = "post"
+        )
 
     def set_validation(self):
         """
@@ -172,17 +169,17 @@ class Post(root_entity.RootEntity):
         """
 
         # defines the filter to retrieve the post with
-        filter = {
-            "eager" : {
-                "author" : {},
-                "tags" : {},
-                "comments" : {
-                    "eager" : (
+        filter = dict(
+            eager = dict(
+                author = dict(),
+                tags = dict(),
+                comments = dict(
+                    eager = (
                         "author",
                     )
-                }
-            }
-        }
+                )
+            )
+        )
 
         # retrieves the post and then returns it to the
         # caller method (as requested by the method)
@@ -200,18 +197,18 @@ class Post(root_entity.RootEntity):
         """
 
         # creates the filter map
-        filter = {
-            "order_by" : "date",
-            "eager" : {
-                "author" : {},
-                "tags" : {},
-                "comments" : {
-                    "eager" : (
+        filter = dict(
+            order_by = "date",
+            eager = dict(
+                author = dict(),
+                tags = dict(),
+                comments = dict(
+                    eager = (
                         "author",
                     )
-                }
-            }
-        }
+                )
+            )
+        )
 
         # retrieves the posts in the blog
         posts = models.Post.find(filter)
@@ -220,7 +217,7 @@ class Post(root_entity.RootEntity):
         return posts
 
     @staticmethod
-    def find_for_page(page_index, number_records_page = DEFAULT_NUMBER_RECORDS_PAGE):
+    def find_for_page(page_index, number_records_page = 3):
         """
         Retrieves the posts that belong to the requested page, using the
         specified page size.
@@ -238,19 +235,19 @@ class Post(root_entity.RootEntity):
         start_record = (page_index - 1) * number_records_page
 
         # creates the filter map
-        filter = {
-            "range" : (start_record, number_records_page),
-            "order_by" : "date",
-            "eager" : {
-                "author" : {},
-                "tags" : {},
-                "comments" : {
-                    "eager" : (
+        filter = dict(
+            range = (start_record, number_records_page),
+            order_by = "date",
+            eager = dict(
+                author = dict(),
+                tags = dict(),
+                comments = dict(
+                    eager = (
                         "author",
                     )
-                }
-            }
-        }
+                )
+            )
+        )
 
         # retrieves the posts for the given page
         posts = models.Post.find(filter)
@@ -259,7 +256,7 @@ class Post(root_entity.RootEntity):
         return posts
 
     @staticmethod
-    def get_number_pages(number_records_page = DEFAULT_NUMBER_RECORDS_PAGE):
+    def get_number_pages(number_records_page = 3):
         """
         Retrieves the number of pages in the blog by counting the number
         of blog posts in the data source and dividing it by the specified
@@ -287,10 +284,9 @@ class Post(root_entity.RootEntity):
         @return: The day when the comment was made.
         """
 
-        # in case there is no date set
-        if not self.date:
-            # returns invalid
-            return None
+        # in case there is no date set, must return
+        # immediately with invalid value
+        if not self.date: return None
 
         # returns the date day
         return self.date.day
@@ -305,10 +301,9 @@ class Post(root_entity.RootEntity):
         @return: The month when the comment was made.
         """
 
-        # in case there is no date set
-        if not self.date:
-            # returns invalid
-            return None
+        # in case there is no date set, must return
+        # immediately with invalid value
+        if not self.date: return None
 
         # returns the data month abbreviated
         return MONTH_NUMBER_MAP[self.date.month]

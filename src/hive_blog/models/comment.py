@@ -64,50 +64,50 @@ class Comment(root_entity.RootEntity):
     The comment class, representing the comment entity.
     """
 
-    date = {
-        "data_type" : "date",
-        "mandatory" : True,
-        "secure" : True
-    }
+    date = dict(
+        data_type = "date",
+        mandatory = True,
+        secure = True
+    )
     """ The date of the comment """
 
-    contents = {
-        "data_type" : "text",
-        "mandatory" : True
-    }
+    contents = dict(
+        data_type = "text",
+        mandatory = True
+    )
     """ The contents of the comment """
 
-    author = {
-        "data_type" : "relation",
-        "fetch_type" : "lazy",
-        "mandatory" : True,
-        "persist_type" : mvc_utils.PERSIST_SAVE | mvc_utils.PERSIST_ASSOCIATE
-    }
+    author = dict(
+        data_type = "relation",
+        fetch_type = "lazy",
+        mandatory = True,
+        persist_type = mvc_utils.PERSIST_SAVE | mvc_utils.PERSIST_ASSOCIATE
+    )
     """ The author of the comment """
 
-    post = {
-        "data_type" : "relation",
-        "fetch_type" : "lazy",
-        "mandatory" : True,
-        "persist_type" : mvc_utils.PERSIST_ASSOCIATE
-    }
+    post = dict(
+        data_type = "relation",
+        fetch_type = "lazy",
+        mandatory = True,
+        persist_type = mvc_utils.PERSIST_ASSOCIATE
+    )
     """ The post that contains the comment """
 
-    in_reply_to = {
-        "data_type" : "relation",
-        "fetch_type" : "lazy",
-        "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_ASSOCIATE
-    }
+    in_reply_to = dict(
+        data_type = "relation",
+        fetch_type = "lazy",
+        secure = True,
+        persist_type = mvc_utils.PERSIST_ASSOCIATE
+    )
     """ The comment for which this comment is a reply
     this is not required for the top level comments """
 
-    replies = {
-        "data_type" : "relation",
-        "fetch_type" : "lazy",
-        "secure" : True,
-        "persist_type" : mvc_utils.PERSIST_NONE
-    }
+    replies = dict(
+        data_type = "relation",
+        fetch_type = "lazy",
+        secure = True,
+        persist_type = mvc_utils.PERSIST_NONE
+    )
     """ The comment replies to the comment """
 
     def __init__(self):
@@ -120,38 +120,38 @@ class Comment(root_entity.RootEntity):
 
     @staticmethod
     def _relation_author():
-        return {
-            "type" : "to-one",
-            "target" : models.User,
-            "reverse" : "comments",
-            "is_mapper" : True
-        }
+        return dict(
+            type = "to-one",
+            target = models.User,
+            reverse = "comments",
+            is_mapper = True
+        )
 
     @staticmethod
     def _relation_post():
-        return {
-            "type" : "to-one",
-            "target" : models.Post,
-            "reverse" : "posts",
-            "is_mapper" : True
-        }
+        return dict(
+            type = "to-one",
+            target = models.Post,
+            reverse = "posts",
+            is_mapper = True
+        )
 
     @staticmethod
     def _relation_in_reply_to():
-        return {
-            "type" : "to-one",
-            "target" : models.Comment,
-            "reverse" : "replies",
-            "is_mapper" : True
-        }
+        return dict(
+            type = "to-one",
+            target = models.Comment,
+            reverse = "replies",
+            is_mapper = True
+        )
 
     @staticmethod
     def _relation_replies():
-        return {
-            "type" : "to-many",
-            "target" : models.Comment,
-            "reverse" : "in_reply_to"
-        }
+        return dict(
+            type = "to-many",
+            target = models.Comment,
+            reverse = "in_reply_to"
+        )
 
     def set_validation(self):
         """
