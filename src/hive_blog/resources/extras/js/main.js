@@ -74,7 +74,7 @@ jQuery(document).ready(function() {
 
     jQuery("form").each(function(index, element) {
         jQuery("div#preview", element).click(function() {
-            jQuery(element).append("<input type=\"hidden\" name=\"post[_parameters][preview]\" value=\"true\" />")
+            jQuery(element).append("<input type=\"hidden\" name=\"preview\" value=\"true\" />")
             element.submit();
         });
     });

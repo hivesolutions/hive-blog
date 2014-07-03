@@ -59,7 +59,7 @@ class PostController(base.BaseController):
         # retrieves the required controllers and the value for the preview
         # field that defined is the current creation is a preview or not
         main_controller = self.system.main_controller
-        preview = request.field("preview", False)
+        preview = request.field("preview", False, cast = bool)
 
         # validates the captcha, regenerating the captcha and raising
         # an exception in case the validation has failed
@@ -68,7 +68,8 @@ class PostController(base.BaseController):
 
         # creates a post entity with the post
         # retrieved from the rest request
-        post = models.Post.new()
+        post = request.field("post", {})
+        post = models.Post.new(map = post)
 
         # sets the post author as the session user
         session_user = request.get_s("user.information")

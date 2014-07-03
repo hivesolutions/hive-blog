@@ -414,7 +414,11 @@ class MainController(base.BaseController):
         callback_path = self._get_host_path(request, "/twitter")
 
         # generates the oauth structure
-        twitter_remote_client.generate_oauth_structure(OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET, oauth_callback = callback_path)
+        twitter_remote_client.generate_oauth_structure(
+            OAUTH_CONSUMER_KEY,
+            OAUTH_CONSUMER_SECRET,
+            oauth_callback = callback_path
+        )
 
         # retrieves the authenticate url
         twitter_remote_client.open_oauth_request_token()
@@ -422,10 +426,9 @@ class MainController(base.BaseController):
         # sets the twitter remote client in the session
         request.set_s("twitter.remote_client", twitter_remote_client)
 
-        # retrieves the oauth authenticate url
+        # retrieves the oauth authenticate url and redirects
+        # the user agent into this same authenticate url
         authenticate_url = twitter_remote_client.get_oauth_authenticate_url()
-
-        # redirects to the authenticate url page
         self.redirect_base_path(request, authenticate_url, quote = False)
 
     def _process_facebook_signin(self, request):
