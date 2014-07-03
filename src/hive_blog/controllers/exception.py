@@ -34,11 +34,9 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import colony
+import base
 
-controllers = colony.__import__("controllers")
-
-class ExceptionController(controllers.Controller):
+class ExceptionController(base.BaseController):
 
     def exception(self, request, message = None, traceback = None):
         self._template(
