@@ -46,9 +46,6 @@ HTTP_PREFIX_VALUE = "http://"
 HTTPS_PREFIX_VALUE = "https://"
 """ The https prefix value """
 
-OPENID_SESSION_TYPE = "no-encryption"
-""" The openid session type """
-
 OAUTH_CONSUMER_KEY = "JUO1lRFjDMOGnfuuvSSVQ"
 """ The oauth consumer key """
 
@@ -169,7 +166,8 @@ class MainController(base.BaseController):
 
         # redirects to the signup path in case no user is in
         # the session, because there should be one and so this
-        # is considered to be the fallback procedure
+        # is considered to be the fallback procedure, this situation
+        # occurs during "social logins" with no account created
         if not user: return self.redirect_base_path(request, "signup")
 
         # retrieves the return address from the session
@@ -208,19 +206,27 @@ class MainController(base.BaseController):
 
     @mvc_utils.serialize
     def openid(self, request):
+        # retrieves the api openid plugin that is going to be used
+        # for the re-construction of the openid client from the structure
+        api_openid_plugin = self.plugin.api_openid_plugin
+
         # retrieves the form data by processing the form (in flat format)
         form_data_map = self.process_form_data_flat(request)
 
-        # retrieves the openid data
+        # retrieves the openid data and then tries to retrieve the
+        # openid simple registration (sreg) data from it
         openid_data = form_data_map["openid"]
-
-        # tries to retrieve the openid simple registration (sreg) data
         openid_sreg_data = openid_data.get("sreg", {})
 
-        # retrieves the openid client from the session
-        openid_client = request.get_s("openid.client")
+        # retrieves the openid structure from the session and uses it to
+        # create the client that may be used latter for operations
+        openid_strucure = request.get_s("openid.structure")
+        openid_client = api_openid_plugin.create_client(
+            dict(openid_structure = openid_strucure)
+        )
 
-        # retrieves the openid attributes
+        # retrieves the complete set of openid attributes that are going
+        # to be used in the process of securing the openid (structure)
         openid_claimed_id = openid_data["claimed_id"]
         openid_identity = openid_data["identity"]
         openid_ns = openid_data["ns"]
@@ -230,11 +236,10 @@ class MainController(base.BaseController):
         openid_return_to = openid_data["return_to"]
         openid_signature = openid_data["sig"]
         openid_signed = openid_data["signed"]
-
-        # tries to retrieve the optional openid attributes
         openid_invalidate_handle = openid_data.get("invalidate_handle", None)
 
-        # creates the openid return structure
+        # creates the openid return structure that is going to be used in
+        # the verification process of the openid infra-structure
         return_openid_structure = openid_client.generate_openid_structure(
             openid_provider_url,
             openid_claimed_id,
@@ -252,23 +257,22 @@ class MainController(base.BaseController):
         return_openid_structure.set_mode(openid_mode)
         return_openid_structure.set_invalidate_handle(openid_invalidate_handle)
 
-        # retrieves the attributes list
+        # retrieves the attributes list and iterates over all the attributes
+        # in the attributes list to set them in the return structure
         attributes_list = request.get_attributes_list()
-
-        # iterates over all the attributes in the attributes list
         for attribute in attributes_list:
             # minimizes the attribute by removing
             # the openid namespace (eg: openid.ns transforms into ns)
             minimized_attribute = attribute[7:]
 
-            # in case the return openid structure does not have
-            # the minimizes attribute sets the value of it
-            if not hasattr(return_openid_structure, minimized_attribute):
-                # retrieves the attribute value from the request
-                attribute_value = self.get_attribute_decoded(request, attribute, "utf-8")
+            # in case the return openid structure does have the minimized
+            # attribute, avoids setting the value (it's set already)
+            if hasattr(return_openid_structure, minimized_attribute): continue
 
-                # sets the attribute value in the return openid structure
-                setattr(return_openid_structure, minimized_attribute, attribute_value)
+            # retrieves the attribute value from the request and
+            # sets the attribute value in the return openid structure
+            attribute_value = self.get_attribute_decoded(request, attribute, "utf-8")
+            setattr(return_openid_structure, minimized_attribute, attribute_value)
 
         # verifies the openid return value (in non strict mode)
         openid_client.openid_verify(return_openid_structure, False)
@@ -289,7 +293,8 @@ class MainController(base.BaseController):
         request.set_s("openid.claimed_id", preferred_claimed_id)
         request.set_s("user.registration", user_registration)
 
-        # redirects to the login page
+        # redirects to the login page so that the "normal" login or signup
+        # process may occur for the current openid attempt
         self.redirect_base_path(request, "login")
 
     @mvc_utils.serialize
@@ -302,19 +307,16 @@ class MainController(base.BaseController):
 
     @mvc_utils.serialize
     def rss(self, request):
-        # retrieves the host path then uses it to create
-        # the base url from the host path
         host_path = self._get_host_path(request)
         base_url = host_path + "/"
-
-        # retrieves all the posts in the blog
         posts = models.Post.find_for_list()
-
-        # processes the contents of the template file assigning the appropriate values to it
-        template_file = self.retrieve_template_file("main/rss.xml.tpl")
-        template_file.assign("base_url", base_url)
-        template_file.assign("posts", posts)
-        self.process_set_contents(request, template_file, content_type = "application/rss+xml")
+        self._template(
+            request = request,
+            template = "main/rss.xml.tpl",
+            content_type = "application/rss+xml",
+            base_url = base_url,
+            posts = posts
+        )
 
     @mvc_utils.serialize
     def captcha(self, request):
@@ -389,7 +391,7 @@ class MainController(base.BaseController):
             openid_value_normalized,
             openid_return_to,
             openid_realm,
-            session_type = OPENID_SESSION_TYPE
+            session_type = "no-encryption"
         )
 
         # runs the openid discovery process to obtains the provider url
@@ -399,7 +401,7 @@ class MainController(base.BaseController):
 
         # sets the openid client in the session, so that it may be latter
         # used for the rest of the authentication process
-        request.set_s("openid.client", openid_client)
+        request.set_s("openid.structure", openid_client.openid_structure)
 
         # retrieves the request url that will be used to forward
         # the user agent and runs the redirection process using it
@@ -426,8 +428,9 @@ class MainController(base.BaseController):
         # retrieves the authenticate url
         twitter_client.open_oauth_request_token()
 
-        # sets the twitter client in the session
-        request.set_s("twitter.client", twitter_client)
+        # sets the twitter structure in the current session
+        # so that it may be used latter to complete authentication
+        request.set_s("twitter.structure", twitter_client.twitter_structure)
 
         # retrieves the oauth authenticate url and redirects
         # the user agent into this same authenticate url
@@ -435,24 +438,29 @@ class MainController(base.BaseController):
         self.redirect_base_path(request, authenticate_url, quote = False)
 
     def _process_facebook_signin(self, request):
+        # retrieves the facebook api plugin and uses it to create a new
+        # client that is going to be used in facebook authentication
         api_facebook_plugin = self.plugin.api_facebook_plugin
-
-        # creates the facebook client
         facebook_client = api_facebook_plugin.create_client({})
 
-        # retrieves the next (callback) from the host
+        # retrieves the next (callback) from the host, this is going to
+        # be calculate taking into account the current host value in request
         next = self._get_host_path(request, "/facebook")
 
-        # generates the facebook structure
+        # generates the facebook structure for the current client using the
+        # currently defined consumer key and secret values
         facebook_client.generate_facebook_structure(
             FACEBOOK_CONSUMER_KEY,
             FACEBOOK_CONSUMER_SECRET,
             next
         )
 
-        # sets the facebook client in the session
-        request.set_s("facebook.client", facebook_client)
+        # sets the facebook structure in the session as it is going
+        # to be used latter to complete authentication process
+        request.set_s("facebook.structure", facebook_client.facebook_structure)
 
+        # retrieves the login url to be used by facebook and redirects
+        # the current used agent into it for authentication
         login_url = facebook_client.get_login_url()
         self.redirect_base_path(request, login_url, quote = False)
 
