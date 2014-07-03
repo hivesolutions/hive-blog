@@ -40,12 +40,6 @@ import hive_blog
 
 import base
 
-HTTP_PREFIX_VALUE = "http://"
-""" The http prefix value """
-
-HTTPS_PREFIX_VALUE = "https://"
-""" The https prefix value """
-
 OAUTH_CONSUMER_KEY = "JUO1lRFjDMOGnfuuvSSVQ"
 """ The oauth consumer key """
 
@@ -381,7 +375,7 @@ class MainController(base.BaseController):
 
         # retrieves the host as the openid realm and then retrieves the
         # return to (url) value taking into account the current host
-        openid_realm = self._get_host(request, HTTP_PREFIX_VALUE)
+        openid_realm = self._get_host(request, "http://")
         openid_return_to = self._get_host_path(request, "/openid")
 
         # generates the openid structure by sending all the required data
