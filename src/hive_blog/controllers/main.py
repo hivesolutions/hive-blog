@@ -368,19 +368,18 @@ class MainController(base.BaseController):
         self.redirect_base_path(request, "login")
 
     def _process_openid_signin(self, request, openid_value):
-        # retrieves the api openid plugin
+        # retrieves the api openid plugin and uses it to create the "default"
+        # openid client that is going to be used in the authentication process
         api_openid_plugin = self.plugin.api_openid_plugin
-
-        # creates the openid client
         openid_client = api_openid_plugin.create_client({})
 
-        # normalizes the openid value
+        # normalizes the openid value, meaning that non canonical names
+        # will be converted into a valid and final url value
         openid_value_normalized = openid_client.normalize_claimed_id(openid_value)
 
-        # retrieves the host as the openid realm
+        # retrieves the host as the openid realm and then retrieves the
+        # return to (url) value taking into account the current host
         openid_realm = self._get_host(request, HTTP_PREFIX_VALUE)
-
-        # retrieves the host path for the openid path as the return to address
         openid_return_to = self._get_host_path(request, "/openid")
 
         # generates the openid structure by sending all the required data
@@ -394,19 +393,17 @@ class MainController(base.BaseController):
         )
 
         # runs the openid discovery process to obtains the provider url
+        # and then associates the server and the provider
         openid_client.openid_discover()
-
-        # associates the server and the provider
         openid_client.openid_associate()
 
-        # sets the openid client in the session
+        # sets the openid client in the session, so that it may be latter
+        # used for the rest of the authentication process
         request.set_s("openid.client", openid_client)
 
-        # retrieves the request url that will be used
-        # to forward the user agent
+        # retrieves the request url that will be used to forward
+        # the user agent and runs the redirection process using it
         request_url = openid_client.get_request_url()
-
-        # redirects to the request url page
         self.redirect_base_path(request, request_url, quote = False)
 
     def _process_twitter_signin(self, request):
