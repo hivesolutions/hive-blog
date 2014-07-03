@@ -28,7 +28,7 @@
                     <div class="clear"></div>
                 </div>
                 <div id="openid-area">
-                    <input type="text" id="openid-field" name="openid[value]" value="OpenID" data-current_status="" data-original_value="OpenID" />
+                    <input type="text" id="openid-field" name="openid[value]" data-current_status="" data-original_value="OpenID" />
                     <div class="form-buttons-small">
                         <div id="login" class="button-large">Login</div>
                         <div class="clear"></div>
