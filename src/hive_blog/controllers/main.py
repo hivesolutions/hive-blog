@@ -217,8 +217,8 @@ class MainController(base.BaseController):
         # tries to retrieve the openid simple registration (sreg) data
         openid_sreg_data = openid_data.get("sreg", {})
 
-        # retrieves the openid remote client from the session
-        openid_remote_client = request.get_s("openid.remote_client")
+        # retrieves the openid client from the session
+        openid_client = request.get_s("openid.client")
 
         # retrieves the openid attributes
         openid_claimed_id = openid_data["claimed_id"]
@@ -235,7 +235,7 @@ class MainController(base.BaseController):
         openid_invalidate_handle = openid_data.get("invalidate_handle", None)
 
         # creates the openid return structure
-        return_openid_structure = openid_remote_client.generate_openid_structure(
+        return_openid_structure = openid_client.generate_openid_structure(
             openid_provider_url,
             openid_claimed_id,
             openid_identity,
@@ -271,10 +271,10 @@ class MainController(base.BaseController):
                 setattr(return_openid_structure, minimized_attribute, attribute_value)
 
         # verifies the openid return value (in non strict mode)
-        openid_remote_client.openid_verify(return_openid_structure, False)
+        openid_client.openid_verify(return_openid_structure, False)
 
         # retrieves the preferred claimed id
-        preferred_claimed_id = openid_remote_client.get_preferred_claimed_id()
+        preferred_claimed_id = openid_client.get_preferred_claimed_id()
 
         # creates the user registration structure from the openid simple
         # registration (sreg) values
@@ -371,11 +371,11 @@ class MainController(base.BaseController):
         # retrieves the api openid plugin
         api_openid_plugin = self.plugin.api_openid_plugin
 
-        # creates the openid remote client
-        openid_remote_client = api_openid_plugin.create_remote_client({})
+        # creates the openid client
+        openid_client = api_openid_plugin.create_client({})
 
         # normalizes the openid value
-        openid_value_normalized = openid_remote_client.normalize_claimed_id(openid_value)
+        openid_value_normalized = openid_client.normalize_claimed_id(openid_value)
 
         # retrieves the host as the openid realm
         openid_realm = self._get_host(request, HTTP_PREFIX_VALUE)
@@ -384,7 +384,7 @@ class MainController(base.BaseController):
         openid_return_to = self._get_host_path(request, "/openid")
 
         # generates the openid structure by sending all the required data
-        openid_remote_client.generate_openid_structure(
+        openid_client.generate_openid_structure(
             None,
             openid_value_normalized,
             openid_value_normalized,
@@ -394,17 +394,17 @@ class MainController(base.BaseController):
         )
 
         # runs the openid discovery process to obtains the provider url
-        openid_remote_client.openid_discover()
+        openid_client.openid_discover()
 
         # associates the server and the provider
-        openid_remote_client.openid_associate()
+        openid_client.openid_associate()
 
-        # sets the openid remote client in the session
-        request.set_s("openid.remote_client", openid_remote_client)
+        # sets the openid client in the session
+        request.set_s("openid.client", openid_client)
 
         # retrieves the request url that will be used
         # to forward the user agent
-        request_url = openid_remote_client.get_request_url()
+        request_url = openid_client.get_request_url()
 
         # redirects to the request url page
         self.redirect_base_path(request, request_url, quote = False)
@@ -413,50 +413,50 @@ class MainController(base.BaseController):
         # retrieves the api twitter plugin
         api_twitter_plugin = self.plugin.api_twitter_plugin
 
-        # creates the twitter remote client
-        twitter_remote_client = api_twitter_plugin.create_remote_client({})
+        # creates the twitter client
+        twitter_client = api_twitter_plugin.create_client({})
 
         # retrieves the callback path from the host
         callback_path = self._get_host_path(request, "/twitter")
 
         # generates the oauth structure
-        twitter_remote_client.generate_oauth_structure(
+        twitter_client.generate_oauth_structure(
             OAUTH_CONSUMER_KEY,
             OAUTH_CONSUMER_SECRET,
             oauth_callback = callback_path
         )
 
         # retrieves the authenticate url
-        twitter_remote_client.open_oauth_request_token()
+        twitter_client.open_oauth_request_token()
 
-        # sets the twitter remote client in the session
-        request.set_s("twitter.remote_client", twitter_remote_client)
+        # sets the twitter client in the session
+        request.set_s("twitter.client", twitter_client)
 
         # retrieves the oauth authenticate url and redirects
         # the user agent into this same authenticate url
-        authenticate_url = twitter_remote_client.get_oauth_authenticate_url()
+        authenticate_url = twitter_client.get_oauth_authenticate_url()
         self.redirect_base_path(request, authenticate_url, quote = False)
 
     def _process_facebook_signin(self, request):
         api_facebook_plugin = self.plugin.api_facebook_plugin
 
-        # creates the facebook remote client
-        facebook_remote_client = api_facebook_plugin.create_remote_client({})
+        # creates the facebook client
+        facebook_client = api_facebook_plugin.create_client({})
 
         # retrieves the next (callback) from the host
         next = self._get_host_path(request, "/facebook")
 
         # generates the facebook structure
-        facebook_remote_client.generate_facebook_structure(
+        facebook_client.generate_facebook_structure(
             FACEBOOK_CONSUMER_KEY,
             FACEBOOK_CONSUMER_SECRET,
             next
         )
 
-        # sets the facebook remote client in the session
-        request.set_s("facebook.remote_client", facebook_remote_client)
+        # sets the facebook client in the session
+        request.set_s("facebook.client", facebook_client)
 
-        login_url = facebook_remote_client.get_login_url()
+        login_url = facebook_client.get_login_url()
         self.redirect_base_path(request, login_url, quote = False)
 
     def _get_session_user(self, request):
