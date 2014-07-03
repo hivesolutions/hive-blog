@@ -219,7 +219,7 @@ class HiveBlog(colony.System):
         # as a session attribute in the controller, then redirect the
         # user to the signin page so that it can escalate permissions
         return_address = controller._get_path(request)
-        controller.set_session_attribute(request, "return_address", return_address)
+        request.set_s("return_address", return_address)
         controller.redirect_base_path(request, "signin")
 
     def __cast_list(self, value):
