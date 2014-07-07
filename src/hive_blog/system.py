@@ -179,10 +179,6 @@ class HiveBlog(colony.System):
         @return: The list of reasons for permission validation failure.
         """
 
-        # retrieves the controller object currently set in the
-        # request and that may be used for controller level operations
-        controller = request.controller
-
         # casts the permissions list
         permissions_list = self.__cast_list(permissions_list)
 
@@ -192,7 +188,7 @@ class HiveBlog(colony.System):
 
         # retrieves the login session attribute in order to check
         # if the user is currently logged in (as required)
-        login = controller.get_session_attribute(request, "login")
+        login = request.get_s(request, "login")
 
         # in case the login is not set must add the login string
         # to the list of reasons (for failure), then returns the
