@@ -65,20 +65,20 @@ class Comment(root_entity.RootEntity):
     """
 
     date = dict(
-        data_type = "date",
+        type = "date",
         mandatory = True,
         secure = True
     )
     """ The date of the comment """
 
     contents = dict(
-        data_type = "text",
+        type = "text",
         mandatory = True
     )
     """ The contents of the comment """
 
     author = dict(
-        data_type = "relation",
+        type = "relation",
         fetch_type = "lazy",
         mandatory = True,
         persist_type = mvc_utils.PERSIST_SAVE | mvc_utils.PERSIST_ASSOCIATE
@@ -86,7 +86,7 @@ class Comment(root_entity.RootEntity):
     """ The author of the comment """
 
     post = dict(
-        data_type = "relation",
+        type = "relation",
         fetch_type = "lazy",
         mandatory = True,
         persist_type = mvc_utils.PERSIST_ASSOCIATE
@@ -94,7 +94,7 @@ class Comment(root_entity.RootEntity):
     """ The post that contains the comment """
 
     in_reply_to = dict(
-        data_type = "relation",
+        type = "relation",
         fetch_type = "lazy",
         secure = True,
         persist_type = mvc_utils.PERSIST_ASSOCIATE
@@ -103,7 +103,7 @@ class Comment(root_entity.RootEntity):
     this is not required for the top level comments """
 
     replies = dict(
-        data_type = "relation",
+        type = "relation",
         fetch_type = "lazy",
         secure = True,
         persist_type = mvc_utils.PERSIST_NONE

@@ -50,7 +50,7 @@ class User(root_entity.RootEntity):
     """
 
     username = dict(
-        data_type = "string",
+        type = "string",
         indexed = True,
         index_types = ("hash", "btree"),
         mandatory = True
@@ -58,43 +58,43 @@ class User(root_entity.RootEntity):
     """ The username of the user """
 
     password = dict(
-        data_type = "text"
+        type = "text"
     )
     """ The password of the user """
 
     name = dict(
-        data_type = "text",
+        type = "text",
         mandatory = True
     )
     """ The name of the user """
 
     email = dict(
-        data_type = "text"
+        type = "text"
     )
     """ The email of the user """
 
     website = dict(
-        data_type = "text"
+        type = "text"
     )
     """ The website of the user """
 
     openid_claimed_id = dict(
-        data_type = "text"
+        type = "text"
     )
     """ The user's openid claimed id """
 
     twitter_username = dict(
-        data_type = "text"
+        type = "text"
     )
     """ The user's twitter username """
 
     facebook_username = dict(
-        data_type = "text"
+        type = "text"
     )
     """ The user's facebook username """
 
     posts = dict(
-        data_type = "relation",
+        type = "relation",
         fetch_type = "lazy",
         secure = True,
         persist_type = mvc_utils.PERSIST_NONE
@@ -102,7 +102,7 @@ class User(root_entity.RootEntity):
     """ The posts made by the user """
 
     comments = dict(
-        data_type = "relation",
+        type = "relation",
         fetch_type = "lazy",
         secure = True,
         persist_type = mvc_utils.PERSIST_NONE

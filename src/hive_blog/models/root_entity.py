@@ -49,13 +49,13 @@ class RootEntity(models.EntityModel):
 
     object_id = dict(
         id = True,
-        data_type = "integer",
+        type = "integer",
         generated = True
     )
     """ The object id of the root entity """
 
     tags = dict(
-        data_type = "relation",
+        type = "relation",
         fetch_type = "lazy",
         persist_type = mvc_utils.PERSIST_ASSOCIATE
     )

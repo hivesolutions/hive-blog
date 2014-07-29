@@ -47,7 +47,7 @@ class Tag(root_entity.RootEntity):
     """
 
     name = dict(
-        data_type = "string",
+        type = "string",
         indexed = True,
         index_types = ("hash", "btree"),
         mandatory = True
@@ -55,14 +55,14 @@ class Tag(root_entity.RootEntity):
     """ The name of the tag """
 
     count = dict(
-        data_type = "integer",
+        type = "integer",
         mandatory = True,
         secure = True
     )
     """ The occurrences count of the tag """
 
     root_entities = dict(
-        data_type = "relation",
+        type = "relation",
         fetch_type = "lazy",
         secure = True,
         persist_type = mvc_utils.PERSIST_NONE

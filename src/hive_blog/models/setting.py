@@ -47,7 +47,7 @@ class Setting(root_entity.RootEntity):
     """
 
     name = dict(
-        data_type = "string",
+        type = "string",
         indexed = True,
         index_types = ("hash", "btree"),
         mandatory = True
@@ -55,7 +55,7 @@ class Setting(root_entity.RootEntity):
     """ The name for the setting """
 
     value = dict(
-        data_type = "text",
+        type = "text",
         mandatory = True
     )
     """ The value for the setting """

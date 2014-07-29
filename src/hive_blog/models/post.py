@@ -70,30 +70,30 @@ class Post(root_entity.RootEntity):
     """
 
     date = dict(
-        data_type = "date",
+        type = "date",
         mandatory = True
     )
     """ The date of the post """
 
     title = dict(
-        data_type = "text",
+        type = "text",
         mandatory = True
     )
     """ The title of the post """
 
     contents = dict(
-        data_type = "text",
+        type = "text",
         mandatory = True
     )
     """ The contents of the post """
 
     contents_abstract = dict(
-        data_type = "text"
+        type = "text"
     )
     """ The contents of the abstract of the post """
 
     author = dict(
-        data_type = "relation",
+        type = "relation",
         fetch_type = "lazy",
         mandatory = True,
         secure = True,
@@ -102,7 +102,7 @@ class Post(root_entity.RootEntity):
     """ The author of the post """
 
     comments = dict(
-        data_type = "relation",
+        type = "relation",
         fetch_type = "lazy",
         secure = True,
         persist_type = mvc_utils.PERSIST_NONE
