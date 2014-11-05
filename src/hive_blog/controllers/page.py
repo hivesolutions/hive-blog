@@ -36,12 +36,12 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import colony
 
-import base
+from .base import BaseController
 
 models = colony.__import__("models")
 mvc_utils = colony.__import__("mvc_utils")
 
-class PageController(base.BaseController):
+class PageController(BaseController):
 
     @mvc_utils.serialize
     def show(self, request, index = 1):

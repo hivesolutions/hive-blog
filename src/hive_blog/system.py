@@ -34,8 +34,6 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import types
-
 import colony
 
 ENTITY_MANAGER_ARGUMENTS = dict(
@@ -234,5 +232,5 @@ class HiveBlog(colony.System):
 
         # creates the list value from the value and returns
         # the value to the caller method
-        list_value = type(value) == types.ListType and value or (value,)
+        list_value = type(value) == list and value or (value,)
         return list_value

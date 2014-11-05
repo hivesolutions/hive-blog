@@ -38,12 +38,12 @@ import colony
 
 import hive_blog
 
-import base
+from .base import BaseController
 
 models = colony.__import__("models")
 mvc_utils = colony.__import__("mvc_utils")
 
-class CommentController(base.BaseController):
+class CommentController(BaseController):
 
     @mvc_utils.serialize
     def create(self, request):

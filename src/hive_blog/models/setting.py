@@ -36,11 +36,11 @@ __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 
 import colony
 
-import root_entity
+from .root_entity import RootEntity
 
 models = colony.__import__("models")
 
-class Setting(root_entity.RootEntity):
+class Setting(RootEntity):
     """
     The setting class, representing the
     setting entity.
@@ -65,7 +65,7 @@ class Setting(root_entity.RootEntity):
         Constructor of the class.
         """
 
-        root_entity.RootEntity.__init__(self)
+        RootEntity.__init__(self)
 
     def set_validation(self):
         """
@@ -74,7 +74,7 @@ class Setting(root_entity.RootEntity):
         """
 
         # adds the inherited validations
-        root_entity.RootEntity.set_validation(self)
+        RootEntity.set_validation(self)
 
         # adds the validation methods to the name attribute
         self.add_validation("name", "not_none", True)

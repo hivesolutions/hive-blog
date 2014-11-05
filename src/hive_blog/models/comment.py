@@ -38,7 +38,7 @@ import datetime
 
 import colony
 
-import root_entity
+from .root_entity import RootEntity
 
 MONTH_NUMBER_MAP = {
     1 : "Jan",
@@ -59,7 +59,7 @@ MONTH_NUMBER_MAP = {
 models = colony.__import__("models")
 mvc_utils = colony.__import__("mvc_utils")
 
-class Comment(root_entity.RootEntity):
+class Comment(RootEntity):
     """
     The comment class, representing the comment entity.
     """
@@ -115,7 +115,7 @@ class Comment(root_entity.RootEntity):
         Constructor of the class.
         """
 
-        root_entity.RootEntity.__init__(self)
+        RootEntity.__init__(self)
         self.date = datetime.datetime.utcnow()
 
     @staticmethod
@@ -159,7 +159,7 @@ class Comment(root_entity.RootEntity):
         """
 
         # adds the inherited validations
-        root_entity.RootEntity.set_validation(self)
+        RootEntity.set_validation(self)
 
         # adds the validation methods to the date attribute
         self.add_validation("date", "not_none", True)

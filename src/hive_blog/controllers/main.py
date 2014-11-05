@@ -38,7 +38,7 @@ import colony
 
 import hive_blog
 
-import base
+from .base import BaseController
 
 OAUTH_CONSUMER_KEY = "JUO1lRFjDMOGnfuuvSSVQ"
 """ The oauth consumer key """
@@ -55,7 +55,7 @@ FACEBOOK_CONSUMER_SECRET = "6fddb2bbaade579798f45b1134865f01"
 models = colony.__import__("models")
 mvc_utils = colony.__import__("mvc_utils")
 
-class MainController(base.BaseController):
+class MainController(BaseController):
 
     @mvc_utils.serialize
     def index(self, request):

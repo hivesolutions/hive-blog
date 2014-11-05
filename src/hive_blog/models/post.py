@@ -39,7 +39,7 @@ import datetime
 
 import colony
 
-import root_entity
+from .root_entity import RootEntity
 
 DEFAULT_DATE_FORMAT = "%Y-%m-%d"
 """ The default date format """
@@ -63,7 +63,7 @@ MONTH_NUMBER_MAP = {
 models = colony.__import__("models")
 mvc_utils = colony.__import__("mvc_utils")
 
-class Post(root_entity.RootEntity):
+class Post(RootEntity):
     """
     The post class, representing the
     post entity.
@@ -114,7 +114,7 @@ class Post(root_entity.RootEntity):
         Constructor of the class.
         """
 
-        root_entity.RootEntity.__init__(self)
+        RootEntity.__init__(self)
         self.date = datetime.datetime.utcnow()
 
     @staticmethod
@@ -140,7 +140,7 @@ class Post(root_entity.RootEntity):
         """
 
         # adds the inherited validations
-        root_entity.RootEntity.set_validation(self)
+        RootEntity.set_validation(self)
 
         # adds the validation methods to the date attribute
         self.add_validation("date", "not_none", True)

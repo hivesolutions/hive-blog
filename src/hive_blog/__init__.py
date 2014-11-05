@@ -31,8 +31,10 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "Hive Solutions Confidential Usage License (HSCUL)"
 """ The license for the module """
 
-import exceptions
-import system
+from . import exceptions
+from . import system
 
-from exceptions import *
-from system import *
+from .exceptions import HiveBlogException, InvalidAuthenticationInformation,\
+    InvalidCaptcha, PasswordConfirmationMismatch, AccessDeniedException
+from .system import HiveBlog
+

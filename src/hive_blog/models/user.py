@@ -38,12 +38,12 @@ import hashlib
 
 import colony
 
-import root_entity
+from .root_entity import RootEntity
 
 models = colony.__import__("models")
 mvc_utils = colony.__import__("mvc_utils")
 
-class User(root_entity.RootEntity):
+class User(RootEntity):
     """
     The user class, representing the
     user entity.
@@ -114,7 +114,7 @@ class User(root_entity.RootEntity):
         Constructor of the class.
         """
 
-        root_entity.RootEntity.__init__(self)
+        RootEntity.__init__(self)
 
     @staticmethod
     def _relation_posts():
@@ -139,7 +139,7 @@ class User(root_entity.RootEntity):
         """
 
         # adds the inherited validations
-        root_entity.RootEntity.set_validation(self)
+        RootEntity.set_validation(self)
 
         # adds the validation methods to the username attribute
         self.add_validation("username", "not_none", True)
