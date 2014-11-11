@@ -37,4 +37,3 @@ from . import system
 from .exceptions import HiveBlogException, InvalidAuthenticationInformation,\
     InvalidCaptcha, PasswordConfirmationMismatch, AccessDeniedException
 from .system import HiveBlog
-
