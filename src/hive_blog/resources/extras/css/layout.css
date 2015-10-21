@@ -63,7 +63,7 @@ body {
     background: transparent url(../images/top-shadow.png) repeat-x left top;
     color: #808080;
     font-family: Rockwell;
-    margin: 0px;
+    margin: 0px 0px 0px 0px;
 }
 
 img {
@@ -95,7 +95,7 @@ a:hover {
 h1 {
     color: #214c8f;
     font-size: 20pt;
-    margin: 0px;
+    margin: 0px 0px 0px 0px;
 }
 
 p {
@@ -232,7 +232,7 @@ textarea.active {
     border-bottom: 3px solid #214c8f;
     border-left: 3px solid #214c8f;
     border-right: 3px solid #214c8f;
-    margin: 0px;
+    margin: 0px 0px 0px 0px;
     padding: 10px 0px 0px 0px;
 }
 
@@ -521,7 +521,7 @@ textarea.active {
 #menu-column ul {
     margin-bottom: 40px;
     margin-left: 0px;
-    padding: 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 #menu-column ul li {
