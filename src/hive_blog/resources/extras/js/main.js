@@ -45,28 +45,29 @@ jQuery(document).ready(function() {
     jQuery("textarea").textarea();
 
     jQuery("#comments-form-area > .button-large").click(function() {
-                jQuery(this).hide();
-                jQuery("#comments-form-area > form").fadeIn(200);
-                jQuery.scrollTo(jQuery("#comments-form-area > form"), 800, {
-                            offset : {
-                                top : -50,
-                                left : 0
-                            }
-                        });
-            });
+        jQuery(this).hide();
+        jQuery("#comments-form-area > form").fadeIn(200);
+        jQuery.scrollTo(jQuery("#comments-form-area > form"), 800, {
+            offset: {
+                top: -50,
+                left: 0
+            }
+        });
+    });
 
     jQuery("form").each(function(index, element) {
         jQuery("div#post", element).click(function() {
             jQuery("#window-captcha").window("show");
             jQuery("#window-captcha").bind("valid_captcha",
-                    function(event, captcha) {
-                        // adds the captcha to the form element as an hidden element
-                        jQuery(element).append("<input type=\"hidden\" name=\"captcha\" value=\""
-                                + captcha + "\" />");
+                function(event, captcha) {
+                    // adds the captcha to the form element as an hidden element
+                    jQuery(element).append(
+                        "<input type=\"hidden\" name=\"captcha\" value=\"" + captcha +
+                        "\" />");
 
-                        // submits the form (with the captcha value)
-                        element.submit();
-                    });
+                    // submits the form (with the captcha value)
+                    element.submit();
+                });
             jQuery("#window-captcha input#captcha").val("");
             jQuery("#window-captcha input#captcha").focus();
         });
@@ -100,35 +101,35 @@ jQuery(document).ready(function() {
     });
 
     jQuery(".button-openid").click(function() {
-                // retrieves the parent form and uses it to
-                // show the openid area of the form
-                var parentForm = jQuery(this).parents("form");
-                jQuery("#openid-area", parentForm).fadeIn(300);
-                jQuery("#openid-area > input").focus();
-            });
+        // retrieves the parent form and uses it to
+        // show the openid area of the form
+        var parentForm = jQuery(this).parents("form");
+        jQuery("#openid-area", parentForm).fadeIn(300);
+        jQuery("#openid-area > input").focus();
+    });
 
     jQuery("#openid-area #login").click(function() {
-                // retrieves the parent form
-                var parentForm = jQuery(this).parents("form");
+        // retrieves the parent form
+        var parentForm = jQuery(this).parents("form");
 
-                // retrieves the return address element
-                var returnAddress = jQuery("input[name=return_address]",
-                        parentForm);
+        // retrieves the return address element
+        var returnAddress = jQuery("input[name=return_address]",
+            parentForm);
 
-                // retrieves the return address value
-                var returnAddressValue = returnAddress.val();
+        // retrieves the return address value
+        var returnAddressValue = returnAddress.val();
 
-                // resolves the signin url
-                var signinUrl = jQuery.resolveurl("signin");
+        // resolves the signin url
+        var signinUrl = jQuery.resolveurl("signin");
 
-                // sets the new value in the return address
-                returnAddress.val(returnAddressValue + "#comments-form-area");
+        // sets the new value in the return address
+        returnAddress.val(returnAddressValue + "#comments-form-area");
 
-                // sets the new action in the parent form and runs
-                // the submit operation in it
-                parentForm.attr("action", signinUrl);
-                parentForm.submit();
-            });
+        // sets the new action in the parent form and runs
+        // the submit operation in it
+        parentForm.attr("action", signinUrl);
+        parentForm.submit();
+    });
 
     jQuery("#window-captcha").bind("refresh_captcha", function() {
         // retrieves the captcha element
@@ -141,9 +142,8 @@ jQuery(document).ready(function() {
         var timestampString = String(timestamp);
 
         // retrieves the captcha (original) src value
-        var srcValue = captchaElement.attr("data-src")
-                ? captchaElement.attr("data-src")
-                : captchaElement.attr("src");
+        var srcValue = captchaElement.attr("data-src") ? captchaElement.attr("data-src") :
+            captchaElement.attr("src");
 
         // saves the captcha original src value
         captchaElement.attr("data-src", srcValue);
@@ -154,15 +154,15 @@ jQuery(document).ready(function() {
     });
 
     jQuery("#window-captcha #captcha-refresh").click(function() {
-                // triggers the refresh captcha event
-                jQuery("#window-captcha").trigger("refresh_captcha");
+        // triggers the refresh captcha event
+        jQuery("#window-captcha").trigger("refresh_captcha");
 
-                // resets the value of the input field associated with
-                // the definition of the captcha value and then runs
-                // the focus operation in it
-                jQuery("#window-captcha input#captcha").val("");
-                jQuery("#window-captcha input#captcha").focus();
-            });
+        // resets the value of the input field associated with
+        // the definition of the captcha value and then runs
+        // the focus operation in it
+        jQuery("#window-captcha input#captcha").val("");
+        jQuery("#window-captcha input#captcha").focus();
+    });
 
     jQuery("#window-captcha div#post").click(function() {
         // retrieves the captcha value
@@ -172,34 +172,34 @@ jQuery(document).ready(function() {
         var captchaUrl = jQuery.resolveurl("captcha");
 
         jQuery.ajax({
-                    type : "get",
-                    url : captchaUrl,
-                    data : {
-                        captcha : captchaValue
-                    },
-                    success : function(data, textStatus) {
-                        // retrieves the window captcha
-                        var windowCaptcha = jQuery("#window-captcha");
+            type: "get",
+            url: captchaUrl,
+            data: {
+                captcha: captchaValue
+            },
+            success: function(data, textStatus) {
+                // retrieves the window captcha
+                var windowCaptcha = jQuery("#window-captcha");
 
-                        // triggers the valid captcha event and hides
-                        // captcha window
-                        windowCaptcha.trigger("valid_captcha", [captchaValue]);
-                        windowCaptcha.window("hide");
-                    },
-                    error : function() {
-                        // retrieves the window captcha and uses it to
-                        // trigger the refresh event in it
-                        var windowCaptcha = jQuery("#window-captcha");
-                        windowCaptcha.trigger("refresh_captcha");
+                // triggers the valid captcha event and hides
+                // captcha window
+                windowCaptcha.trigger("valid_captcha", [captchaValue]);
+                windowCaptcha.window("hide");
+            },
+            error: function() {
+                // retrieves the window captcha and uses it to
+                // trigger the refresh event in it
+                var windowCaptcha = jQuery("#window-captcha");
+                windowCaptcha.trigger("refresh_captcha");
 
-                        // resets the value of the input field associated with
-                        // the definition of the captcha value and then runs
-                        // the focus operation in it
-                        jQuery("#window-captcha input#captcha").attr("value",
-                                "");
-                        jQuery("#window-captcha input#captcha").focus();
-                    }
-                });
+                // resets the value of the input field associated with
+                // the definition of the captcha value and then runs
+                // the focus operation in it
+                jQuery("#window-captcha input#captcha").attr("value",
+                    "");
+                jQuery("#window-captcha input#captcha").focus();
+            }
+        });
     });
 
     // creates the overlay
