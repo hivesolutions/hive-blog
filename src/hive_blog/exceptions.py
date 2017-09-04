@@ -53,8 +53,8 @@ class InvalidAuthenticationInformation(HiveBlogException):
         """
         Constructor of the class.
 
-        @type message: String
-        @param message: The message to be printed.
+        :type message: String
+        :param message: The message to be printed.
         """
 
         HiveBlogException.__init__(self)
@@ -64,8 +64,8 @@ class InvalidAuthenticationInformation(HiveBlogException):
         """
         Returns the string representation of the class.
 
-        @rtype: String
-        @return: The string representation of the class.
+        :rtype: String
+        :return: The string representation of the class.
         """
 
         return "Invalid authentication information - %s" % self.message
@@ -79,8 +79,8 @@ class InvalidCaptcha(HiveBlogException):
         """
         Constructor of the class.
 
-        @type message: String
-        @param message: The message to be printed.
+        :type message: String
+        :param message: The message to be printed.
         """
 
         HiveBlogException.__init__(self)
@@ -90,8 +90,8 @@ class InvalidCaptcha(HiveBlogException):
         """
         Returns the string representation of the class.
 
-        @rtype: String
-        @return: The string representation of the class.
+        :rtype: String
+        :return: The string representation of the class.
         """
 
         return "Invalid captcha - %s" % self.message
@@ -105,8 +105,8 @@ class PasswordConfirmationMismatch(HiveBlogException):
         """
         Constructor of the class.
 
-        @type message: String
-        @param message: The message to be printed.
+        :type message: String
+        :param message: The message to be printed.
         """
 
         HiveBlogException.__init__(self)
@@ -116,8 +116,8 @@ class PasswordConfirmationMismatch(HiveBlogException):
         """
         Returns the string representation of the class.
 
-        @rtype: String
-        @return: The string representation of the class.
+        :rtype: String
+        :return: The string representation of the class.
         """
 
         return "Password confirmation mismatch - %s" % self.message
@@ -131,8 +131,8 @@ class AccessDeniedException(HiveBlogException):
         """
         Constructor of the class.
 
-        @type message: String
-        @param message: The message to be printed.
+        :type message: String
+        :param message: The message to be printed.
         """
 
         HiveBlogException.__init__(self)
@@ -142,8 +142,8 @@ class AccessDeniedException(HiveBlogException):
         """
         Returns the string representation of the class.
 
-        @rtype: String
-        @return: The string representation of the class.
+        :rtype: String
+        :return: The string representation of the class.
         """
 
         return "Access denied exception - %s" % self.message

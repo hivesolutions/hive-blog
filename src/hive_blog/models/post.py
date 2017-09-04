@@ -162,10 +162,10 @@ class Post(RootEntity):
         Retrieves the specified instance with the necessary relations
         loaded for its usage in a context where it is being shown.
 
-        @type post_object_id: int
-        @param post_object_id: The post object id.
-        @rtype: Post
-        @return: The post.
+        :type post_object_id: int
+        :param post_object_id: The post object id.
+        :rtype: Post
+        :return: The post.
         """
 
         # defines the filter to retrieve the post with
@@ -192,8 +192,8 @@ class Post(RootEntity):
         Retrieves all the posts in the blog with the necessary relations
         loaded for its usage in a context where they are being listed.
 
-        @rtype: List
-        @return: The blog posts.
+        :rtype: List
+        :return: The blog posts.
         """
 
         # creates the filter map
@@ -222,12 +222,12 @@ class Post(RootEntity):
         Retrieves the posts that belong to the requested page, using the
         specified page size.
 
-        @type page_index: int
-        @param page_index: The number of the page being requested.
-        @type number_records_page: int
-        @param number_records_page: Number of posts in a page.
-        @rtype: List
-        @return: The posts that belong to the specified page.
+        :type page_index: int
+        :param page_index: The number of the page being requested.
+        :type number_records_page: int
+        :param number_records_page: Number of posts in a page.
+        :rtype: List
+        :return: The posts that belong to the specified page.
         """
 
         # calculates the start record from the current page index and
@@ -262,10 +262,10 @@ class Post(RootEntity):
         of blog posts in the data source and dividing it by the specified
         page size.
 
-        @type number_records_page: int
-        @param number_records_page: Number of posts in a page.
-        @rtype: int
-        @return: The number of pages.
+        :type number_records_page: int
+        :param number_records_page: Number of posts in a page.
+        :rtype: int
+        :return: The number of pages.
         """
 
         # retrieves the post count and uses it to calculate
@@ -280,8 +280,8 @@ class Post(RootEntity):
         """
         Retrieves the day when the comment was made.
 
-        @rtype: int
-        @return: The day when the comment was made.
+        :rtype: int
+        :return: The day when the comment was made.
         """
 
         # in case there is no date set, must return
@@ -297,8 +297,8 @@ class Post(RootEntity):
         (represented in abbreviated text, eg: "January"
         is represented as "Jan").
 
-        @rtype: String
-        @return: The month when the comment was made.
+        :rtype: String
+        :return: The month when the comment was made.
         """
 
         # in case there is no date set, must return
@@ -313,8 +313,8 @@ class Post(RootEntity):
         Retrieves the data formatted to a string
         in the "YYYY-MM-DD" representation.
 
-        @rtype: String
-        @return: The formatted date.
+        :rtype: String
+        :return: The formatted date.
         """
 
         # formats the date using the default format

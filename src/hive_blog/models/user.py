@@ -179,8 +179,8 @@ class User(RootEntity):
 
         Passwords are encrypted in sha512.
 
-        @type password: String
-        @param password: The password to encrypt.
+        :type password: String
+        :param password: The password to encrypt.
         """
 
         # retrieves the password to be used, uses the
@@ -201,8 +201,8 @@ class User(RootEntity):
         Retrieves the gravatar hash value, according to the email
         defined in the user.
 
-        @rtype: String
-        @return: The md5 hash value of the email to be used to
+        :rtype: String
+        :return: The md5 hash value of the email to be used to
         retrieve the gravatar image.
         """
 
@@ -228,12 +228,12 @@ class User(RootEntity):
         The validation is not performed in case either the password and
         password confirmation parameters are not defined.
 
-        @type attribute_name: String
-        @param attribute_name: The name of the attribute to be validated.
-        @type attribute_value: Object
-        @param attribute_value: The value of the attribute to be validated.
-        @type properties: Dictionary
-        @param properties: The properties for the validation.
+        :type attribute_name: String
+        :param attribute_name: The name of the attribute to be validated.
+        :type attribute_value: Object
+        :param attribute_value: The value of the attribute to be validated.
+        :type properties: Dictionary
+        :param properties: The properties for the validation.
         """
 
         # retrieves the password and its confirmation from the parameters

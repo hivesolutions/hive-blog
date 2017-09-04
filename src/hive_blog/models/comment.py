@@ -172,8 +172,8 @@ class Comment(RootEntity):
         """
         Retrieves the day when the comment was made.
 
-        @rtype: int
-        @return: The day when the comment was made.
+        :rtype: int
+        :return: The day when the comment was made.
         """
 
         # in case there is no date set, must return
@@ -189,8 +189,8 @@ class Comment(RootEntity):
         (represented in abbreviated text, eg: "January"
         is represented as "Jan").
 
-        @rtype: String
-        @return: The month when the comment was made.
+        :rtype: String
+        :return: The month when the comment was made.
         """
 
         # in case there is no date set, must return

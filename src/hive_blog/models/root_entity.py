@@ -91,8 +91,8 @@ class RootEntity(models.EntityModel):
         Encrypts the specified data in sha512 and returns its
         hexadecimal digest.
 
-        @rtype: String
-        @return: The encrypted data digest in hexadecimal format.
+        :rtype: String
+        :return: The encrypted data digest in hexadecimal format.
         """
 
         # computes the sha 512 hash of the data and

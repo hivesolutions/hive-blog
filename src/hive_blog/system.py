@@ -97,8 +97,8 @@ class HiveBlog(colony.System):
         to the mvc service. The tuple should relate the route with the handler
         method/function.
 
-        @rtype: Tuple
-        @return: The tuple of regular expressions to be used as patterns,
+        :rtype: Tuple
+        :return: The tuple of regular expressions to be used as patterns,
         to the mvc service.
         """
 
@@ -130,8 +130,8 @@ class HiveBlog(colony.System):
         to the mvc service. The tuple should relate the route with the base
         file system path to be used.
 
-        @rtype: Tuple
-        @return: The tuple of regular expressions to be used as resource patterns,
+        :rtype: Tuple
+        :return: The tuple of regular expressions to be used as resource patterns,
         to the mvc service.
         """
 
@@ -150,8 +150,8 @@ class HiveBlog(colony.System):
         take into consideration any kind of configuration and uses
         only static configuration values.
 
-        @rtype: Dictionary
-        @return: The entity manager arguments after the resolution
+        :rtype: Dictionary
+        :return: The entity manager arguments after the resolution
         process for the retrieval of the arguments.
         """
 
@@ -169,12 +169,12 @@ class HiveBlog(colony.System):
         """
         Requires the permissions in the given permissions list to be set.
 
-        @type request: Request
-        @param request: The request to be updated.
-        @type permissions_list: List
-        @param permissions_list: The list of permission to be validated.
-        @rtype: List
-        @return: The list of reasons for permission validation failure.
+        :type request: Request
+        :param request: The request to be updated.
+        :type permissions_list: List
+        :param permissions_list: The list of permission to be validated.
+        :rtype: List
+        :return: The list of reasons for permission validation failure.
         """
 
         # casts the permissions list
@@ -199,10 +199,10 @@ class HiveBlog(colony.System):
         Handler for permission validation failures.
         Displays a message or redirects depending on the encoder name.
 
-        @type request: Request
-        @param request: The request object.
-        @type reasons_list: List
-        @param reasons_list: A list with the reasons for validation failure.
+        :type request: Request
+        :param request: The request object.
+        :type reasons_list: List
+        :param reasons_list: A list with the reasons for validation failure.
         """
 
         # retrieves the controller object currently set in the
@@ -220,10 +220,10 @@ class HiveBlog(colony.System):
         """
         Casts the given value to a list, converting it if required.
 
-        @type value: Object
-        @param value: The value to be "casted".
-        @rtype: List
-        @return: The casted list value.
+        :type value: Object
+        :param value: The value to be "casted".
+        :rtype: List
+        :return: The casted list value.
         """
 
         # in case the value is invalid returns
