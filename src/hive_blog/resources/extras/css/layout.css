@@ -147,6 +147,11 @@ input {
     height: 48px;
     margin-bottom: 20px;
     outline: none;
+    -o-outline: none;
+    -ms-outline: none;
+    -moz-outline: none;
+    -khtml-outline: none;
+    -webkit-outline: none;
     padding: 1px 20px 1px 20px;
     width: 485px;
 }
@@ -179,6 +184,11 @@ textarea {
     font-size: 20pt;
     height: 206px;
     outline: none;
+    -o-outline: none;
+    -ms-outline: none;
+    -moz-outline: none;
+    -khtml-outline: none;
+    -webkit-outline: none;
     overflow: visible;
     padding-bottom: 12px;
     padding-left: 20px;
@@ -534,10 +544,20 @@ textarea.active {
 
 .icon-social{
     opacity: 0.5;
+    -o-opacity: 0.5;
+    -ms-opacity: 0.5;
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    -webkit-opacity: 0.5;
 }
 
 .icon-social:hover{
     opacity: 1;
+    -o-opacity: 1;
+    -ms-opacity: 1;
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
 }
 
 .about {
@@ -709,6 +729,11 @@ textarea.active {
     display: none;
     left: 0px;
     opacity: 0.8;
+    -o-opacity: 0.8;
+    -ms-opacity: 0.8;
+    -moz-opacity: 0.8;
+    -khtml-opacity: 0.8;
+    -webkit-opacity: 0.8;
     position: absolute;
     top: 0px;
     z-index: 1;
@@ -729,6 +754,11 @@ textarea.active {
     display: none;
     margin: 150px auto 0px auto;
     opacity: 1;
+    -o-opacity: 1;
+    -ms-opacity: 1;
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
     overflow: auto;
     padding: 20px 0px 30px 0px;
     position: relative;
