@@ -132,7 +132,7 @@ class MainController(BaseController):
         twitter_value = twitter_data.get("value", None)
         facebook_value = facebook_data.get("value", None)
 
-        # in case there is a return address data defined (return url)
+        # in case there is a return address data defined (return URL)
         # it must be defined in the current session to be used latter
         if return_address_data: request.set_s("return_address", return_address_data)
 
@@ -370,11 +370,11 @@ class MainController(BaseController):
         openid_client = api_openid_plugin.create_client({})
 
         # normalizes the openid value, meaning that non canonical names
-        # will be converted into a valid and final url value
+        # will be converted into a valid and final URL value
         openid_value_normalized = openid_client.normalize_claimed_id(openid_value)
 
         # retrieves the host as the openid realm and then retrieves the
-        # return to (url) value taking into account the current host
+        # return to (URL) value taking into account the current host
         openid_realm = self._get_host(request, "http://")
         openid_return_to = self._get_host_path(request, "/openid")
 
@@ -388,7 +388,7 @@ class MainController(BaseController):
             session_type = "no-encryption"
         )
 
-        # runs the openid discovery process to obtains the provider url
+        # runs the openid discovery process to obtains the provider URL
         # and then associates the server and the provider
         openid_client.openid_discover()
         openid_client.openid_associate()
@@ -397,7 +397,7 @@ class MainController(BaseController):
         # used for the rest of the authentication process
         request.set_s("openid.structure", openid_client.openid_structure)
 
-        # retrieves the request url that will be used to forward
+        # retrieves the request URL that will be used to forward
         # the user agent and runs the redirection process using it
         request_url = openid_client.get_request_url()
         self.redirect_base_path(request, request_url, quote = False)
@@ -414,14 +414,14 @@ class MainController(BaseController):
 
         # generates the oauth structure taking into account the currently
         # defined consumer key and secret values and also the callback
-        # url for which the user will be redirected after authentication
+        # URL for which the user will be redirected after authentication
         twitter_client.generate_oauth_structure(
             OAUTH_CONSUMER_KEY,
             OAUTH_CONSUMER_SECRET,
             oauth_callback = callback_path
         )
 
-        # retrieves the authenticate url this is going to be used for the
+        # retrieves the authenticate URL this is going to be used for the
         # redirection of the user agent at the end of the handling
         twitter_client.open_oauth_request_token()
 
@@ -429,8 +429,8 @@ class MainController(BaseController):
         # so that it may be used latter to complete authentication
         request.set_s("twitter.structure", twitter_client.twitter_structure)
 
-        # retrieves the oauth authenticate url and redirects
-        # the user agent into this same authenticate url
+        # retrieves the oauth authenticate URL and redirects
+        # the user agent into this same authenticate URL
         authenticate_url = twitter_client.get_oauth_authenticate_url()
         self.redirect_base_path(request, authenticate_url, quote = False)
 
@@ -456,7 +456,7 @@ class MainController(BaseController):
         # to be used latter to complete authentication process
         request.set_s("facebook.structure", facebook_client.facebook_structure)
 
-        # retrieves the login url to be used by facebook and redirects
+        # retrieves the login URL to be used by facebook and redirects
         # the current used agent into it for authentication
         login_url = facebook_client.get_login_url()
         self.redirect_base_path(request, login_url, quote = False)
