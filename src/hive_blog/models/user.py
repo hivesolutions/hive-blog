@@ -81,7 +81,7 @@ class User(RootEntity):
     openid_claimed_id = dict(
         type = "text"
     )
-    """ The user's openid claimed id """
+    """ The user's OpenID claimed id """
 
     twitter_username = dict(
         type = "text"
@@ -160,7 +160,7 @@ class User(RootEntity):
         # adds the validation methods to the website attribute
         self.add_validation("website", "is_url")
 
-        # adds the validation methods to the openid claimed id attribute
+        # adds the validation methods to the OpenID claimed id attribute
         self.add_validation("openid_claimed_id", "not_empty")
 
         # adds the validation methods to the Twitter username attribute

@@ -288,7 +288,7 @@ class MainController(BaseController):
         request.set_s("user.registration", user_registration)
 
         # redirects to the login page so that the "normal" login or signup
-        # process may occur for the current openid attempt
+        # process may occur for the current OpenID attempt
         self.redirect_base_path(request, "login")
 
     @mvc_utils.serialize
