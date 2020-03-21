@@ -88,7 +88,7 @@ class RootEntity(models.EntityModel):
     @staticmethod
     def encrypt(data):
         """
-        Encrypts the specified data in sha512 and returns its
+        Encrypts the specified data in SHA512 and returns its
         hexadecimal digest.
 
         :rtype: String
