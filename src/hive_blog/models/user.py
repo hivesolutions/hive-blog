@@ -198,26 +198,22 @@ class User(RootEntity):
 
     def get_gravatar_hash(self):
         """
-        Retrieves the gravatar hash value, according to the email
+        Retrieves the Gravatar hash value, according to the email
         defined in the user.
 
         :rtype: String
-        :return: The md5 hash value of the email to be used to
-        retrieve the gravatar image.
+        :return: The MD5 hash value of the email to be used to
+        retrieve the Gravatar image.
         """
 
-        # returns in case the email is not defined
-        if not self.email:
-            # returns immediately
-            return
+        # returns in case the email is not defined, then returns
+        # the control flow immediately
+        if not self.email: return
 
-        # creates the md5 value from the email
+        # creates the MD5 value from the email, then
+        # generates the MD5 email digest and returns it
         email_md5 = hashlib.md5(self.email)
-
-        # generates the md5 email digest
         email_md5_digest = email_md5.hexdigest()
-
-        # returns the md5 email digest
         return email_md5_digest
 
     def validate_password_match(self, attribute_name, attribute_value, properties):

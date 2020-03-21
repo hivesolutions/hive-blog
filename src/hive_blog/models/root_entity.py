@@ -95,7 +95,7 @@ class RootEntity(models.EntityModel):
         :return: The encrypted data digest in hexadecimal format.
         """
 
-        # computes the sha 512 hash of the data and
+        # computes the SHA 512 hash of the data and
         # retrieves its digest in hexadecimal format
         encrypted_data = hashlib.sha512(data)
         encrypted_data_digest = encrypted_data.hexdigest()
