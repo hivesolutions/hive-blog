@@ -41,16 +41,16 @@ import hive_blog
 from .base import BaseController
 
 OAUTH_CONSUMER_KEY = "JUO1lRFjDMOGnfuuvSSVQ"
-""" The oauth consumer key """
+""" The OAuth consumer key """
 
 OAUTH_CONSUMER_SECRET = "R4rKyklKk2FaUa94B0kHVsrynyqawdxAH75wEprig"
-""" The oauth consumer secret """
+""" The OAuth consumer secret """
 
 FACEBOOK_CONSUMER_KEY = "b42e59dee7e7b07258dfc82913648e43"
-""" The facebook consumer key """
+""" The Facebook consumer key """
 
 FACEBOOK_CONSUMER_SECRET = "6fddb2bbaade579798f45b1134865f01"
-""" The facebook consumer secret """
+""" The Facebook consumer secret """
 
 models = colony.__import__("models")
 mvc_utils = colony.__import__("mvc_utils")
@@ -140,16 +140,16 @@ class MainController(BaseController):
         # username and password were specified
         if login_username and login_password:
             self._process_login_signin(request, login_username, login_password)
-        # processes an openid signin in case
+        # processes an OpenID signin in case
         # the open id value was specified
         elif openid_value:
             self._process_openid_signin(request, openid_value)
-        # processes a twitter signin in case
-        # the twitter value was specified
+        # processes a Twitter signin in case
+        # the Twitter value was specified
         elif twitter_value:
             self._process_twitter_signin(request)
-        # processes a facebook signin in case
-        # the facebook value was specified
+        # processes a Facebook signin in case
+        # the Facebook value was specified
         elif facebook_value:
             self._process_facebook_signin(request)
 
@@ -200,27 +200,27 @@ class MainController(BaseController):
 
     @mvc_utils.serialize
     def openid(self, request):
-        # retrieves the api openid plugin that is going to be used
-        # for the re-construction of the openid client from the structure
+        # retrieves the API OpenID plugin that is going to be used
+        # for the re-construction of the OpenID client from the structure
         api_openid_plugin = self.plugin.api_openid_plugin
 
         # retrieves the form data by processing the form (in flat format)
         form_data_map = self.process_form_data_flat(request)
 
-        # retrieves the openid data and then tries to retrieve the
-        # openid simple registration (sreg) data from it
+        # retrieves the OpenID data and then tries to retrieve the
+        # OpenID simple registration (sreg) data from it
         openid_data = form_data_map["openid"]
         openid_sreg_data = openid_data.get("sreg", {})
 
-        # retrieves the openid structure from the session and uses it to
+        # retrieves the OpenID structure from the session and uses it to
         # create the client that may be used latter for operations
         openid_strucure = request.get_s("openid.structure")
         openid_client = api_openid_plugin.create_client(
             dict(openid_structure = openid_strucure)
         )
 
-        # retrieves the complete set of openid attributes that are going
-        # to be used in the process of securing the openid (structure)
+        # retrieves the complete set of OpenID attributes that are going
+        # to be used in the process of securing the OpenID (structure)
         openid_claimed_id = openid_data["claimed_id"]
         openid_identity = openid_data["identity"]
         openid_ns = openid_data["ns"]
@@ -232,8 +232,8 @@ class MainController(BaseController):
         openid_signed = openid_data["signed"]
         openid_invalidate_handle = openid_data.get("invalidate_handle", None)
 
-        # creates the openid return structure that is going to be used in
-        # the verification process of the openid infra-structure
+        # creates the OpenID return structure that is going to be used in
+        # the verification process of the OpenID infra-structure
         return_openid_structure = openid_client.generate_openid_structure(
             openid_provider_url,
             openid_claimed_id,
@@ -243,7 +243,7 @@ class MainController(BaseController):
             set_structure = False
         )
 
-        # sets some of the items of the openid structure
+        # sets some of the items of the OpenID structure
         return_openid_structure.set_signed(openid_signed)
         return_openid_structure.set_signature(openid_signature)
         return_openid_structure.set_response_nonce(openid_response_nonce)
@@ -256,25 +256,25 @@ class MainController(BaseController):
         attributes_list = request.get_attributes_list()
         for attribute in attributes_list:
             # minimizes the attribute by removing
-            # the openid namespace (eg: openid.ns transforms into ns)
+            # the OpenID namespace (eg: openid.ns transforms into ns)
             minimized_attribute = attribute[7:]
 
-            # in case the return openid structure does have the minimized
+            # in case the return OpenID structure does have the minimized
             # attribute, avoids setting the value (it's set already)
             if hasattr(return_openid_structure, minimized_attribute): continue
 
             # retrieves the attribute value from the request and
-            # sets the attribute value in the return openid structure
+            # sets the attribute value in the return OpenID structure
             attribute_value = self.get_attribute_decoded(request, attribute, "utf-8")
             setattr(return_openid_structure, minimized_attribute, attribute_value)
 
-        # verifies the openid return value (in non strict mode)
+        # verifies the OpenID return value (in non strict mode)
         openid_client.openid_verify(return_openid_structure, False)
 
         # retrieves the preferred claimed id
         preferred_claimed_id = openid_client.get_preferred_claimed_id()
 
-        # creates the user registration structure from the openid simple
+        # creates the user registration structure from the OpenID simple
         # registration (sreg) values
         user_registration = dict(
             username = openid_sreg_data.get("nickname", None),
@@ -282,7 +282,7 @@ class MainController(BaseController):
             email = openid_sreg_data.get("email", None)
         )
 
-        # sets the openid id associate attributes in the current session
+        # sets the OpenID id associate attributes in the current session
         # so that may be used latter in the login process
         request.set_s("openid.claimed_id", preferred_claimed_id)
         request.set_s("user.registration", user_registration)
@@ -364,21 +364,21 @@ class MainController(BaseController):
         self.redirect_base_path(request, "login")
 
     def _process_openid_signin(self, request, openid_value):
-        # retrieves the api openid plugin and uses it to create the "default"
-        # openid client that is going to be used in the authentication process
+        # retrieves the API OpenID plugin and uses it to create the "default"
+        # OpenID client that is going to be used in the authentication process
         api_openid_plugin = self.plugin.api_openid_plugin
         openid_client = api_openid_plugin.create_client({})
 
-        # normalizes the openid value, meaning that non canonical names
+        # normalizes the OpenID value, meaning that non canonical names
         # will be converted into a valid and final URL value
         openid_value_normalized = openid_client.normalize_claimed_id(openid_value)
 
-        # retrieves the host as the openid realm and then retrieves the
+        # retrieves the host as the OpenID realm and then retrieves the
         # return to (URL) value taking into account the current host
         openid_realm = self._get_host(request, "http://")
         openid_return_to = self._get_host_path(request, "/openid")
 
-        # generates the openid structure by sending all the required data
+        # generates the OpenID structure by sending all the required data
         openid_client.generate_openid_structure(
             None,
             openid_value_normalized,
@@ -388,12 +388,12 @@ class MainController(BaseController):
             session_type = "no-encryption"
         )
 
-        # runs the openid discovery process to obtains the provider URL
+        # runs the OpenID discovery process to obtains the provider URL
         # and then associates the server and the provider
         openid_client.openid_discover()
         openid_client.openid_associate()
 
-        # sets the openid client in the session, so that it may be latter
+        # sets the OpenID client in the session, so that it may be latter
         # used for the rest of the authentication process
         request.set_s("openid.structure", openid_client.openid_structure)
 
@@ -403,8 +403,8 @@ class MainController(BaseController):
         self.redirect_base_path(request, request_url, quote = False)
 
     def _process_twitter_signin(self, request):
-        # retrieves the twitter api plugin and uses it to create a new
-        # client that is going to be used in twitter authentication
+        # retrieves the Twitter API plugin and uses it to create a new
+        # client that is going to be used in Twitter authentication
         api_twitter_plugin = self.plugin.api_twitter_plugin
         twitter_client = api_twitter_plugin.create_client({})
 
@@ -412,7 +412,7 @@ class MainController(BaseController):
         # using the current request's host value (as expected)
         callback_path = self._get_host_path(request, "/twitter")
 
-        # generates the oauth structure taking into account the currently
+        # generates the OAuth structure taking into account the currently
         # defined consumer key and secret values and also the callback
         # URL for which the user will be redirected after authentication
         twitter_client.generate_oauth_structure(
@@ -425,18 +425,18 @@ class MainController(BaseController):
         # redirection of the user agent at the end of the handling
         twitter_client.open_oauth_request_token()
 
-        # sets the twitter structure in the current session
+        # sets the Twitter structure in the current session
         # so that it may be used latter to complete authentication
         request.set_s("twitter.structure", twitter_client.twitter_structure)
 
-        # retrieves the oauth authenticate URL and redirects
+        # retrieves the OAuth authenticate URL and redirects
         # the user agent into this same authenticate URL
         authenticate_url = twitter_client.get_oauth_authenticate_url()
         self.redirect_base_path(request, authenticate_url, quote = False)
 
     def _process_facebook_signin(self, request):
-        # retrieves the facebook api plugin and uses it to create a new
-        # client that is going to be used in facebook authentication
+        # retrieves the Facebook API plugin and uses it to create a new
+        # client that is going to be used in Facebook authentication
         api_facebook_plugin = self.plugin.api_facebook_plugin
         facebook_client = api_facebook_plugin.create_client({})
 
@@ -444,7 +444,7 @@ class MainController(BaseController):
         # be calculate taking into account the current host value in request
         next = self._get_host_path(request, "/facebook")
 
-        # generates the facebook structure for the current client using the
+        # generates the Facebook structure for the current client using the
         # currently defined consumer key and secret values
         facebook_client.generate_facebook_structure(
             FACEBOOK_CONSUMER_KEY,
@@ -452,11 +452,11 @@ class MainController(BaseController):
             next
         )
 
-        # sets the facebook structure in the session as it is going
+        # sets the Facebook structure in the session as it is going
         # to be used latter to complete authentication process
         request.set_s("facebook.structure", facebook_client.facebook_structure)
 
-        # retrieves the login URL to be used by facebook and redirects
+        # retrieves the login URL to be used by Facebook and redirects
         # the current used agent into it for authentication
         login_url = facebook_client.get_login_url()
         self.redirect_base_path(request, login_url, quote = False)
