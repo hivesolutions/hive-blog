@@ -86,12 +86,12 @@ class User(RootEntity):
     twitter_username = dict(
         type = "text"
     )
-    """ The user's twitter username """
+    """ The user's Twitter username """
 
     facebook_username = dict(
         type = "text"
     )
-    """ The user's facebook username """
+    """ The user's Facebook username """
 
     posts = dict(
         type = "relation",
@@ -163,10 +163,10 @@ class User(RootEntity):
         # adds the validation methods to the openid claimed id attribute
         self.add_validation("openid_claimed_id", "not_empty")
 
-        # adds the validation methods to the twitter username attribute
+        # adds the validation methods to the Twitter username attribute
         self.add_validation("twitter_username", "not_empty")
 
-        # adds the validation methods to the facebook username attribute
+        # adds the validation methods to the Facebook username attribute
         self.add_validation("facebook_username", "not_empty")
 
     def encrypt_password(self, password = None):
